@@ -5,4 +5,5 @@ using UnityEngine;
 public class Tags
 {
     public const string Ground = "Ground";
+    public const string Boost = "Boost";
 }

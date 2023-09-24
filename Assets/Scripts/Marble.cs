@@ -12,6 +12,7 @@ public class Marble : MonoBehaviour
     private int gravityMultiplier = 1;  // Toggles between 1 and -1 depending on if we are falling down or up
 
     public int InitialHorizontalForce = 100;
+    public int BoostForce = 10;
     public int JumpForce = 500;
     public int SpeedIncreaseForce = 10;
 
@@ -65,10 +66,18 @@ public class Marble : MonoBehaviour
             {
                 this.CurrentState.OnLanded();
             }
+        }   
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == Tags.Boost)
+        {
+            rb.AddForce(Vector3.right * 10, ForceMode.Impulse);
         }
     }
 
-        void IncreaseSpeed()
+    void IncreaseSpeed()
     {
         rb.AddForce(Vector3.right * SpeedIncreaseForce, ForceMode.Acceleration);
     }
