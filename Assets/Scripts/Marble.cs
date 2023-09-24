@@ -15,6 +15,8 @@ public class Marble : MonoBehaviour
     public int JumpForce = 500;
     public int SpeedIncreaseForce = 10;
 
+    public MarbleState CurrentState { get; set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,10 +51,24 @@ public class Marble : MonoBehaviour
     private void Jump_performed(InputAction.CallbackContext obj)
     {
         Debug.Log("On Jump");
-        rb.AddForce(Vector3.up * JumpForce * gravityMultiplier, ForceMode.Force);
+        if(this.CurrentState != null)
+        {
+            this.CurrentState.OnJumpTriggered(JumpForce, gravityMultiplier);
+        }
     }
 
-    void IncreaseSpeed()
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == Tags.Ground)
+        {
+            if(this.CurrentState != null)
+            {
+                this.CurrentState.OnLanded();
+            }
+        }
+    }
+
+        void IncreaseSpeed()
     {
         rb.AddForce(Vector3.right * SpeedIncreaseForce, ForceMode.Acceleration);
     }
@@ -63,4 +79,11 @@ public class Marble : MonoBehaviour
     }
 
     
+}
+
+public interface MarbleState
+{
+    void OnJumpTriggered(int jumpForce, int gravityMultiplier);
+
+    void OnLanded();
 }
