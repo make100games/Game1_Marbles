@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarbleStateOnGround : StateMachineBehaviour, MarbleState
+public class MarbleStateBoosted : StateMachineBehaviour, MarbleState
 {
     private Marble marble;
     private Animator animator;
-    private Rigidbody rb;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Enter marble state OnGround");
+        Debug.Log("Enter marble state Boosted");
         this.marble = animator.gameObject.GetComponent<Marble>();
         this.animator = animator;
-        this.rb = marble.GetComponent<Rigidbody>();
         this.marble.CurrentState = this;
+        animator.SetTrigger(Triggers.TriggerBoostWoreOff);
+    }
+
+    public void OnBoosted(int boostForce)
+    {
+        // We ignore this so that we don't boost too much in a row
     }
 
     public void OnJumpTriggered(int jumpForce, int gravityMultiplier)
@@ -26,12 +30,6 @@ public class MarbleStateOnGround : StateMachineBehaviour, MarbleState
 
     public void OnLanded()
     {
-        // No-op
-    }
-
-    public void OnBoosted(int boostForce)
-    {
-        rb.AddForce(Vector3.right * boostForce, ForceMode.Impulse);
-        this.animator.SetTrigger(Triggers.TriggerBoosted);
+        // No op
     }
 }

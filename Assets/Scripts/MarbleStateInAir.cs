@@ -24,4 +24,9 @@ public class MarbleStateInAir : StateMachineBehaviour, MarbleState
     {
         this.animator.SetTrigger(Triggers.TriggerLanded);
     }
+
+    public void OnBoosted(int boostForce)
+    {
+        // No op
+    }
 }

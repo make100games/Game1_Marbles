@@ -11,10 +11,10 @@ public class Marble : MonoBehaviour
     private Vector3 gravity;
     private int gravityMultiplier = 1;  // Toggles between 1 and -1 depending on if we are falling down or up
 
-    public int InitialHorizontalForce = 100;
-    public int BoostForce = 10;
-    public int JumpForce = 500;
-    public int SpeedIncreaseForce = 10;
+    private int InitialHorizontalForce = 5;
+    private int BoostForce = 10;
+    private int JumpForce = 500;
+    private int SpeedIncreaseForce = 10;
 
     public MarbleState CurrentState { get; set; }
 
@@ -37,21 +37,18 @@ public class Marble : MonoBehaviour
 
     private void FallDown_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("Fall Down");
         gravityMultiplier = 1;
         Physics.gravity = gravity;
     }
 
     private void FallUp_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("Fall Up");
         gravityMultiplier = -1;
         Physics.gravity *= gravityMultiplier;
     }
 
     private void Jump_performed(InputAction.CallbackContext obj)
     {
-        Debug.Log("On Jump");
         if(this.CurrentState != null)
         {
             this.CurrentState.OnJumpTriggered(JumpForce, gravityMultiplier);
@@ -73,7 +70,10 @@ public class Marble : MonoBehaviour
     {
         if (other.gameObject.tag == Tags.Boost)
         {
-            rb.AddForce(Vector3.right * 10, ForceMode.Impulse);
+            if(this.CurrentState != null)
+            {
+                this.CurrentState.OnBoosted(BoostForce);
+            }
         }
     }
 
@@ -82,12 +82,10 @@ public class Marble : MonoBehaviour
         rb.AddForce(Vector3.right * SpeedIncreaseForce, ForceMode.Acceleration);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Jump(int jumpForce, int gravityMultiplier)
     {
+        rb.AddForce(Vector3.up * jumpForce * gravityMultiplier, ForceMode.Force);
     }
-
-    
 }
 
 public interface MarbleState
@@ -95,4 +93,6 @@ public interface MarbleState
     void OnJumpTriggered(int jumpForce, int gravityMultiplier);
 
     void OnLanded();
+
+    void OnBoosted(int boostForce);
 }
