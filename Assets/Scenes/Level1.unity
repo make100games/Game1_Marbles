@@ -1266,8 +1266,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 789275263}
-  m_LocalRotation: {x: 5.04871e-29, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.61, y: 1.94, z: -10}
+  m_LocalRotation: {x: 7.1915794e-25, y: 0.09901593, z: -7.1559736e-26, w: 0.9950859}
+  m_LocalPosition: {x: -8.62, y: 1.94, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1357,8 +1357,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 5.04871e-29, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.61, y: 1.94, z: -10}
+  m_LocalRotation: {x: 7.1915794e-25, y: 0.09901593, z: -7.1559736e-26, w: 0.9950859}
+  m_LocalPosition: {x: -8.62, y: 1.94, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1381,7 +1381,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -2237,7 +2237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_FollowOffset: {x: -2.0099998, y: 0, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -2599,10 +2599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a121e9104e484e1abb7a287bb013f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialHorizontalForce: 3
-  BoostForce: 100
-  JumpForce: 500
-  SpeedIncreaseForce: 10
 --- !u!95 &1843310935
 Animator:
   serializedVersion: 5
