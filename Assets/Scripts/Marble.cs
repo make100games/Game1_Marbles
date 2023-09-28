@@ -13,8 +13,10 @@ public class Marble : MonoBehaviour
 
     private int InitialHorizontalForce = 5;
     private int BoostForce = 10;
+    private int HighBoostForce = 50;
     private int JumpForce = 500;
     private int SpeedIncreaseForce = 10;
+    private float ContinuousBoost = 0.25f;    // Boost applied while on a continously boosting platform
 
     public MarbleState CurrentState { get; set; }
 
@@ -63,7 +65,17 @@ public class Marble : MonoBehaviour
             {
                 this.CurrentState.OnLanded();
             }
-        }   
+        }
+
+        // We want this to be a regular collider so that a player can land on
+        // the continuous boost platform and start boosting
+        if(collision.gameObject.tag == Tags.ContinuousBoost)
+        {
+            if(this.CurrentState != null)
+            {
+                this.CurrentState.OnStartedContinuousBoost();
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -73,6 +85,20 @@ public class Marble : MonoBehaviour
             if(this.CurrentState != null)
             {
                 this.CurrentState.OnBoosted(BoostForce);
+            }
+        }
+        if (other.gameObject.tag == Tags.HighBoost)
+        {
+            if (this.CurrentState != null)
+            {
+                this.CurrentState.OnBoosted(HighBoostForce);
+            }
+        }
+        if (other.gameObject.tag == Tags.ContinuousBoostExit)
+        {
+            if (this.CurrentState != null)
+            {
+                this.CurrentState.OnStoppedContinuousBoost();
             }
         }
     }
@@ -86,6 +112,11 @@ public class Marble : MonoBehaviour
     {
         rb.AddForce(Vector3.up * jumpForce * gravityMultiplier, ForceMode.Force);
     }
+
+    public void ApplySoftBoost()
+    {
+        rb.AddForce(Vector3.right * ContinuousBoost, ForceMode.Impulse);
+    }
 }
 
 public interface MarbleState
@@ -95,4 +126,8 @@ public interface MarbleState
     void OnLanded();
 
     void OnBoosted(int boostForce);
+
+    void OnStartedContinuousBoost();
+
+    void OnStoppedContinuousBoost();
 }

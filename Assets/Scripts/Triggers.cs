@@ -8,4 +8,6 @@ public class Triggers
     public const string TriggerLanded = "Landed";
     public const string TriggerBoosted = "Boosted";
     public const string TriggerBoostWoreOff = "BoostWoreOff";
+    public const string TriggerStartContinuousBoost = "StartContinuousBoost";
+    public const string TriggerStopContinuousBoost = "StopContinuousBoost";
 }

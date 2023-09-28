@@ -34,4 +34,14 @@ public class MarbleStateOnGround : StateMachineBehaviour, MarbleState
         rb.AddForce(Vector3.right * boostForce, ForceMode.Impulse);
         this.animator.SetTrigger(Triggers.TriggerBoosted);
     }
+
+    public void OnStartedContinuousBoost()
+    {
+        this.animator.SetTrigger(Triggers.TriggerStartContinuousBoost);
+    }
+
+    public void OnStoppedContinuousBoost()
+    {
+        // No op
+    }
 }

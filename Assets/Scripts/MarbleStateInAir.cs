@@ -29,4 +29,14 @@ public class MarbleStateInAir : StateMachineBehaviour, MarbleState
     {
         // No op
     }
+
+    public void OnStartedContinuousBoost()
+    {
+        // No op
+    }
+
+    public void OnStoppedContinuousBoost()
+    {
+        // No op
+    }
 }
