@@ -37,6 +37,6 @@ public class MarbleStateOnGround : StateMachineBehaviour, MarbleState
 
     public void OnBoosted(int boostForce)
     {
-        // No op
+        this.animator.SetTrigger(Triggers.HitBoost);
     }
 }

@@ -42,7 +42,7 @@ public class Marble : MonoBehaviour
     {
         if(isAccelerating)
         {
-            rb.AddForce(Vector3.right * acceleratingBoost, ForceMode.Acceleration);
+            //rb.AddForce(Vector3.right * acceleratingBoost, ForceMode.Acceleration);
         }
     }
 
