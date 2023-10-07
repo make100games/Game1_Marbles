@@ -11,12 +11,14 @@ public class Marble : MonoBehaviour
     private Vector3 gravity;
     private int gravityMultiplier = 1;  // Toggles between 1 and -1 depending on if we are falling down or up
 
-    private int InitialHorizontalForce = 5;
-    private int BoostForce = 10;
-    private int HighBoostForce = 50;
-    private int JumpForce = 500;
-    private int SpeedIncreaseForce = 10;
-    private float ContinuousBoost = 0.25f;    // Boost applied while on a continously boosting platform
+    private int initialHorizontalForce = 5;
+    private int boostForce = 10;
+    private int highBoostForce = 50;
+    private int jumpForce = 500;
+    private float acceleratingBoost = 10f;   // Continuously apply boost while on the ground
+    private float slamDownForce = 500;  // While in the air, the player can slam the ball back to the ground
+    private float landingBoost = 10;    // The boost you get when you land right after an obstacle
+    private bool isAccelerating = false;
 
     public MarbleState CurrentState { get; set; }
 
@@ -33,8 +35,15 @@ public class Marble : MonoBehaviour
 
         gravity = Physics.gravity;
 
-        rb.AddForce(Vector3.right * InitialHorizontalForce, ForceMode.Impulse);
-        InvokeRepeating("IncreaseSpeed", 0.5f, 0.5f);
+        rb.AddForce(Vector3.right * initialHorizontalForce, ForceMode.Impulse);
+    }
+
+    private void FixedUpdate()
+    {
+        if(isAccelerating)
+        {
+            rb.AddForce(Vector3.right * acceleratingBoost, ForceMode.Acceleration);
+        }
     }
 
     private void FallDown_performed(InputAction.CallbackContext obj)
@@ -53,7 +62,7 @@ public class Marble : MonoBehaviour
     {
         if(this.CurrentState != null)
         {
-            this.CurrentState.OnJumpTriggered(JumpForce, gravityMultiplier);
+            this.CurrentState.OnJumpTriggered(jumpForce, gravityMultiplier);
         }
     }
 
@@ -66,16 +75,6 @@ public class Marble : MonoBehaviour
                 this.CurrentState.OnLanded();
             }
         }
-
-        // We want this to be a regular collider so that a player can land on
-        // the continuous boost platform and start boosting
-        if(collision.gameObject.tag == Tags.ContinuousBoost)
-        {
-            if(this.CurrentState != null)
-            {
-                this.CurrentState.OnStartedContinuousBoost();
-            }
-        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -84,28 +83,16 @@ public class Marble : MonoBehaviour
         {
             if(this.CurrentState != null)
             {
-                this.CurrentState.OnBoosted(BoostForce);
+                this.CurrentState.OnBoosted(boostForce);
             }
         }
         if (other.gameObject.tag == Tags.HighBoost)
         {
             if (this.CurrentState != null)
             {
-                this.CurrentState.OnBoosted(HighBoostForce);
+                this.CurrentState.OnBoosted(highBoostForce);
             }
         }
-        if (other.gameObject.tag == Tags.ContinuousBoostExit)
-        {
-            if (this.CurrentState != null)
-            {
-                this.CurrentState.OnStoppedContinuousBoost();
-            }
-        }
-    }
-
-    void IncreaseSpeed()
-    {
-        rb.AddForce(Vector3.right * SpeedIncreaseForce, ForceMode.Acceleration);
     }
 
     public void Jump(int jumpForce, int gravityMultiplier)
@@ -113,9 +100,24 @@ public class Marble : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce * gravityMultiplier, ForceMode.Force);
     }
 
-    public void ApplySoftBoost()
+    public void SlamDown()
     {
-        rb.AddForce(Vector3.right * ContinuousBoost, ForceMode.Impulse);
+        rb.AddForce(Vector3.down * slamDownForce, ForceMode.Force);
+    }
+
+    public void StartAccelerating()
+    {
+        isAccelerating = true;
+    }
+
+    public void StopAccelerating()
+    {
+        isAccelerating = false;
+    }
+
+    public void ApplyLandingBoost()
+    {
+        rb.AddForce(Vector3.right * landingBoost, ForceMode.Impulse);
     }
 }
 
@@ -126,8 +128,4 @@ public interface MarbleState
     void OnLanded();
 
     void OnBoosted(int boostForce);
-
-    void OnStartedContinuousBoost();
-
-    void OnStoppedContinuousBoost();
 }

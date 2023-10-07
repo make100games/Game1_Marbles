@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarbleStateInAir : StateMachineBehaviour, MarbleState
+public class MarbleStateInAirInBoost : StateMachineBehaviour, MarbleState
 {
     private Marble marble;
     private Animator animator;
@@ -10,25 +10,25 @@ public class MarbleStateInAir : StateMachineBehaviour, MarbleState
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Enter marble state InAir");
+        Debug.Log("Enter marble state InAirInBoost");
         this.marble = animator.gameObject.GetComponent<Marble>();
         this.animator = animator;
         this.marble.CurrentState = this;
     }
 
-    public void OnJumpTriggered(int jumpForce, int gravityMultiplier)
-    {
-        // Slam back down to the ground
-        this.marble.SlamDown();
-    }
-
     public void OnLanded()
     {
+        Debug.Log("InAirInBoost -> Set Trigger: Landed");
         this.animator.SetTrigger(Triggers.Landed);
     }
 
     public void OnBoosted(int boostForce)
     {
-        this.animator.SetTrigger(Triggers.HitBoost);
+        // No op
+    }
+
+    public void OnJumpTriggered(int jumpForce, int gravityMultiplier)
+    {
+        // No op
     }
 }

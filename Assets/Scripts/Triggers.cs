@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Triggers
 {
-    public const string TriggerJumped = "Jumped";
-    public const string TriggerLanded = "Landed";
-    public const string TriggerBoosted = "Boosted";
-    public const string TriggerBoostWoreOff = "BoostWoreOff";
-    public const string TriggerStartContinuousBoost = "StartContinuousBoost";
-    public const string TriggerStopContinuousBoost = "StopContinuousBoost";
+    public const string Jumped = "Jumped";
+    public const string Landed = "Landed";
+    public const string HitBoost = "HitBoost";
 }

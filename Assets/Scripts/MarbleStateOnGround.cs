@@ -16,31 +16,26 @@ public class MarbleStateOnGround : StateMachineBehaviour, MarbleState
         this.animator = animator;
         this.rb = marble.GetComponent<Rigidbody>();
         this.marble.CurrentState = this;
+        this.marble.StartAccelerating();
+    }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        this.marble.StopAccelerating();
     }
 
     public void OnJumpTriggered(int jumpForce, int gravityMultiplier)
     {
         this.marble.Jump(jumpForce, gravityMultiplier);
-        this.animator.SetTrigger(Triggers.TriggerJumped);
+        this.animator.SetTrigger(Triggers.Jumped);
     }
 
     public void OnLanded()
     {
-        // No-op
+        // No op
     }
 
     public void OnBoosted(int boostForce)
-    {
-        rb.AddForce(Vector3.right * boostForce, ForceMode.Impulse);
-        this.animator.SetTrigger(Triggers.TriggerBoosted);
-    }
-
-    public void OnStartedContinuousBoost()
-    {
-        this.animator.SetTrigger(Triggers.TriggerStartContinuousBoost);
-    }
-
-    public void OnStoppedContinuousBoost()
     {
         // No op
     }
