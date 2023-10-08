@@ -30,25 +30,25 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
-                    ""id"": ""eb5a3596-f089-4068-b846-9b88396ef40c"",
+                    ""id"": ""da68174a-5473-4571-a91f-2ceed3640644"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FallUp"",
+                    ""name"": ""MoveLeft"",
                     ""type"": ""Button"",
-                    ""id"": ""b8b81a7b-cb87-43a3-a9bd-b32825806a6c"",
+                    ""id"": ""30524ec3-d45f-415f-89e8-b6bea835b4e1"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""FallDown"",
+                    ""name"": ""MoveRight"",
                     ""type"": ""Button"",
-                    ""id"": ""94d665b6-f4b4-4494-bca5-290b6da38f6d"",
+                    ""id"": ""234899ea-2538-49fa-aada-53825a8bd829"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -58,8 +58,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""21af1ed6-6562-4575-aba3-9198c81130f2"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""id"": ""fdd42ae3-50b9-4f7c-965e-d46e2f3b63cf"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -69,34 +69,23 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""28573913-7c44-46dd-b9aa-69d1c7f9fcd7"",
-                    ""path"": """",
+                    ""id"": ""a901f047-ae7d-4e30-9081-016d2243eb3d"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""MoveLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7a5b819c-41ed-4ecc-b8b1-8ab3989152fb"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""id"": ""80a46021-6ac7-4ba2-b813-4e8b26299489"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""FallUp"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ce0068f3-0eb1-4056-8005-2537fd9a5150"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""FallDown"",
+                    ""action"": ""MoveRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -108,8 +97,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
-        m_Game_FallUp = m_Game.FindAction("FallUp", throwIfNotFound: true);
-        m_Game_FallDown = m_Game.FindAction("FallDown", throwIfNotFound: true);
+        m_Game_MoveLeft = m_Game.FindAction("MoveLeft", throwIfNotFound: true);
+        m_Game_MoveRight = m_Game.FindAction("MoveRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -172,15 +161,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Game;
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
     private readonly InputAction m_Game_Jump;
-    private readonly InputAction m_Game_FallUp;
-    private readonly InputAction m_Game_FallDown;
+    private readonly InputAction m_Game_MoveLeft;
+    private readonly InputAction m_Game_MoveRight;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
         public GameActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Game_Jump;
-        public InputAction @FallUp => m_Wrapper.m_Game_FallUp;
-        public InputAction @FallDown => m_Wrapper.m_Game_FallDown;
+        public InputAction @MoveLeft => m_Wrapper.m_Game_MoveLeft;
+        public InputAction @MoveRight => m_Wrapper.m_Game_MoveRight;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -193,12 +182,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @FallUp.started += instance.OnFallUp;
-            @FallUp.performed += instance.OnFallUp;
-            @FallUp.canceled += instance.OnFallUp;
-            @FallDown.started += instance.OnFallDown;
-            @FallDown.performed += instance.OnFallDown;
-            @FallDown.canceled += instance.OnFallDown;
+            @MoveLeft.started += instance.OnMoveLeft;
+            @MoveLeft.performed += instance.OnMoveLeft;
+            @MoveLeft.canceled += instance.OnMoveLeft;
+            @MoveRight.started += instance.OnMoveRight;
+            @MoveRight.performed += instance.OnMoveRight;
+            @MoveRight.canceled += instance.OnMoveRight;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -206,12 +195,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @FallUp.started -= instance.OnFallUp;
-            @FallUp.performed -= instance.OnFallUp;
-            @FallUp.canceled -= instance.OnFallUp;
-            @FallDown.started -= instance.OnFallDown;
-            @FallDown.performed -= instance.OnFallDown;
-            @FallDown.canceled -= instance.OnFallDown;
+            @MoveLeft.started -= instance.OnMoveLeft;
+            @MoveLeft.performed -= instance.OnMoveLeft;
+            @MoveLeft.canceled -= instance.OnMoveLeft;
+            @MoveRight.started -= instance.OnMoveRight;
+            @MoveRight.performed -= instance.OnMoveRight;
+            @MoveRight.canceled -= instance.OnMoveRight;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -232,7 +221,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     public interface IGameActions
     {
         void OnJump(InputAction.CallbackContext context);
-        void OnFallUp(InputAction.CallbackContext context);
-        void OnFallDown(InputAction.CallbackContext context);
+        void OnMoveLeft(InputAction.CallbackContext context);
+        void OnMoveRight(InputAction.CallbackContext context);
     }
 }
