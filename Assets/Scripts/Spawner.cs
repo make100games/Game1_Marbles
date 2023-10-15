@@ -41,6 +41,8 @@ public class Spawner : MonoBehaviour
             var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
             obstacle.transform.position = hit.point;
             obstacle.transform.up = hit.normal;
+            obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
+            obstacle.transform.parent = cylinder.transform;
             Debug.DrawRay(hit.point, hit.normal * 200, Color.red, 60);
         }   
     }
