@@ -3,30 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 
-public class TileSpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     public GameObject cylinder;
 
     // Start is called before the first frame update
     void Start()
     {
-
         InvokeRepeating("SpawnObject", 2f, 2f);
-
-        /*Vector3 position = hit.transform.position + hit.normal;
-
-        // calculate the rotation to create the object aligned with the face normal:
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-        // create the object at the face center, and perpendicular to it:
-        GameObject Placement = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        Placement.transform.position = position;
-        Placement.transform.rotation = rotation;*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.DrawRay(transform.position, transform.forward * 200, Color.yellow);
     }
 
     void SpawnObject()
@@ -40,9 +30,18 @@ public class TileSpawner : MonoBehaviour
         var signOfMove = Random.Range(0f, 1f) >= 0.5 ? -1 : 1;
         var randomPositionOfSpawner = cylinderX + (amountToMove * signOfMove);
         transform.position = new Vector3(randomPositionOfSpawner, transform.position.y, transform.position.y);
-        transform.LookAt(cylinder.transform);
 
         // Fire a ray into the cylinder and spawn an object there with its normal aligned
         // with that of the face it is sitting on
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+        {
+            // Spawn object at hit location and align its Up vector with the surface normal of the collision
+            Debug.Log("Raycast hit");
+            var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            obstacle.transform.position = hit.point;
+            obstacle.transform.up = hit.normal;
+            Debug.DrawRay(hit.point, hit.normal * 200, Color.red, 60);
+        }   
     }
 }
