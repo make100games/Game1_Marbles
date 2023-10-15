@@ -7,16 +7,22 @@ public class Spawner : MonoBehaviour
 {
     public GameObject cylinder;
 
+    private bool spawn = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnObject", 2f, 2f);
+        //InvokeRepeating("SpawnObject", 2f, 2f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(transform.position, transform.forward * 200, Color.yellow);
+        if(spawn)
+        {
+            spawn = false;
+            Invoke("SpawnObject", Random.Range(0.25f, 1f));
+        }
     }
 
     void SpawnObject()
@@ -37,13 +43,15 @@ public class Spawner : MonoBehaviour
         if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
             // Spawn object at hit location and align its Up vector with the surface normal of the collision
-            Debug.Log("Raycast hit");
             var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            // Give it some randomized scale
+            obstacle.transform.localScale = new Vector3(Random.Range(1f, 2f), Random.Range(1f, 5f), Random.Range(1f, 2f));
+            obstacle.tag = Tags.Obstacle;
             obstacle.transform.position = hit.point;
             obstacle.transform.up = hit.normal;
             obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
             obstacle.transform.parent = cylinder.transform;
-            Debug.DrawRay(hit.point, hit.normal * 200, Color.red, 60);
-        }   
+        }
+        spawn = true;
     }
 }

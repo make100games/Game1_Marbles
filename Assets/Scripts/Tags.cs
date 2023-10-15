@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Tags
 {
-    public const string Ground = "Ground";
+    public const string Obstacle = "Obstacle";
 }

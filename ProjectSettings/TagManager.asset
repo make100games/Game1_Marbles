@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
+  - Obstacle
   - Boost
   - HighBoost
+  - Ground
   layers:
   - Default
   - TransparentFX
