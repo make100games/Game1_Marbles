@@ -13,10 +13,6 @@ public class Marble : MonoBehaviour
     {
         gameInput = new GameInput();
         gameInput.Enable();
-
-        gameInput.Game.Jump.performed += Jump_performed;
-        gameInput.Game.MoveLeft.performed += MoveLeft_performed;
-        gameInput.Game.MoveRight.performed += MoveRight_performed;
     }
 
     private void MoveRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -27,11 +23,6 @@ public class Marble : MonoBehaviour
     private void MoveLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         StartCoroutine(MoveLeft());
-    }
-
-    private void Jump_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-    {
-        
     }
 
     IEnumerator MoveLeft()

@@ -28,27 +28,36 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""id"": ""940a3553-c6ae-4c96-b931-0b7b30193048"",
             ""actions"": [
                 {
-                    ""name"": ""Jump"",
+                    ""name"": ""StartMovingLeft"",
                     ""type"": ""Button"",
-                    ""id"": ""da68174a-5473-4571-a91f-2ceed3640644"",
+                    ""id"": ""d74b9c6f-e615-4102-b9cd-4d0f56fc4f24"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MoveLeft"",
+                    ""name"": ""StopMovingLeft"",
                     ""type"": ""Button"",
-                    ""id"": ""30524ec3-d45f-415f-89e8-b6bea835b4e1"",
+                    ""id"": ""2c54033f-2af4-48e7-a4e7-dd53c63591ea"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MoveRight"",
+                    ""name"": ""StartMovingRight"",
                     ""type"": ""Button"",
-                    ""id"": ""234899ea-2538-49fa-aada-53825a8bd829"",
+                    ""id"": ""5a812ee9-7d8d-4920-8653-bf6ec345a913"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StopMovingRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""8073ecc4-47d1-424f-b5b1-ab8791dd34c6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -58,34 +67,45 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""fdd42ae3-50b9-4f7c-965e-d46e2f3b63cf"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a901f047-ae7d-4e30-9081-016d2243eb3d"",
+                    ""id"": ""fb956261-9e0e-4944-9fc4-d4804de08843"",
                     ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveLeft"",
+                    ""action"": ""StartMovingLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""80a46021-6ac7-4ba2-b813-4e8b26299489"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
+                    ""id"": ""a99d1316-c349-48ee-b4ae-60ca64fd49b5"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": ""Press(behavior=1)"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MoveRight"",
+                    ""action"": ""StopMovingLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70f627ed-0675-454e-8331-bc4d57a64aca"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartMovingRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80f98e27-a2bf-4f3b-aba1-9de77c0d2f20"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StopMovingRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -96,9 +116,10 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
 }");
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
-        m_Game_MoveLeft = m_Game.FindAction("MoveLeft", throwIfNotFound: true);
-        m_Game_MoveRight = m_Game.FindAction("MoveRight", throwIfNotFound: true);
+        m_Game_StartMovingLeft = m_Game.FindAction("StartMovingLeft", throwIfNotFound: true);
+        m_Game_StopMovingLeft = m_Game.FindAction("StopMovingLeft", throwIfNotFound: true);
+        m_Game_StartMovingRight = m_Game.FindAction("StartMovingRight", throwIfNotFound: true);
+        m_Game_StopMovingRight = m_Game.FindAction("StopMovingRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,16 +181,18 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     // Game
     private readonly InputActionMap m_Game;
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
-    private readonly InputAction m_Game_Jump;
-    private readonly InputAction m_Game_MoveLeft;
-    private readonly InputAction m_Game_MoveRight;
+    private readonly InputAction m_Game_StartMovingLeft;
+    private readonly InputAction m_Game_StopMovingLeft;
+    private readonly InputAction m_Game_StartMovingRight;
+    private readonly InputAction m_Game_StopMovingRight;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
         public GameActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Jump => m_Wrapper.m_Game_Jump;
-        public InputAction @MoveLeft => m_Wrapper.m_Game_MoveLeft;
-        public InputAction @MoveRight => m_Wrapper.m_Game_MoveRight;
+        public InputAction @StartMovingLeft => m_Wrapper.m_Game_StartMovingLeft;
+        public InputAction @StopMovingLeft => m_Wrapper.m_Game_StopMovingLeft;
+        public InputAction @StartMovingRight => m_Wrapper.m_Game_StartMovingRight;
+        public InputAction @StopMovingRight => m_Wrapper.m_Game_StopMovingRight;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -179,28 +202,34 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameActionsCallbackInterfaces.Add(instance);
-            @Jump.started += instance.OnJump;
-            @Jump.performed += instance.OnJump;
-            @Jump.canceled += instance.OnJump;
-            @MoveLeft.started += instance.OnMoveLeft;
-            @MoveLeft.performed += instance.OnMoveLeft;
-            @MoveLeft.canceled += instance.OnMoveLeft;
-            @MoveRight.started += instance.OnMoveRight;
-            @MoveRight.performed += instance.OnMoveRight;
-            @MoveRight.canceled += instance.OnMoveRight;
+            @StartMovingLeft.started += instance.OnStartMovingLeft;
+            @StartMovingLeft.performed += instance.OnStartMovingLeft;
+            @StartMovingLeft.canceled += instance.OnStartMovingLeft;
+            @StopMovingLeft.started += instance.OnStopMovingLeft;
+            @StopMovingLeft.performed += instance.OnStopMovingLeft;
+            @StopMovingLeft.canceled += instance.OnStopMovingLeft;
+            @StartMovingRight.started += instance.OnStartMovingRight;
+            @StartMovingRight.performed += instance.OnStartMovingRight;
+            @StartMovingRight.canceled += instance.OnStartMovingRight;
+            @StopMovingRight.started += instance.OnStopMovingRight;
+            @StopMovingRight.performed += instance.OnStopMovingRight;
+            @StopMovingRight.canceled += instance.OnStopMovingRight;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
         {
-            @Jump.started -= instance.OnJump;
-            @Jump.performed -= instance.OnJump;
-            @Jump.canceled -= instance.OnJump;
-            @MoveLeft.started -= instance.OnMoveLeft;
-            @MoveLeft.performed -= instance.OnMoveLeft;
-            @MoveLeft.canceled -= instance.OnMoveLeft;
-            @MoveRight.started -= instance.OnMoveRight;
-            @MoveRight.performed -= instance.OnMoveRight;
-            @MoveRight.canceled -= instance.OnMoveRight;
+            @StartMovingLeft.started -= instance.OnStartMovingLeft;
+            @StartMovingLeft.performed -= instance.OnStartMovingLeft;
+            @StartMovingLeft.canceled -= instance.OnStartMovingLeft;
+            @StopMovingLeft.started -= instance.OnStopMovingLeft;
+            @StopMovingLeft.performed -= instance.OnStopMovingLeft;
+            @StopMovingLeft.canceled -= instance.OnStopMovingLeft;
+            @StartMovingRight.started -= instance.OnStartMovingRight;
+            @StartMovingRight.performed -= instance.OnStartMovingRight;
+            @StartMovingRight.canceled -= instance.OnStartMovingRight;
+            @StopMovingRight.started -= instance.OnStopMovingRight;
+            @StopMovingRight.performed -= instance.OnStopMovingRight;
+            @StopMovingRight.canceled -= instance.OnStopMovingRight;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -220,8 +249,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     public GameActions @Game => new GameActions(this);
     public interface IGameActions
     {
-        void OnJump(InputAction.CallbackContext context);
-        void OnMoveLeft(InputAction.CallbackContext context);
-        void OnMoveRight(InputAction.CallbackContext context);
+        void OnStartMovingLeft(InputAction.CallbackContext context);
+        void OnStopMovingLeft(InputAction.CallbackContext context);
+        void OnStartMovingRight(InputAction.CallbackContext context);
+        void OnStopMovingRight(InputAction.CallbackContext context);
     }
 }
