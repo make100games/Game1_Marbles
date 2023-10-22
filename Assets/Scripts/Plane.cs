@@ -77,18 +77,52 @@ public class Plane : MonoBehaviour
     {
         if(movingRight)
         {
-            UnityEngine.Debug.Log("Move right");
+            if (rb.velocity.x < 0)
+            {
+                rb.AddForce(Vector3.right * 10f, ForceMode.Acceleration);
+            }
             rb.AddForce(Vector3.right * 5f, ForceMode.Acceleration);
         }
         if(movingLeft)
         {
-            UnityEngine.Debug.Log("Move left");
+            if(rb.velocity.x > 0)
+            {
+                rb.AddForce(Vector3.left * 10f, ForceMode.Acceleration);
+            }
             rb.AddForce(Vector3.left * 5f, ForceMode.Acceleration);
         }
         if(!movingLeft && !movingRight)
         {
             // Decelerate depending if we are currently moving left or right
-            UnityEngine.Debug.Log("Rigid body velocity: " + rb.velocity);
+            //UnityEngine.Debug.Log("Rigid body velocity: " + rb.velocity);
+            if(rb.velocity.x > 0)
+            {
+                if(rb.velocity.x < 0.5)
+                {
+                    // If we are just barely moving, stop the plane's lateral movement
+                    UnityEngine.Debug.Log("STOP");
+                    rb.velocity = Vector3.zero;
+                }
+                else
+                {
+                    // We are moving to the right so decelerate by applying force to the left
+                    rb.AddForce(Vector3.left * 10f, ForceMode.Acceleration);
+                }
+            }
+            if(rb.velocity.x < 0)
+            {
+                if (rb.velocity.x > -0.5)
+                {
+                    // If we are just barely moving, stop the plane's lateral movement
+                    UnityEngine.Debug.Log("STOP");
+                    rb.velocity = Vector3.zero;
+                }
+                else
+                {
+                    // We are moving to the right so decelerate by applying force to the left
+                    rb.AddForce(Vector3.right * 10f, ForceMode.Acceleration);
+                }
+            }
         }
     }
 
