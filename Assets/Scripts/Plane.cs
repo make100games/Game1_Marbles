@@ -11,6 +11,8 @@ public class Plane : MonoBehaviour
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
+    private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
+    private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
 
     // Start is called before the first frame update
     void Start()
@@ -97,35 +99,53 @@ public class Plane : MonoBehaviour
             //UnityEngine.Debug.Log("Rigid body velocity: " + rb.velocity);
             if(rb.velocity.x > 0)
             {
-                if(rb.velocity.x < 0.5)
-                {
-                    // If we are just barely moving, stop the plane's lateral movement
-                    UnityEngine.Debug.Log("STOP");
-                    rb.velocity = Vector3.zero;
-                }
-                else
-                {
-                    // We are moving to the right so decelerate by applying force to the left
-                    rb.AddForce(Vector3.left * 10f, ForceMode.Acceleration);
-                }
+                DecelerateRightwardMovement();
             }
             if(rb.velocity.x < 0)
             {
-                if (rb.velocity.x > -0.5)
-                {
-                    // If we are just barely moving, stop the plane's lateral movement
-                    UnityEngine.Debug.Log("STOP");
-                    rb.velocity = Vector3.zero;
-                }
-                else
-                {
-                    // We are moving to the right so decelerate by applying force to the left
-                    rb.AddForce(Vector3.right * 10f, ForceMode.Acceleration);
-                }
+                DecelerateLeftwardMovement();
             }
         }
     }
 
+    void DecelerateRightwardMovement()
+    {
+        if (rb.velocity.x < movingSlowlyThreshold)
+        {
+            // If we are just barely moving, stop the plane's lateral movement
+            UnityEngine.Debug.Log("STOP");
+            rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            // We are moving to the right so decelerate by applying force to the left
+            rb.AddForce(Vector3.left * decelerationForce, ForceMode.Acceleration);
+        }
+    }
+
+    void DecelerateLeftwardMovement()
+    {
+        if (rb.velocity.x > -movingSlowlyThreshold)
+        {
+            // If we are just barely moving, stop the plane's lateral movement
+            UnityEngine.Debug.Log("STOP");
+            rb.velocity = Vector3.zero;
+        }
+        else
+        {
+            // We are moving to the right so decelerate by applying force to the left
+            rb.AddForce(Vector3.right * decelerationForce, ForceMode.Acceleration);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == Tags.Ramp)
+        {
+            // Tilt plane back and give it an upward push
+
+        }
+    }
 
     // Update is called once per frame
     void Update()
