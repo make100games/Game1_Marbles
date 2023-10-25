@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.HID;
 public class Spawner : MonoBehaviour
 {
     public GameObject cylinder;
+    public GameObject rampPrefab;
 
     private bool spawn = true;
 
@@ -27,7 +28,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnObject()
     {
-        // Spawn tiles by moving left or right a random distance (but not so far
+        // Spawn objects by moving left or right a random distance (but not so far
         // as to go beyond the left or right edge of the Cylinder), looking at the
         // cylinder, firing a ray at it and spawning an object where the ray hit
         var cylinderX = cylinder.transform.position.x;
@@ -43,10 +44,12 @@ public class Spawner : MonoBehaviour
         if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
             // Spawn object at hit location and align its Up vector with the surface normal of the collision
-            var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var obstacle = Instantiate(rampPrefab);
+            
             // Give it some randomized scale
             obstacle.transform.localScale = new Vector3(Random.Range(1f, 2f), Random.Range(1f, 5f), Random.Range(1f, 2f));
-            obstacle.tag = Tags.Obstacle;
+            //obstacle.tag = Tags.Obstacle;
             obstacle.transform.position = hit.point;
             obstacle.transform.up = hit.normal;
             obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);

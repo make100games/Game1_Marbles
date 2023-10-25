@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cylinder: {fileID: 1808669133}
+  rampPrefab: {fileID: 4711688632424566680, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
 --- !u!136 &228734572
 CapsuleCollider:
   m_ObjectHideFlags: 0

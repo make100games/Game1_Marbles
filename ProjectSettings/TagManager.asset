@@ -8,6 +8,7 @@ TagManager:
   - Boost
   - HighBoost
   - Ground
+  - Ramp
   layers:
   - Default
   - TransparentFX

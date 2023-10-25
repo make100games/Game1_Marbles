@@ -8,6 +8,9 @@ public class Plane : MonoBehaviour
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
+    private float amountToPitchInDegrees = 45;  // Amount of degrees to pitch plane back when we hit a ramp
+    private float rateOfUpwardPitch = 0.25f;    // Amount to pitch in a single frame update when pitching up
+    private float rateOfDownwardPitch = 0.0725f;   // Amount to pitch in a single frame update when pitching down
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
@@ -59,7 +62,8 @@ public class Plane : MonoBehaviour
     {
         for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
         {
-            transform.Rotate(Vector3.forward, rateOfRoll);
+            transform.rotation *= Quaternion.AngleAxis(rateOfRoll, Vector3.forward);
+            //transform.Rotate(Vector3.forward, rateOfRoll);
             
             yield return null;
         }
@@ -69,7 +73,8 @@ public class Plane : MonoBehaviour
     {
         for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
         {
-            transform.Rotate(Vector3.forward, -rateOfRoll);
+            transform.rotation *= Quaternion.AngleAxis(-rateOfRoll, Vector3.forward);
+            //transform.Rotate(Vector3.forward, -rateOfRoll);
 
             yield return null;
         }
@@ -140,10 +145,32 @@ public class Plane : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        UnityEngine.Debug.Log("Triggery trigger: " + other.tag);
         if(other.tag == Tags.Ramp)
         {
-            // Tilt plane back and give it an upward push
+            // Tilt plane back then slowly back down and give it an upward push
+            StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
+        }
+    }
 
+    IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()
+    {
+        // Quickly pitch plane upwards
+        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfUpwardPitch)
+        {
+            transform.rotation *= Quaternion.AngleAxis(rateOfUpwardPitch, Vector3.left);
+            //transform.Rotate(Vector3.left, rateOfUpwardPitch);
+
+            yield return null;
+        }
+
+        // Slowly pitch it back down
+        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfDownwardPitch)
+        {
+            transform.rotation *= Quaternion.AngleAxis(-rateOfDownwardPitch, Vector3.left);
+            //transform.Rotate(Vector3.left, -rateOfDownwardPitch);
+
+            yield return null;
         }
     }
 
