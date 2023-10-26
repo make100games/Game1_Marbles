@@ -63,7 +63,6 @@ public class Plane : MonoBehaviour
         for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
         {
             transform.rotation *= Quaternion.AngleAxis(rateOfRoll, Vector3.forward);
-            //transform.Rotate(Vector3.forward, rateOfRoll);
             
             yield return null;
         }
@@ -74,7 +73,6 @@ public class Plane : MonoBehaviour
         for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
         {
             transform.rotation *= Quaternion.AngleAxis(-rateOfRoll, Vector3.forward);
-            //transform.Rotate(Vector3.forward, -rateOfRoll);
 
             yield return null;
         }
@@ -101,7 +99,6 @@ public class Plane : MonoBehaviour
         if(!movingLeft && !movingRight)
         {
             // Decelerate depending if we are currently moving left or right
-            //UnityEngine.Debug.Log("Rigid body velocity: " + rb.velocity);
             if(rb.velocity.x > 0)
             {
                 DecelerateRightwardMovement();
@@ -158,7 +155,6 @@ public class Plane : MonoBehaviour
         // Quickly pitch plane upwards
         for (float i = 0f; i < amountToPitchInDegrees; i += rateOfUpwardPitch)
         {
-            //transform.rotation *= Quaternion.AngleAxis(rateOfUpwardPitch, Vector3.left);
             transform.Rotate(Vector3.left, rateOfUpwardPitch, Space.World);
 
             yield return null;
@@ -167,23 +163,15 @@ public class Plane : MonoBehaviour
         // Slowly pitch it back down
         for (float i = 0f; i < amountToPitchInDegrees; i += rateOfDownwardPitch)
         {
-            //transform.rotation *= Quaternion.AngleAxis(-rateOfDownwardPitch, Vector3.left);
             transform.Rotate(Vector3.left, -rateOfDownwardPitch, Space.World);
 
             yield return null;
         }
     }
 
-    private float duration = 150f;
-    private float timeRemaining = 150f;
-
     // Update is called once per frame
     void Update()
     {
-        var targetDirection = Quaternion.Euler(Vector3.forward * 45);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, targetDirection, duration - timeRemaining);
-        //timeRemaining -= Time.deltaTime;
-
-        //transform.Rotate(Vector3.right, 50.0f * Time.deltaTime, Space.World);
+        
     }
 }
