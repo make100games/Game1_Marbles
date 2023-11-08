@@ -16,6 +16,8 @@ public class Plane : MonoBehaviour
     private bool movingRight = false;
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
+    private float jumpForce = 20f;  // Upward force applied to the plane to make it jump
+    private float cruisingYPos; // The y position of the plane when it is just cruising over the surface of the cylinder. This is the y position the plane will come back down to after a jump.
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,8 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingLeft.performed += StopMovingLeft_performed;
         gameInput.Game.StartMovingRight.performed += StartMovingRight_performed;
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
+
+        cruisingYPos = transform.position.y;
     }
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -146,7 +150,10 @@ public class Plane : MonoBehaviour
         if(other.tag == Tags.Ramp)
         {
             // Tilt plane back then slowly back down and give it an upward push
+            // Be sure to enable gravity before applying the jump so that the plane can fall back down
             StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.useGravity = true;
         }
     }
 
@@ -172,6 +179,12 @@ public class Plane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
+        {
+            rb.useGravity = false;
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
+        }
     }
 }
