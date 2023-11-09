@@ -16,8 +16,9 @@ public class Plane : MonoBehaviour
     private bool movingRight = false;
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
-    private float jumpForce = 20f;  // Upward force applied to the plane to make it jump
+    private float jumpForce = 25f;  // Upward force applied to the plane to make it jump
     private float cruisingYPos; // The y position of the plane when it is just cruising over the surface of the cylinder. This is the y position the plane will come back down to after a jump.
+    private float glidingUpwardForce = 20f;  // When we jump, we want to glide back down and not simply fall down. This represents the slight upward force to counteract gravity a bit
 
     // Start is called before the first frame update
     void Start()
@@ -108,6 +109,11 @@ public class Plane : MonoBehaviour
                 DecelerateLeftwardMovement();
             }
         }
+        if(rb.useGravity && rb.velocity.y < 0)
+        {
+            // If we are falling after having taken a jump, apply a slight upward force to simulate a gliding effect
+            rb.AddForce(Vector3.up * glidingUpwardForce, ForceMode.Force);
+        }
     }
 
     void DecelerateRightwardMovement()
@@ -181,6 +187,5 @@ public class Plane : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
         }
-        UnityEngine.Debug.Log("Y velocity: " + rb.velocity.y);
     }
 }
