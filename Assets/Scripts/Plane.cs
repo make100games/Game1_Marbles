@@ -36,28 +36,24 @@ public class Plane : MonoBehaviour
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Stop moving right");
         StartCoroutine(RollToTheLeft());
         movingRight = false;
     }
 
     private void StartMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Start moving right");
         StartCoroutine(RollToTheRight());
         movingRight = true;
     }
 
     private void StopMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Stop moving left");
         StartCoroutine(RollToTheRight());
         movingLeft = false;
     }
 
     private void StartMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Start moving left");
         StartCoroutine(RollToTheLeft());
         movingLeft = true;
     }
@@ -119,8 +115,7 @@ public class Plane : MonoBehaviour
         if (rb.velocity.x < movingSlowlyThreshold)
         {
             // If we are just barely moving, stop the plane's lateral movement
-            UnityEngine.Debug.Log("STOP");
-            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector3(0f, rb.velocity.y, rb.velocity.z);
         }
         else
         {
@@ -134,8 +129,7 @@ public class Plane : MonoBehaviour
         if (rb.velocity.x > -movingSlowlyThreshold)
         {
             // If we are just barely moving, stop the plane's lateral movement
-            UnityEngine.Debug.Log("STOP");
-            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector3(0f, rb.velocity.y, rb.velocity.z);
         }
         else
         {
@@ -147,7 +141,7 @@ public class Plane : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         UnityEngine.Debug.Log("Triggery trigger: " + other.tag);
-        if(other.tag == Tags.Ramp)
+        if(other.tag == Tags.Ramp && rb.velocity.y == 0)
         {
             // Tilt plane back then slowly back down and give it an upward push
             // Be sure to enable gravity before applying the jump so that the plane can fall back down
@@ -181,10 +175,12 @@ public class Plane : MonoBehaviour
     {
         if(rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
         {
+            UnityEngine.Debug.Log("BELOW CRUISING!");
             rb.useGravity = false;
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
         }
+        UnityEngine.Debug.Log("Y velocity: " + rb.velocity.y);
     }
 }
