@@ -14,6 +14,8 @@ public class Plane : MonoBehaviour
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
+    private float compensatingLateralForce = 10f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
+    private float lateralForce = 5f;    // Force to apply when moving left or right
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
     private float jumpForce = 25f;  // Upward force applied to the plane to make it jump
@@ -85,17 +87,17 @@ public class Plane : MonoBehaviour
         {
             if (rb.velocity.x < 0)
             {
-                rb.AddForce(Vector3.right * 10f, ForceMode.Acceleration);
+                rb.AddForce(Vector3.right * compensatingLateralForce, ForceMode.Acceleration);
             }
-            rb.AddForce(Vector3.right * 5f, ForceMode.Acceleration);
+            rb.AddForce(Vector3.right * lateralForce, ForceMode.Acceleration);
         }
         if(movingLeft)
         {
             if(rb.velocity.x > 0)
             {
-                rb.AddForce(Vector3.left * 10f, ForceMode.Acceleration);
+                rb.AddForce(Vector3.left * compensatingLateralForce, ForceMode.Acceleration);
             }
-            rb.AddForce(Vector3.left * 5f, ForceMode.Acceleration);
+            rb.AddForce(Vector3.left * lateralForce, ForceMode.Acceleration);
         }
         if(!movingLeft && !movingRight)
         {
@@ -183,9 +185,13 @@ public class Plane : MonoBehaviour
         {
             UnityEngine.Debug.Log("BELOW CRUISING!");
             rb.useGravity = false;
-            rb.velocity = Vector3.zero;
+            rb.velocity = Vector3.zero; // TODO: Should probably just set y velocity to zero. Otherwise this leads to lateral movement being stopped when "landing"
             rb.angularVelocity = Vector3.zero;
             rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
         }
+
+        // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
+        compensatingLateralForce += Cylinder.accelerationFactor;
+        lateralForce += Cylinder.accelerationFactor;
     }
 }
