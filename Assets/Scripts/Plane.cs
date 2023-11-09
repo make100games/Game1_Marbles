@@ -185,7 +185,7 @@ public class Plane : MonoBehaviour
         {
             UnityEngine.Debug.Log("BELOW CRUISING!");
             rb.useGravity = false;
-            rb.velocity = Vector3.zero; // TODO: Should probably just set y velocity to zero. Otherwise this leads to lateral movement being stopped when "landing"
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             rb.angularVelocity = Vector3.zero;
             rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
         }
