@@ -49,7 +49,7 @@ public class Spawner : MonoBehaviour
             
             // Give it some randomized scale
             obstacle.transform.localScale = new Vector3(Random.Range(1f, 2f), Random.Range(1f, 5f), Random.Range(1f, 2f));
-            //obstacle.tag = Tags.Obstacle;
+            obstacle.tag = Tags.Obstacle;
             obstacle.transform.position = hit.point;
             obstacle.transform.up = hit.normal;
             obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
