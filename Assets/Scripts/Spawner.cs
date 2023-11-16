@@ -6,7 +6,8 @@ using UnityEngine.InputSystem.HID;
 public class Spawner : MonoBehaviour
 {
     public GameObject cylinder;
-    public GameObject rampPrefab;
+    public GameObject prefab;
+    private float cylinderWidth;
 
     private bool spawn = true;
 
@@ -14,6 +15,8 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         //InvokeRepeating("SpawnObject", 2f, 2f);
+        var renderer = cylinder.GetComponentInChildren<MeshRenderer>();
+        cylinderWidth = renderer.bounds.size.x;
     }
 
     // Update is called once per frame
@@ -32,11 +35,10 @@ public class Spawner : MonoBehaviour
         // as to go beyond the left or right edge of the Cylinder), looking at the
         // cylinder, firing a ray at it and spawning an object where the ray hit
         var cylinderX = cylinder.transform.position.x;
-        var cylinderWidth = cylinder.GetComponent<MeshRenderer>().bounds.size.x;
         var amountToMove = Random.Range(0f, (cylinderWidth / 2));
         var signOfMove = Random.Range(0f, 1f) >= 0.5 ? -1 : 1;
         var randomPositionOfSpawner = cylinderX + (amountToMove * signOfMove);
-        transform.position = new Vector3(randomPositionOfSpawner, transform.position.y, transform.position.y);
+        transform.position = new Vector3(randomPositionOfSpawner, transform.position.y, transform.position.z);
 
         // Fire a ray into the cylinder and spawn an object there with its normal aligned
         // with that of the face it is sitting on
@@ -45,11 +47,11 @@ public class Spawner : MonoBehaviour
         {
             // Spawn object at hit location and align its Up vector with the surface normal of the collision
             //var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            var obstacle = Instantiate(rampPrefab);
+            var obstacle = Instantiate(prefab);
             
             // Give it some randomized scale
             obstacle.transform.localScale = new Vector3(Random.Range(1f, 2f), Random.Range(1f, 5f), Random.Range(1f, 2f));
-            obstacle.tag = Tags.Obstacle;
+            //obstacle.tag = Tags.Obstacle;
             obstacle.transform.position = hit.point;
             obstacle.transform.up = hit.normal;
             obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
