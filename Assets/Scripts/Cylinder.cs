@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cylinder : MonoBehaviour
 {
     public const float accelerationFactor = 0.00025f;   // Amount by which to increase rotation speed of cylinder
-    private float rotationSpeed = -20f;
+    private float rotationSpeed = -40f;
 
     // Start is called before the first frame update
     void Start()

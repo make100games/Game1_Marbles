@@ -7,6 +7,8 @@ public class Spawner : MonoBehaviour
 {
     public GameObject cylinder;
     public GameObject prefab;
+    public GameObject obstaclePrefab;
+    public GameObject coinPrefab;
     private float cylinderWidth;
 
     private bool spawn = true;
@@ -40,23 +42,72 @@ public class Spawner : MonoBehaviour
         var randomPositionOfSpawner = cylinderX + (amountToMove * signOfMove);
         transform.position = new Vector3(randomPositionOfSpawner, transform.position.y, transform.position.z);
 
-        // Fire a ray into the cylinder and spawn an object there with its normal aligned
-        // with that of the face it is sitting on
+        // Fire a ray into the cylinder and spawn an object that will fall towards the cylinder
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
-            // Spawn object at hit location and align its Up vector with the surface normal of the collision
-            //var obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            var obstacle = Instantiate(prefab);
+            if(Random.Range(0, 2) == 0)
+            {
+                SpawnCoin(hit);
+            }
+            else
+            {
+                SpawnObstacle(hit);
+            }
             
-            // Give it some randomized scale
-            obstacle.transform.localScale = new Vector3(Random.Range(1f, 2f), Random.Range(1f, 5f), Random.Range(1f, 2f));
-            //obstacle.tag = Tags.Obstacle;
-            obstacle.transform.position = hit.point;
-            obstacle.transform.up = hit.normal;
-            obstacle.transform.Translate(Vector3.up * (obstacle.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
-            obstacle.transform.parent = cylinder.transform;
         }
         spawn = true;
+    }
+
+    private void SpawnObstacle(RaycastHit hit)
+    {
+        var numberOfObstacles = Random.Range(2, 4);
+        for(int i = 0; i < numberOfObstacles; i++)
+        {
+            var gameObject = Instantiate(obstaclePrefab);
+
+            // Give it some randomized scale
+            gameObject.transform.localScale = new Vector3(Random.Range(3f, 6f), Random.Range(3f, 6f), Random.Range(3f, 6f));
+            gameObject.transform.position = transform.position;
+            gameObject.transform.up = hit.normal;
+            gameObject.transform.parent = cylinder.transform;
+
+            // Give the obstacle a bit of a spin
+            var randomValue = Random.Range(1, 4);
+            Vector3 spinDirection;
+            switch (randomValue)
+            {
+                case 1:
+                    spinDirection = Vector3.left;
+                    break;
+                case 2:
+                    spinDirection = Vector3.right;
+                    break;
+                case 3:
+                    spinDirection = Vector3.forward;
+                    break;
+                default:
+                    spinDirection = Vector3.back;
+                    break;
+            }
+            gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
+        }
+    }
+
+    private void SpawnCoin(RaycastHit hit)
+    {
+        // Spawn a handful of coins
+        var numberOfCoins = Random.Range(2, 5);
+        for(int i = 0; i < numberOfCoins; i++)
+        {
+            var gameObject = Instantiate(coinPrefab);
+
+            gameObject.transform.position = transform.position;
+            gameObject.transform.up = hit.normal;
+            gameObject.transform.parent = cylinder.transform;
+
+            // Give the coin a slight nudge
+            gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
+        }
     }
 }

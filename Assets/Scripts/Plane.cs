@@ -14,13 +14,14 @@ public class Plane : MonoBehaviour
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
-    private float compensatingLateralForce = 10f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
-    private float lateralForce = 5f;    // Force to apply when moving left or right
+    private float compensatingLateralForce = 25f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
+    private float lateralForce = 20f;    // Force to apply when moving left or right
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
     private float jumpForce = 25f;  // Upward force applied to the plane to make it jump
     private float cruisingYPos; // The y position of the plane when it is just cruising over the surface of the cylinder. This is the y position the plane will come back down to after a jump.
     private float glidingUpwardForce = 20f;  // When we jump, we want to glide back down and not simply fall down. This represents the slight upward force to counteract gravity a bit
+    private int numberOfCoinsCollected = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -156,6 +157,13 @@ public class Plane : MonoBehaviour
             StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             rb.useGravity = true;
+        }
+        if(other.tag == Tags.Coin)
+        {
+            // TODO Collect points
+            this.numberOfCoinsCollected++;
+            UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
+            Destroy(other.gameObject);
         }
     }
 

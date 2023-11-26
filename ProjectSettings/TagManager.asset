@@ -9,6 +9,7 @@ TagManager:
   - HighBoost
   - Ground
   - Ramp
+  - Coin
   layers:
   - Default
   - TransparentFX
