@@ -48,18 +48,19 @@ public class Spawner : MonoBehaviour
         {
             if(Random.Range(0, 2) == 0)
             {
-                SpawnCoin(hit);
+                StartCoroutine(SpawnCoin(hit));
             }
             else
             {
-                SpawnObstacle(hit);
+                StartCoroutine(SpawnObstacle(hit));
             }
             
         }
         spawn = true;
     }
 
-    private void SpawnObstacle(RaycastHit hit)
+    
+    private IEnumerator SpawnObstacle(RaycastHit hit)
     {
         var numberOfObstacles = Random.Range(2, 4);
         for(int i = 0; i < numberOfObstacles; i++)
@@ -91,10 +92,11 @@ public class Spawner : MonoBehaviour
                     break;
             }
             gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
+            yield return null;
         }
     }
 
-    private void SpawnCoin(RaycastHit hit)
+    private IEnumerator SpawnCoin(RaycastHit hit)
     {
         // Spawn a handful of coins
         var numberOfCoins = Random.Range(2, 5);
@@ -108,6 +110,7 @@ public class Spawner : MonoBehaviour
 
             // Give the coin a slight nudge
             gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            yield return null;
         }
     }
 }
