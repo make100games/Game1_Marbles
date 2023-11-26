@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class HoverCraft : MonoBehaviour
 {
-    public bool acceleratesOverTime = false;
-    private const float accelerationFactor = 0.0005f;   // Amount by which to increase speed of craft
     public float rotationSpeed = 15f;
 
     // Start is called before the first frame update
@@ -16,10 +14,10 @@ public class HoverCraft : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(acceleratesOverTime)
-        {
-            rotationSpeed += accelerationFactor;
-        }
+        // We want to decrease the speed of rotation of the non-playable aircraft over
+        // time because we want them to get slower relative to the player as the player
+        // speeds up
+        rotationSpeed -= Cylinder.accelerationFactor;
     }
 
     private void FixedUpdate()

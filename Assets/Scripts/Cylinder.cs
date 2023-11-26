@@ -16,6 +16,8 @@ public class Cylinder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // The player speed is nothing more than the ever increasing speed of
+        // rotation of the cylinder
         rotationSpeed += accelerationFactor;
     }
 
