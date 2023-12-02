@@ -11,6 +11,9 @@ public class RandomSpawner : MonoBehaviour
     public GameObject obstaclePrefab;
     public GameObject coinPrefab;
     private float cylinderWidth;
+    private Spawner coinSpawner = new CoinSpawner();
+    private Spawner obstacleSpawner = new ObstacleSpawner();
+    private Spawner rampSpawner = new RampSpawner();
 
     private bool spawn = true;
 
@@ -50,83 +53,34 @@ public class RandomSpawner : MonoBehaviour
             var randomValue = Random.Range(1, 10);
             if(randomValue < 3)
             {
-                SpawnRamp(hit);
+                if(rampPrefab != null)
+                {
+                    var ramp = Instantiate(rampPrefab);
+                    rampSpawner.SpawnObject(cylinder, transform.position, hit, ramp);
+                }
+                
             }
             else if(randomValue < 7)
             {
-                SpawnObstacle(hit);
+                if(obstaclePrefab != null)
+                {
+                    var numberOfObstacles = Random.Range(2, 4);
+                    for (int i = 0; i < numberOfObstacles; i++)
+                    {
+                        var obstacle = Instantiate(obstaclePrefab);
+                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle);
+                    }
+                }
             }
             else
             {
-                SpawnCoin(hit);
+                if(coinPrefab != null)
+                {
+                    var coin = Instantiate(coinPrefab);
+                    coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
+                }
             }
         }
         spawn = true;
-    }
-
-
-    private void SpawnObstacle(RaycastHit hit)
-    {
-        var numberOfObstacles = Random.Range(2, 4);
-        for (int i = 0; i < numberOfObstacles; i++)
-        {
-            var gameObject = Instantiate(obstaclePrefab);
-
-            // Give it some randomized scale
-            gameObject.transform.localScale = new Vector3(Random.Range(3f, 6f), Random.Range(3f, 6f), Random.Range(3f, 6f));
-            gameObject.transform.position = transform.position;
-            gameObject.transform.up = hit.normal;
-            gameObject.transform.parent = cylinder.transform;
-
-            // Give the obstacle a bit of a spin
-            var randomValue = Random.Range(1, 4);
-            Vector3 spinDirection;
-            switch (randomValue)
-            {
-                case 1:
-                    spinDirection = Vector3.left;
-                    break;
-                case 2:
-                    spinDirection = Vector3.right;
-                    break;
-                case 3:
-                    spinDirection = Vector3.forward;
-                    break;
-                default:
-                    spinDirection = Vector3.back;
-                    break;
-            }
-            gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
-        }
-    }
-
-    private void SpawnCoin(RaycastHit hit)
-    {
-        // Spawn a handful of coins
-        var numberOfCoins = Random.Range(2, 5);
-        for (int i = 0; i < numberOfCoins; i++)
-        {
-            var gameObject = Instantiate(coinPrefab);
-
-            gameObject.transform.position = transform.position;
-            gameObject.transform.up = hit.normal;
-            gameObject.transform.parent = cylinder.transform;
-
-            // Give the coin a slight nudge
-            gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
-        }
-    }
-
-    private void SpawnRamp(RaycastHit hit)
-    {
-        var ramp = Instantiate(rampPrefab);
-        ramp.transform.position = hit.point;
-        ramp.transform.up = hit.normal;
-
-        // Get the ramp to face the right direction. Pretty hacky, I know.
-        ramp.transform.Rotate(new Vector3(90, 90, 0));
-        ramp.transform.Rotate(new Vector3(0, 180, 0));
-        ramp.transform.Translate(Vector3.up * (ramp.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
-        ramp.transform.parent = cylinder.transform;
     }
 }

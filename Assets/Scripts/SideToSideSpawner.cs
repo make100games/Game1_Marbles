@@ -19,6 +19,8 @@ public class SideToSideSpawner : MonoBehaviour
     private bool spawning = false;   // True if allowed to be spawning. False if currently not spawning
     private bool spawn = true;
     private bool toggle = true;
+    private Spawner coinSpawner = new CoinSpawner();
+    private Spawner obstacleSpawner = new ObstacleSpawner();
 
     // Start is called before the first frame update
     void Start()
@@ -60,59 +62,18 @@ public class SideToSideSpawner : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
-            if(spawnObstacle)
+            if(spawnObstacle && obstaclePrefab != null)
             {
-                SpawnObstacle(hit);
+                var obstacle = Instantiate(obstaclePrefab);
+                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle);
             }
-            else
+            else if(coinPrefab != null)
             {
-                SpawnCoin(hit);
+                var coin = Instantiate(coinPrefab);
+                coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
             }
         }
         spawn = true;
-    }
-
-    private void SpawnObstacle(RaycastHit hit)
-    {
-        var gameObject = Instantiate(obstaclePrefab);
-
-        // Give it some randomized scale
-        gameObject.transform.localScale = new Vector3(Random.Range(3f, 6f), Random.Range(3f, 6f), Random.Range(3f, 6f));
-        gameObject.transform.position = transform.position;
-        gameObject.transform.up = hit.normal;
-        gameObject.transform.parent = cylinder.transform;
-
-        // Give the obstacle a bit of a spin
-        var randomValue = Random.Range(1, 4);
-        Vector3 spinDirection;
-        switch (randomValue)
-        {
-            case 1:
-                spinDirection = Vector3.left;
-                break;
-            case 2:
-                spinDirection = Vector3.right;
-                break;
-            case 3:
-                spinDirection = Vector3.forward;
-                break;
-            default:
-                spinDirection = Vector3.back;
-                break;
-        }
-        gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
-    }
-
-    private void SpawnCoin(RaycastHit hit)
-    {
-        var gameObject = Instantiate(coinPrefab);
-
-        gameObject.transform.position = transform.position;
-        gameObject.transform.up = hit.normal;
-        gameObject.transform.parent = cylinder.transform;
-
-        // Give the coin a slight nudge
-        gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 5f, ForceMode.Impulse);
     }
 
     IEnumerator MoveFromSideToSide()

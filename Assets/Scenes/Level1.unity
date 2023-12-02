@@ -4679,6 +4679,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 559488191}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
+      propertyPath: coinPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
       objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
