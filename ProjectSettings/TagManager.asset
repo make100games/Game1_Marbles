@@ -10,6 +10,7 @@ TagManager:
   - Ground
   - Ramp
   - Coin
+  - DeletionZone
   layers:
   - Default
   - TransparentFX
