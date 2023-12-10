@@ -10,7 +10,7 @@ using UnityEngine;
 // This object should be removed once it has lived a certain amount of time
 public class Spawnable : MonoBehaviour
 {
-    public float timeToLive = 5f;  // Time until this obstacle is removed
+    public float timeToLive = 5f;  // Time until this obstacle is removed (in seconds)
     private bool inDeletionZone = false;
 
     // Update is called once per frame
