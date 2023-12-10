@@ -46,9 +46,10 @@ public class RandomSpawner : MonoBehaviour
         var randomPositionOfSpawner = cylinderX + (amountToMove * signOfMove);
         transform.position = new Vector3(randomPositionOfSpawner, transform.position.y, transform.position.z);
 
-        // Fire a ray into the cylinder and spawn an object that will fall towards the cylinder
+        // Fire a ray into the cylinder and spawn an object that will fall towards the cylinder.
+        // Make sure to only spawn an object if our raycast hit the ground and not another object
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity) && hit.collider.CompareTag(Tags.Ground))
         {
             var randomValue = Random.Range(1, 10);
             if(randomValue < 3)

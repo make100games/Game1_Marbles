@@ -60,7 +60,7 @@ public class SideToSideSpawner : MonoBehaviour
     {
         // Fire a ray into the cylinder and spawn an object that will fall towards the cylinder
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity) && hit.collider.CompareTag(Tags.Ground))
         {
             if(spawnObstacle && obstaclePrefab != null)
             {

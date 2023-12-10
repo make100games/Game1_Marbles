@@ -6,7 +6,6 @@ public class Spawnable : MonoBehaviour
 {
     public float timeToLive = 5f;  // Time until this obstacle is removed (in seconds)
     private float maxTimeToLive = 30f;  // Time after which something gest deleted regardless of where it is
-    private float initialTime = 0;
     private float timeLived = 0;
     private bool inDeletionZone = false;
 

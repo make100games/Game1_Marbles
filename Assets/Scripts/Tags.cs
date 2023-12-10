@@ -8,4 +8,5 @@ public class Tags
     public const string Ramp = "Ramp";
     public const string Coin = "Coin";
     public const string DeletionZone = "DeletionZone";
+    public const string Ground = "Ground";
 }
