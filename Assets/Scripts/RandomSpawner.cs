@@ -69,7 +69,7 @@ public class RandomSpawner : MonoBehaviour
                     for (int i = 0; i < numberOfObstacles; i++)
                     {
                         var obstacle = Instantiate(obstaclePrefab);
-                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle);
+                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true);
                     }
                 }
             }

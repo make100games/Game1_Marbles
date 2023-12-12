@@ -10,12 +10,13 @@ public interface Spawner
     /// <param name="sourcePosition">The position of the spawner</param>
     /// <param name="hit">The position on the parent object where to spawn the object (only used if object should be spawned on surface)</param>
     /// <param name="gameObject">The object to spawn</param>
-	void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject);
+    /// <param name="randomizeScale">True if the scale of the object to be spawned should be randomized a bit</param>
+	void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false);
 }
 
 public class CoinSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false)
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;
@@ -29,10 +30,13 @@ public class CoinSpawner : Spawner
 
 public class ObstacleSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false)
     {
         // Give it some randomized scale
-        gameObject.transform.localScale = new Vector3(Random.Range(3f, 6f), Random.Range(3f, 6f), Random.Range(3f, 6f));
+        if(randomizeScale)
+        {
+            gameObject.transform.localScale = new Vector3(Random.Range(3f, 6f), Random.Range(3f, 6f), Random.Range(3f, 6f));
+        }
         gameObject.transform.position = sourcePosition;
         gameObject.transform.up = hit.normal;
         gameObject.transform.parent = parentObject.transform;
@@ -61,7 +65,7 @@ public class ObstacleSpawner : Spawner
 
 public class RampSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false)
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;

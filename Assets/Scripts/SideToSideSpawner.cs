@@ -12,6 +12,7 @@ public class SideToSideSpawner : MonoBehaviour
     public float intervalBetweenObjects = 0.25f;   // Amount of seconds between each object spawn
     public float minTimeToSpawn = 1f;
     public float maxTimeToSpawn = 3.5f;
+    public bool randomizeScale = true;  // True if the scale of the spawned objects should be randomized. False if the objects should just be spawned at their true scale
     private float cylinderWidth;
     private float amountByWhichToMovePerFrame = 0.05f;
     private float cylinderLeftEdge;
@@ -65,7 +66,7 @@ public class SideToSideSpawner : MonoBehaviour
             if(spawnObstacle && obstaclePrefab != null)
             {
                 var obstacle = Instantiate(obstaclePrefab);
-                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle);
+                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale);
             }
             else if(coinPrefab != null)
             {
