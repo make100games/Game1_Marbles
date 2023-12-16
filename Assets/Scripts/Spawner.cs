@@ -35,7 +35,7 @@ public class ObstacleSpawner : Spawner
         // Give it some randomized scale
         if(randomizeScale)
         {
-            var randomScale = Random.Range(3f, 6f);
+            var randomScale = Random.Range(2f, 3f);
             gameObject.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
         }
         gameObject.transform.position = sourcePosition;
