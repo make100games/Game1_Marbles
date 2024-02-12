@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
+    public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
@@ -117,6 +118,11 @@ public class Plane : MonoBehaviour
             // If we are falling after having taken a jump, apply a slight upward force to simulate a gliding effect
             rb.AddForce(Vector3.up * glidingUpwardForce, ForceMode.Force);
         }
+    }
+
+    private void LateUpdate()
+    {
+        shipSparksTransform.position = this.transform.position;
     }
 
     void DecelerateRightwardMovement()
