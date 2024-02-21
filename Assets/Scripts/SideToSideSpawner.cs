@@ -13,6 +13,7 @@ public class SideToSideSpawner : MonoBehaviour
     public float minTimeToSpawn = 1f;
     public float maxTimeToSpawn = 3.5f;
     public bool randomizeScale = true;  // True if the scale of the spawned objects should be randomized. False if the objects should just be spawned at their true scale
+    public bool addSpinToObstacle = true;   // If true, spawned obstacle will have a spin applied
     private float cylinderWidth;
     private float amountByWhichToMovePerFrame = 0.05f;
     private float cylinderLeftEdge;
@@ -66,7 +67,7 @@ public class SideToSideSpawner : MonoBehaviour
             if(spawnObstacle && obstaclePrefab != null)
             {
                 var obstacle = Instantiate(obstaclePrefab);
-                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale);
+                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
             }
             else if(coinPrefab != null)
             {
