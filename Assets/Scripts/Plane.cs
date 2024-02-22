@@ -6,6 +6,7 @@ using UnityEngine;
 public class Plane : MonoBehaviour
 {
     public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
+    public GameObject cylinder; // The cylinder around which the plane is flying. Technically the plane is standing still and the cylinder is spinning but you know what I mean
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
@@ -21,8 +22,11 @@ public class Plane : MonoBehaviour
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
     private float jumpForce = 25f;  // Upward force applied to the plane to make it jump
     private float cruisingYPos; // The y position of the plane when it is just cruising over the surface of the cylinder. This is the y position the plane will come back down to after a jump.
+    private float crashedYPos;  // The y position of the plane when it has hit the ground after a crash (game over)
     private float glidingUpwardForce = 20f;  // When we jump, we want to glide back down and not simply fall down. This represents the slight upward force to counteract gravity a bit
     private int numberOfCoinsCollected = 0;
+    private int health = 3; // Plane can take 3 hits before crashing
+    private bool dead = false;  // True if the player has crashed the plane
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +41,7 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
 
         cruisingYPos = transform.position.y;
+        crashedYPos = cruisingYPos - 3;
     }
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -85,7 +90,7 @@ public class Plane : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(movingRight)
+        if(movingRight && !dead)
         {
             if (rb.velocity.x < 0)
             {
@@ -93,7 +98,7 @@ public class Plane : MonoBehaviour
             }
             rb.AddForce(Vector3.right * lateralForce, ForceMode.Acceleration);
         }
-        if(movingLeft)
+        if(movingLeft && !dead)
         {
             if(rb.velocity.x > 0)
             {
@@ -113,7 +118,7 @@ public class Plane : MonoBehaviour
                 DecelerateLeftwardMovement();
             }
         }
-        if(rb.useGravity && rb.velocity.y < 0)
+        if(rb.useGravity && rb.velocity.y < 0 && !dead)
         {
             // If we are falling after having taken a jump, apply a slight upward force to simulate a gliding effect
             rb.AddForce(Vector3.up * glidingUpwardForce, ForceMode.Force);
@@ -155,22 +160,49 @@ public class Plane : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        UnityEngine.Debug.Log("Triggery trigger: " + other.tag);
-        if(other.tag == Tags.Ramp && rb.velocity.y == 0)
+        if(!dead)
         {
-            // Tilt plane back then slowly back down and give it an upward push
-            // Be sure to enable gravity before applying the jump so that the plane can fall back down
-            StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            rb.useGravity = true;
-        }
-        if(other.tag == Tags.Coin)
-        {
-            // TODO Collect points
-            this.numberOfCoinsCollected++;
-            UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
-            Destroy(other.gameObject);
-        }
+            UnityEngine.Debug.Log("Triggery trigger: " + other.tag);
+            if (other.tag == Tags.Ramp && rb.velocity.y == 0)
+            {
+                // Tilt plane back then slowly back down and give it an upward push
+                // Be sure to enable gravity before applying the jump so that the plane can fall back down
+                StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                rb.useGravity = true;
+            }
+            if (other.tag == Tags.Coin)
+            {
+                // TODO Collect points
+                this.numberOfCoinsCollected++;
+                UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
+                Destroy(other.gameObject);
+            }
+            if (other.tag == Tags.Obstacle)
+            {
+                // Take damage
+                health--;
+                UnityEngine.Debug.Log("Took a hit! Current health: " + health);
+                if (health == 2)
+                {
+                    // TODO show some smoke
+                }
+                if(health == 1)
+                {
+                    // TODO show more smoke and some fire maybe
+                }
+                if (health == 0)
+                {
+                    UnityEngine.Debug.Log("GAME OVER");
+                    dead = true;
+                    // Game Over
+                    // TODO Crash ship
+                    rb.useGravity = true;
+                    rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
+                    cylinder.GetComponent<Cylinder>().ComeToAStop();
+                }
+            }
+        }   
     }
 
     IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()
@@ -195,17 +227,30 @@ public class Plane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
+        if (!dead)
         {
-            UnityEngine.Debug.Log("BELOW CRUISING!");
-            rb.useGravity = false;
-            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-            rb.angularVelocity = Vector3.zero;
-            rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
-        }
+            if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
+            {
+                UnityEngine.Debug.Log("BELOW CRUISING!");
+                rb.useGravity = false;
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+                rb.angularVelocity = Vector3.zero;
+                rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
+            }
 
-        // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
-        compensatingLateralForce += Cylinder.accelerationFactor;
-        lateralForce += Cylinder.accelerationFactor;
+            // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
+            compensatingLateralForce += Cylinder.accelerationFactor;
+            lateralForce += Cylinder.accelerationFactor;
+        } else
+        {
+            if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < crashedYPos)
+            {
+                UnityEngine.Debug.Log("BELOW CRASHING!");
+                rb.useGravity = false;
+                rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+                rb.angularVelocity = Vector3.zero;
+                rb.MovePosition(new Vector3(rb.position.x, crashedYPos, rb.position.z));
+            }
+        }
     }
 }
