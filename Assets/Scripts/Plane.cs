@@ -7,6 +7,12 @@ public class Plane : MonoBehaviour
 {
     public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
     public GameObject cylinder; // The cylinder around which the plane is flying. Technically the plane is standing still and the cylinder is spinning but you know what I mean
+    public GameObject lightSmoke;   // The smoke to show when plane has been hit once
+    public GameObject moreSmoke;    // Smoke to show when plane has been hit twice
+    public GameObject sparks1;   // One of the spark particle systems to play back when plane has been hit twice
+    public GameObject sparks2;   // Another of the spark particle systems to play back when plane has been hit twice
+    public GameObject sparks3;   // Another of the spark particle systems to play back when plane has been hit twice
+    public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
@@ -185,11 +191,20 @@ public class Plane : MonoBehaviour
                 UnityEngine.Debug.Log("Took a hit! Current health: " + health);
                 if (health == 2)
                 {
-                    // TODO show some smoke
+                    lightSmoke.SetActive(true);
                 }
                 if(health == 1)
                 {
-                    // TODO show more smoke and some fire maybe
+                    // Show smoke and repeatedly show some sparks
+                    moreSmoke.SetActive(true);
+                    sparks1.SetActive(true);
+                    sparks2.SetActive(true);
+                    sparks3.SetActive(true);
+                    sparks4.SetActive(true);
+                    InvokeRepeating("FireFirstSparks", 1, 3);
+                    InvokeRepeating("FireSecondSparks", 2, 3);
+                    InvokeRepeating("FireThirdSparks", 3, 3);
+                    InvokeRepeating("FireFourthSparks", 4, 3);
                 }
                 if (health == 0)
                 {
@@ -199,10 +214,30 @@ public class Plane : MonoBehaviour
                     // TODO Crash ship
                     rb.useGravity = true;
                     rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
-                    cylinder.GetComponent<Cylinder>().ComeToAStop();
+                    cylinder.GetComponent<Cylinder>().ComeToAStop();                    
                 }
             }
         }   
+    }
+
+    void FireFirstSparks()
+    {
+        sparks1.GetComponent<ParticleSystem>().Play();
+    }
+
+    void FireSecondSparks()
+    {
+        sparks2.GetComponent<ParticleSystem>().Play();
+    }
+
+    void FireThirdSparks()
+    {
+        sparks3.GetComponent<ParticleSystem>().Play();
+    }
+
+    void FireFourthSparks()
+    {
+        sparks4.GetComponent<ParticleSystem>().Play();
     }
 
     IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()
