@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using Cinemachine;
 
 public class Plane : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class Plane : MonoBehaviour
     private int numberOfCoinsCollected = 0;
     private int health = 3; // Plane can take 3 hits before crashing
     private bool dead = false;  // True if the player has crashed the plane
+    private CinemachineCollisionImpulseSource collisionImpulseSource;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,7 @@ public class Plane : MonoBehaviour
         gameInput = new GameInput();
         gameInput.Enable();
         rb = GetComponent<Rigidbody>();
+        collisionImpulseSource = GetComponent<CinemachineCollisionImpulseSource>();
 
         gameInput.Game.StartMovingLeft.performed += StartMovingLeft_performed;
         gameInput.Game.StopMovingLeft.performed += StopMovingLeft_performed;
@@ -186,6 +189,9 @@ public class Plane : MonoBehaviour
             }
             if (other.tag == Tags.Obstacle)
             {
+                // Shake camera
+                collisionImpulseSource.GenerateImpulse(new Vector3(1, 1, 0));
+
                 // Take damage
                 health--;
                 UnityEngine.Debug.Log("Took a hit! Current health: " + health);
