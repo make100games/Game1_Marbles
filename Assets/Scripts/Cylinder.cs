@@ -6,7 +6,7 @@ public class Cylinder : MonoBehaviour
 {
     public const float accelerationFactor = 0.00025f;   // Amount by which to increase rotation speed of cylinder
     private const float deccelerationFactorWhenPlaneCrashed = 0.0075f; // Amount by which to decrease rotation once the player has crashed
-    private float rotationSpeed = -40f;
+    public float RotationSpeed { get; private set; } = -40f;
     private bool comeToAStop = false;
 
     // Start is called before the first frame update
@@ -20,20 +20,20 @@ public class Cylinder : MonoBehaviour
     {
         if(comeToAStop)
         {
-            if(rotationSpeed < 0)
+            if(RotationSpeed < 0)
             {
-                rotationSpeed += deccelerationFactorWhenPlaneCrashed;
+                RotationSpeed += deccelerationFactorWhenPlaneCrashed;
             }
-            else if(rotationSpeed > 0)
+            else if(RotationSpeed > 0)
             {
-                rotationSpeed = 0;
+                RotationSpeed = 0;
             }
         }
         else
         {
             // The player speed is nothing more than the ever increasing speed of
             // rotation of the cylinder. Increasing in the negative direction ;)
-            rotationSpeed -= accelerationFactor;
+            RotationSpeed -= accelerationFactor;
         }
         
     }
@@ -45,6 +45,6 @@ public class Cylinder : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
     }
 }

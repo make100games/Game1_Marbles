@@ -14,6 +14,9 @@ public class Plane : MonoBehaviour
     public GameObject sparks2;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject sparks3;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
+    public GameObject trackingCamera;   // The camera tracking the plane
+    private Cylinder cylinderScript;
+    private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
@@ -42,6 +45,8 @@ public class Plane : MonoBehaviour
         gameInput = new GameInput();
         gameInput.Enable();
         rb = GetComponent<Rigidbody>();
+        cylinderScript = cylinder.GetComponent<Cylinder>();
+        cameraShaker = trackingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         collisionImpulseSource = GetComponent<CinemachineCollisionImpulseSource>();
 
         gameInput.Game.StartMovingLeft.performed += StartMovingLeft_performed;
@@ -190,7 +195,8 @@ public class Plane : MonoBehaviour
             if (other.tag == Tags.Obstacle)
             {
                 // Shake camera
-                collisionImpulseSource.GenerateImpulse(new Vector3(1, 1, 0));
+                var shakeForce = this.cameraShaker.m_AmplitudeGain < 0.5 ? 1 : this.cameraShaker.m_AmplitudeGain * 3;
+                collisionImpulseSource.GenerateImpulse(new Vector3(shakeForce, shakeForce, 0));
 
                 // Take damage
                 health--;
@@ -220,7 +226,10 @@ public class Plane : MonoBehaviour
                     // TODO Crash ship
                     rb.useGravity = true;
                     rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
-                    cylinder.GetComponent<Cylinder>().ComeToAStop();                    
+                    cylinder.GetComponent<Cylinder>().ComeToAStop();
+
+                    // Turn off camera shake
+                    this.cameraShaker.m_AmplitudeGain = 0;
                 }
             }
         }   
@@ -282,6 +291,24 @@ public class Plane : MonoBehaviour
             // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
             compensatingLateralForce += Cylinder.accelerationFactor;
             lateralForce += Cylinder.accelerationFactor;
+
+            // Slowly start to add some camera shake as we speed up to increase that sense of speed
+            var lowestShakingSpeedThreshold = 47;
+            var middleShakingSpeedThreshold = 48;
+            var highestShakingSpeedThreshold = 49;  // Point after which camera shake is no longer increased any further
+            if(Mathf.Abs(cylinderScript.RotationSpeed) > lowestShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeed) < middleShakingSpeedThreshold)
+            {
+                if(this.cameraShaker.m_AmplitudeGain == 0)
+                {
+                    this.cameraShaker.m_AmplitudeGain = 0.5f;
+                }
+                this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 2);
+            }
+            else if (Mathf.Abs(cylinderScript.RotationSpeed) > middleShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeed) < highestShakingSpeedThreshold)
+            {
+                this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 10);
+            }
+            
         } else
         {
             if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < crashedYPos)
