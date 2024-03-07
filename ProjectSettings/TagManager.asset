@@ -11,6 +11,7 @@ TagManager:
   - Ramp
   - Coin
   - DeletionZone
+  - Boundary
   layers:
   - Default
   - TransparentFX

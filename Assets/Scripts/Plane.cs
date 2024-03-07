@@ -8,6 +8,7 @@ public class Plane : MonoBehaviour
 {
     public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
     public GameObject cylinder; // The cylinder around which the plane is flying. Technically the plane is standing still and the cylinder is spinning but you know what I mean
+    public GameObject boundaryCollisionSparks;  // The sparks which appear as a result of the ship hitting the left or right stage boundary
     public GameObject lightSmoke;   // The smoke to show when plane has been hit once
     public GameObject moreSmoke;    // Smoke to show when plane has been hit twice
     public GameObject sparks1;   // One of the spark particle systems to play back when plane has been hit twice
@@ -199,40 +200,61 @@ public class Plane : MonoBehaviour
                 collisionImpulseSource.GenerateImpulse(new Vector3(shakeForce, shakeForce, 0));
 
                 // Take damage
-                health--;
-                UnityEngine.Debug.Log("Took a hit! Current health: " + health);
-                if (health == 2)
-                {
-                    lightSmoke.SetActive(true);
-                }
-                if(health == 1)
-                {
-                    // Show smoke and repeatedly show some sparks
-                    moreSmoke.SetActive(true);
-                    sparks1.SetActive(true);
-                    sparks2.SetActive(true);
-                    sparks3.SetActive(true);
-                    sparks4.SetActive(true);
-                    InvokeRepeating("FireFirstSparks", 1, 3);
-                    InvokeRepeating("FireSecondSparks", 2, 3);
-                    InvokeRepeating("FireThirdSparks", 3, 3);
-                    InvokeRepeating("FireFourthSparks", 4, 3);
-                }
-                if (health == 0)
-                {
-                    UnityEngine.Debug.Log("GAME OVER");
-                    dead = true;
-                    // Game Over
-                    // TODO Crash ship
-                    rb.useGravity = true;
-                    rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
-                    cylinder.GetComponent<Cylinder>().ComeToAStop();
+                TakeDamage();
+            }
+            if(other.tag == Tags.Boundary)
+            {
+                // Give ship a push back to the track
+                rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
 
-                    // Turn off camera shake
-                    this.cameraShaker.m_AmplitudeGain = 0;
-                }
+                // Take some damage and show electrical sparks for some time
+                TakeDamage();
+                boundaryCollisionSparks.SetActive(true);
+
+                Invoke("TurnOffBoundaryCollisionSparks", 2.5f);
             }
         }   
+    }
+
+    private void TurnOffBoundaryCollisionSparks()
+    {
+        boundaryCollisionSparks.SetActive(false);
+    }
+
+    private void TakeDamage()
+    {
+        health--;
+        UnityEngine.Debug.Log("Took a hit! Current health: " + health);
+        if (health == 2)
+        {
+            lightSmoke.SetActive(true);
+        }
+        if (health == 1)
+        {
+            // Show smoke and repeatedly show some sparks
+            moreSmoke.SetActive(true);
+            sparks1.SetActive(true);
+            sparks2.SetActive(true);
+            sparks3.SetActive(true);
+            sparks4.SetActive(true);
+            InvokeRepeating("FireFirstSparks", 1, 3);
+            InvokeRepeating("FireSecondSparks", 2, 3);
+            InvokeRepeating("FireThirdSparks", 3, 3);
+            InvokeRepeating("FireFourthSparks", 4, 3);
+        }
+        if (health == 0)
+        {
+            UnityEngine.Debug.Log("GAME OVER");
+            dead = true;
+            // Game Over
+            // TODO Crash ship
+            rb.useGravity = true;
+            rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
+            cylinder.GetComponent<Cylinder>().ComeToAStop();
+
+            // Turn off camera shake
+            this.cameraShaker.m_AmplitudeGain = 0;
+        }
     }
 
     void FireFirstSparks()

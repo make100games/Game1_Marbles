@@ -9,4 +9,5 @@ public class Tags
     public const string Coin = "Coin";
     public const string DeletionZone = "DeletionZone";
     public const string Ground = "Ground";
+    public const string Boundary = "Boundary";
 }
