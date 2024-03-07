@@ -17,7 +17,6 @@ public class Plane : MonoBehaviour
     public GameObject trackingCamera;   // The camera tracking the plane
     private Cylinder cylinderScript;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
-    private CinemachineTransposer cameraTransposer;
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
@@ -39,7 +38,6 @@ public class Plane : MonoBehaviour
     private int health = 3; // Plane can take 3 hits before crashing
     private bool dead = false;  // True if the player has crashed the plane
     private CinemachineCollisionImpulseSource collisionImpulseSource;
-    private bool reducingCameraRollDamping = false; // True if currently reducing the damping of the camera roll
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +47,6 @@ public class Plane : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cylinderScript = cylinder.GetComponent<Cylinder>();
         cameraShaker = trackingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        cameraTransposer = trackingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineTransposer>();
         collisionImpulseSource = GetComponent<CinemachineCollisionImpulseSource>();
 
         gameInput.Game.StartMovingLeft.performed += StartMovingLeft_performed;
@@ -65,46 +62,24 @@ public class Plane : MonoBehaviour
     {
         StartCoroutine(RollToTheLeft());
         movingRight = false;
-        StartCoroutine(ReduceDamping());
     }
 
     private void StartMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         StartCoroutine(RollToTheRight());
         movingRight = true;
-        cameraTransposer.m_RollDamping = 20f;
     }
 
     private void StopMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         StartCoroutine(RollToTheRight());
         movingLeft = false;
-        StartCoroutine(ReduceDamping());
     }
 
     private void StartMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         StartCoroutine(RollToTheLeft());
         movingLeft = true;
-        cameraTransposer.m_RollDamping = 18f;
-    }
-
-    IEnumerator ReduceDamping()
-    {
-        reducingCameraRollDamping = true;
-        for (float i = cameraTransposer.m_RollDamping; i > 3f; i -= 0.05f)
-        {
-            if (!movingLeft && !movingRight)
-            {
-                cameraTransposer.m_RollDamping = i;
-                yield return null;
-            }
-            else
-            {
-                break;
-            }
-        }
-        reducingCameraRollDamping = false;
     }
 
     IEnumerator RollToTheLeft()
