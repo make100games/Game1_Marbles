@@ -57,11 +57,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6bfc0c355263e4ceb94cbdfb9723173c, type: 2}
     - target: {fileID: 919132149155446097, guid: 669ac4fb429314ba0a021fbe10706585, type: 3}
       propertyPath: m_Name
-      value: Ship
+      value: Ship Variant
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 669ac4fb429314ba0a021fbe10706585, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 669ac4fb429314ba0a021fbe10706585, type: 3}
@@ -111,3 +111,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf48b24a5d334bc5803af1a55933e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shipSparksTransform: {fileID: 0}
+  cylinder: {fileID: 0}
+  boundaryCollisionSparks: {fileID: 0}
+  lightSmoke: {fileID: 0}
+  moreSmoke: {fileID: 0}
+  sparks1: {fileID: 0}
+  sparks2: {fileID: 0}
+  sparks3: {fileID: 0}
+  sparks4: {fileID: 0}
+  trackingCamera: {fileID: 0}

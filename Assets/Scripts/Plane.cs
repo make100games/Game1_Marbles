@@ -196,8 +196,7 @@ public class Plane : MonoBehaviour
             if (other.tag == Tags.Obstacle)
             {
                 // Shake camera
-                var shakeForce = this.cameraShaker.m_AmplitudeGain < 0.5 ? 1 : this.cameraShaker.m_AmplitudeGain * 3;
-                collisionImpulseSource.GenerateImpulse(new Vector3(shakeForce, shakeForce, 0));
+                ShakeCameraDueToImpact();
 
                 // Take damage
                 TakeDamage();
@@ -206,6 +205,9 @@ public class Plane : MonoBehaviour
             {
                 // Give ship a push back to the track
                 rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
+
+                // Shake camera
+                ShakeCameraDueToImpact();
 
                 // Take some damage and show electrical sparks for some time
                 TakeDamage();
@@ -219,6 +221,12 @@ public class Plane : MonoBehaviour
     private void TurnOffBoundaryCollisionSparks()
     {
         boundaryCollisionSparks.SetActive(false);
+    }
+
+    private void ShakeCameraDueToImpact()
+    {
+        var shakeForce = this.cameraShaker.m_AmplitudeGain < 0.5 ? 1 : this.cameraShaker.m_AmplitudeGain * 3;
+        collisionImpulseSource.GenerateImpulse(new Vector3(shakeForce, shakeForce, 0));
     }
 
     private void TakeDamage()
