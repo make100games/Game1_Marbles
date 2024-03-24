@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: ImpactBlurPostProcessing Profile
+  m_Name: ImpactBlur Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 4937691174381811476}
---- !u!114 &4937691174381811476
+  - {fileID: 5059501654183798165}
+--- !u!114 &5059501654183798165
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,13 +44,13 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 30.9
   aperture:
     m_OverrideState: 1
     m_Value: 5.6
   focalLength:
     m_OverrideState: 1
-    m_Value: 74
+    m_Value: 141
   bladeCount:
     m_OverrideState: 1
     m_Value: 5
