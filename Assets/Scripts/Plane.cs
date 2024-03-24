@@ -18,7 +18,7 @@ public class Plane : MonoBehaviour
     public GameObject sparks3;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject trackingCamera;   // The camera tracking the plane
-    public Volume blurVolume;   // Post processing volume that renders dizziness blur
+    public Volume blurVolume;
     private Cylinder cylinderScript;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
@@ -54,7 +54,6 @@ public class Plane : MonoBehaviour
         cameraShaker = trackingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         collisionImpulseSource = GetComponent<CinemachineCollisionImpulseSource>();
         DepthOfField temp;
-
         if(blurVolume.profile.TryGet<DepthOfField>(out temp))
         {
             dizzinessBlur = temp;
@@ -213,7 +212,7 @@ public class Plane : MonoBehaviour
             }
             if(other.tag == Tags.Boundary)
             {
-                // Add blur effect for dizziness
+                // Show a blur effect to simulate dizziness
                 StartCoroutine(ShowDizzinessBlur());
 
                 // Give ship a push back to the track
@@ -234,21 +233,15 @@ public class Plane : MonoBehaviour
     private IEnumerator ShowDizzinessBlur()
     {
         blurVolume.gameObject.SetActive(true);
-        var fullBlur = 300f;
+        var maxBlur = 300f;
         var noBlur = 120f;
-        var durationInSeconds = 5f;
-        for (var timePassed = 0f; timePassed < durationInSeconds; timePassed += Time.deltaTime)
+        var durationInSeconds = 5;
+        for(var timePassed = 0f; timePassed < durationInSeconds; timePassed += Time.deltaTime)
         {
             var factor = timePassed / durationInSeconds;
-            dizzinessBlur.focalLength.Override(Mathf.Lerp(fullBlur, noBlur, factor));
+            dizzinessBlur.focalLength.Override(Mathf.Lerp(maxBlur, noBlur, factor));
             yield return null;
         }
-        /*for (float i = fullBlur; i >= noBlur; i-= 0.05f)
-        {
-            dizzinessBlur.focalLength.Override(fullBlur);
-            yield return null;
-        }*/
-        
         blurVolume.gameObject.SetActive(false);
     }
 
