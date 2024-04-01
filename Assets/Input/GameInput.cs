@@ -62,6 +62,24 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LeftBarrelRoll"",
+                    ""type"": ""Button"",
+                    ""id"": ""e3b45052-aa77-4e92-aa41-ae61b3eeae2c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightBarrelRoll"",
+                    ""type"": ""Button"",
+                    ""id"": ""18ca3511-79cf-486c-8807-3a50612dbc51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -108,6 +126,28 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""StopMovingRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bb162f3-aa6c-4b30-9701-68b7704aa58c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftBarrelRoll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""769de1c7-fe50-459c-b281-eb876ccddddf"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightBarrelRoll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -120,6 +160,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Game_StopMovingLeft = m_Game.FindAction("StopMovingLeft", throwIfNotFound: true);
         m_Game_StartMovingRight = m_Game.FindAction("StartMovingRight", throwIfNotFound: true);
         m_Game_StopMovingRight = m_Game.FindAction("StopMovingRight", throwIfNotFound: true);
+        m_Game_LeftBarrelRoll = m_Game.FindAction("LeftBarrelRoll", throwIfNotFound: true);
+        m_Game_RightBarrelRoll = m_Game.FindAction("RightBarrelRoll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,6 +227,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_StopMovingLeft;
     private readonly InputAction m_Game_StartMovingRight;
     private readonly InputAction m_Game_StopMovingRight;
+    private readonly InputAction m_Game_LeftBarrelRoll;
+    private readonly InputAction m_Game_RightBarrelRoll;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -193,6 +237,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @StopMovingLeft => m_Wrapper.m_Game_StopMovingLeft;
         public InputAction @StartMovingRight => m_Wrapper.m_Game_StartMovingRight;
         public InputAction @StopMovingRight => m_Wrapper.m_Game_StopMovingRight;
+        public InputAction @LeftBarrelRoll => m_Wrapper.m_Game_LeftBarrelRoll;
+        public InputAction @RightBarrelRoll => m_Wrapper.m_Game_RightBarrelRoll;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,6 +260,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @StopMovingRight.started += instance.OnStopMovingRight;
             @StopMovingRight.performed += instance.OnStopMovingRight;
             @StopMovingRight.canceled += instance.OnStopMovingRight;
+            @LeftBarrelRoll.started += instance.OnLeftBarrelRoll;
+            @LeftBarrelRoll.performed += instance.OnLeftBarrelRoll;
+            @LeftBarrelRoll.canceled += instance.OnLeftBarrelRoll;
+            @RightBarrelRoll.started += instance.OnRightBarrelRoll;
+            @RightBarrelRoll.performed += instance.OnRightBarrelRoll;
+            @RightBarrelRoll.canceled += instance.OnRightBarrelRoll;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -230,6 +282,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @StopMovingRight.started -= instance.OnStopMovingRight;
             @StopMovingRight.performed -= instance.OnStopMovingRight;
             @StopMovingRight.canceled -= instance.OnStopMovingRight;
+            @LeftBarrelRoll.started -= instance.OnLeftBarrelRoll;
+            @LeftBarrelRoll.performed -= instance.OnLeftBarrelRoll;
+            @LeftBarrelRoll.canceled -= instance.OnLeftBarrelRoll;
+            @RightBarrelRoll.started -= instance.OnRightBarrelRoll;
+            @RightBarrelRoll.performed -= instance.OnRightBarrelRoll;
+            @RightBarrelRoll.canceled -= instance.OnRightBarrelRoll;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -253,5 +311,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnStopMovingLeft(InputAction.CallbackContext context);
         void OnStartMovingRight(InputAction.CallbackContext context);
         void OnStopMovingRight(InputAction.CallbackContext context);
+        void OnLeftBarrelRoll(InputAction.CallbackContext context);
+        void OnRightBarrelRoll(InputAction.CallbackContext context);
     }
 }

@@ -23,7 +23,9 @@ public class Plane : MonoBehaviour
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
+    private float amountToRollDuringBarellRollInDegrees = 360;  // Amount of degrees to roll to the left or right when doing a barrell roll
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
+    private float rateOfBarrellRoll = 2.0f; // Amount to barrell roll in a single frame update
     private float amountToPitchInDegrees = 45;  // Amount of degrees to pitch plane back when we hit a ramp
     private float rateOfUpwardPitch = 0.25f;    // Amount to pitch in a single frame update when pitching up
     private float rateOfDownwardPitch = 0.0725f;   // Amount to pitch in a single frame update when pitching down
@@ -32,6 +34,7 @@ public class Plane : MonoBehaviour
     private bool movingRight = false;
     private float compensatingLateralForce = 25f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
     private float lateralForce = 20f;    // Force to apply when moving left or right
+    private float barrelRollLateralForce = 950f; // Force to apply when doing a barrel roll
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally
     private float jumpForce = 25f;  // Upward force applied to the plane to make it jump
@@ -63,9 +66,25 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingLeft.performed += StopMovingLeft_performed;
         gameInput.Game.StartMovingRight.performed += StartMovingRight_performed;
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
+        gameInput.Game.LeftBarrelRoll.performed += LeftBarrelRoll_performed;
+        gameInput.Game.RightBarrelRoll.performed += RightBarrelRoll_performed;
 
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
+    }
+
+    private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        UnityEngine.Debug.Log("Right barrel roll!");
+        rb.AddForce(Vector3.right * barrelRollLateralForce, ForceMode.Force);
+        StartCoroutine(BarrelRollToTheRight());
+    }
+
+    private void LeftBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        UnityEngine.Debug.Log("Left barrel roll!");
+        rb.AddForce(Vector3.left * barrelRollLateralForce, ForceMode.Force);
+        StartCoroutine(BarrelRollToTheLeft());
     }
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -90,6 +109,26 @@ public class Plane : MonoBehaviour
     {
         StartCoroutine(RollToTheLeft());
         movingLeft = true;
+    }
+
+    IEnumerator BarrelRollToTheLeft()
+    {
+        for (float i = 0f; i < amountToRollDuringBarellRollInDegrees; i += rateOfBarrellRoll)
+        {
+            transform.rotation *= Quaternion.AngleAxis(rateOfBarrellRoll, Vector3.forward);
+
+            yield return null;
+        }
+    }
+
+    IEnumerator BarrelRollToTheRight()
+    {
+        for (float i = 0f; i < amountToRollDuringBarellRollInDegrees; i += rateOfBarrellRoll)
+        {
+            transform.rotation *= Quaternion.AngleAxis(-rateOfBarrellRoll, Vector3.forward);
+
+            yield return null;
+        }
     }
 
     IEnumerator RollToTheLeft()
