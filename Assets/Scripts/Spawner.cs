@@ -22,8 +22,8 @@ public class CoinSpawner : Spawner
         gameObject.transform.up = hit.normal;
 
         // Get the coin to face the right direction. Pretty hacky, I know.
-        gameObject.transform.Rotate(new Vector3(90, 0, 0));
-        gameObject.transform.Translate(Vector3.up * (gameObject.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
+        gameObject.transform.Rotate(new Vector3(0, 0, 270));
+        gameObject.transform.Translate(Vector3.up * ((gameObject.GetComponent<MeshRenderer>().bounds.size.y / 2) + 1.75f), Space.World);
         gameObject.transform.parent = parentObject.transform;       
     }
 }

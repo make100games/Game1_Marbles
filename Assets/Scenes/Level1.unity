@@ -46201,6 +46201,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 559488191}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
+      propertyPath: coinPrefab
+      value: 
+      objectReference: {fileID: 6292887303706284825, guid: 8948fae29afb540c48abf95cc03da759, type: 3}
+    - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: spawnObstacle
       value: 0
       objectReference: {fileID: 0}
