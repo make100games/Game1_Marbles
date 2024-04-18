@@ -10,4 +10,5 @@ public class Tags
     public const string DeletionZone = "DeletionZone";
     public const string Ground = "Ground";
     public const string Boundary = "Boundary";
+    public const string Player = "Player";
 }

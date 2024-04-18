@@ -19,6 +19,7 @@ public class Plane : MonoBehaviour
     public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject trackingCamera;   // The camera tracking the plane
     public Volume blurVolume;
+    public GameObject coinCollectionParticleEffectObject;
     private Cylinder cylinderScript;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
@@ -46,6 +47,7 @@ public class Plane : MonoBehaviour
     private bool dead = false;  // True if the player has crashed the plane
     private CinemachineCollisionImpulseSource collisionImpulseSource;
     private DepthOfField dizzinessBlur;
+    private ParticleSystem coinCollectedEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +73,9 @@ public class Plane : MonoBehaviour
 
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
+
+        coinCollectedEffect = coinCollectionParticleEffectObject.GetComponent<ParticleSystem>();
+        print("");
     }
 
     private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -239,6 +244,13 @@ public class Plane : MonoBehaviour
                 // TODO Collect points
                 this.numberOfCoinsCollected++;
                 UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
+
+                // Show particle effect to indicate that coin was collected
+                // TODO playing this particle system is not working yet
+                //coinCollectedEffect.gameObject.SetActive(true);
+                //coinCollectedEffect.Stop();
+                coinCollectedEffect.Play();
+
                 Destroy(other.gameObject);
             }
             if (other.tag == Tags.Obstacle)

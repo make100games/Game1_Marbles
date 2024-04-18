@@ -3,10 +3,16 @@ using System.Collections;
 
 public class Coin : Spawnable
 {
+    private ParticleSystem collectedParticles;
+
+    private void Start()
+    {
+        collectedParticles = GetComponentInChildren<ParticleSystem>();
+    }
+
     private void FixedUpdate()
     {
-        // Have coin spin
-        transform.Rotate(0, 10f * Time.deltaTime, 0);
+        
     }
 }
 
