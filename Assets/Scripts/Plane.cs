@@ -20,6 +20,7 @@ public class Plane : MonoBehaviour
     public GameObject trackingCamera;   // The camera tracking the plane
     public Volume blurVolume;
     public GameObject coinCollectionParticleEffectObject;
+    public GameObject coinCollectedLargeParticleEffectObject;
     private Cylinder cylinderScript;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
@@ -48,6 +49,7 @@ public class Plane : MonoBehaviour
     private CinemachineCollisionImpulseSource collisionImpulseSource;
     private DepthOfField dizzinessBlur;
     private ParticleSystem coinCollectedEffect;
+    private ParticleSystem coinCollectedLargeEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -75,7 +77,7 @@ public class Plane : MonoBehaviour
         crashedYPos = cruisingYPos - 3;
 
         coinCollectedEffect = coinCollectionParticleEffectObject.GetComponent<ParticleSystem>();
-        print("");
+        coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
     }
 
     private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -246,10 +248,9 @@ public class Plane : MonoBehaviour
                 UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
 
                 // Show particle effect to indicate that coin was collected
-                // TODO playing this particle system is not working yet
-                //coinCollectedEffect.gameObject.SetActive(true);
-                //coinCollectedEffect.Stop();
                 coinCollectedEffect.Play();
+                coinCollectedLargeEffect.Emit(1);
+                coinCollectedLargeEffect.Play();
 
                 Destroy(other.gameObject);
             }

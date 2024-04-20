@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour
 {
-    public GameObject coinCollectionParticleEffectObject;
+    public List<GameObject> coinCollectedParticleEffectObjects = new List<GameObject>();
     public GameObject ship;
 
     // Start is called before the first frame update
@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coinCollectionParticleEffectObject.transform.position = ship.transform.position;
+        foreach (GameObject obj in coinCollectedParticleEffectObjects)
+        {
+            obj.transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, ship.transform.position.z);
+        }
     }
 }
