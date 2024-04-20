@@ -19,7 +19,8 @@ public class Plane : MonoBehaviour
     public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject trackingCamera;   // The camera tracking the plane
     public Volume blurVolume;
-    public GameObject coinCollectionParticleEffectObject;
+    public GameObject coinCollectionStarsParticleEffectObject;
+    public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
     private Cylinder cylinderScript;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
@@ -48,7 +49,8 @@ public class Plane : MonoBehaviour
     private bool dead = false;  // True if the player has crashed the plane
     private CinemachineCollisionImpulseSource collisionImpulseSource;
     private DepthOfField dizzinessBlur;
-    private ParticleSystem coinCollectedEffect;
+    private ParticleSystem coinCollectedStarEffect;
+    private ParticleSystem coinCollectedBlobEffect;
     private ParticleSystem coinCollectedLargeEffect;
 
     // Start is called before the first frame update
@@ -76,7 +78,8 @@ public class Plane : MonoBehaviour
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
 
-        coinCollectedEffect = coinCollectionParticleEffectObject.GetComponent<ParticleSystem>();
+        coinCollectedStarEffect = coinCollectionStarsParticleEffectObject.GetComponent<ParticleSystem>();
+        coinCollectedBlobEffect = coinCollectionBlobsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
     }
 
@@ -248,7 +251,8 @@ public class Plane : MonoBehaviour
                 UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
 
                 // Show particle effect to indicate that coin was collected
-                coinCollectedEffect.Play();
+                coinCollectedStarEffect.Play();
+                coinCollectedBlobEffect.Play();
                 coinCollectedLargeEffect.Emit(1);
                 coinCollectedLargeEffect.Play();
 
