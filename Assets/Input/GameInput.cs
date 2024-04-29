@@ -80,6 +80,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleBoost"",
+                    ""type"": ""Button"",
+                    ""id"": ""a9ed0e65-68b6-481a-8b09-3ed12918a2fe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +157,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""RightBarrelRoll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a673dd0b-800e-4853-a563-e12bec7db1c9"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleBoost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +182,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Game_StopMovingRight = m_Game.FindAction("StopMovingRight", throwIfNotFound: true);
         m_Game_LeftBarrelRoll = m_Game.FindAction("LeftBarrelRoll", throwIfNotFound: true);
         m_Game_RightBarrelRoll = m_Game.FindAction("RightBarrelRoll", throwIfNotFound: true);
+        m_Game_ToggleBoost = m_Game.FindAction("ToggleBoost", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +250,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_StopMovingRight;
     private readonly InputAction m_Game_LeftBarrelRoll;
     private readonly InputAction m_Game_RightBarrelRoll;
+    private readonly InputAction m_Game_ToggleBoost;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -239,6 +261,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @StopMovingRight => m_Wrapper.m_Game_StopMovingRight;
         public InputAction @LeftBarrelRoll => m_Wrapper.m_Game_LeftBarrelRoll;
         public InputAction @RightBarrelRoll => m_Wrapper.m_Game_RightBarrelRoll;
+        public InputAction @ToggleBoost => m_Wrapper.m_Game_ToggleBoost;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +289,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RightBarrelRoll.started += instance.OnRightBarrelRoll;
             @RightBarrelRoll.performed += instance.OnRightBarrelRoll;
             @RightBarrelRoll.canceled += instance.OnRightBarrelRoll;
+            @ToggleBoost.started += instance.OnToggleBoost;
+            @ToggleBoost.performed += instance.OnToggleBoost;
+            @ToggleBoost.canceled += instance.OnToggleBoost;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -288,6 +314,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RightBarrelRoll.started -= instance.OnRightBarrelRoll;
             @RightBarrelRoll.performed -= instance.OnRightBarrelRoll;
             @RightBarrelRoll.canceled -= instance.OnRightBarrelRoll;
+            @ToggleBoost.started -= instance.OnToggleBoost;
+            @ToggleBoost.performed -= instance.OnToggleBoost;
+            @ToggleBoost.canceled -= instance.OnToggleBoost;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -313,5 +342,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnStopMovingRight(InputAction.CallbackContext context);
         void OnLeftBarrelRoll(InputAction.CallbackContext context);
         void OnRightBarrelRoll(InputAction.CallbackContext context);
+        void OnToggleBoost(InputAction.CallbackContext context);
     }
 }

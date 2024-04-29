@@ -7860,6 +7860,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3738651881254543057, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
   m_PrefabInstance: {fileID: 3776520551678723122}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1184464041 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 624465015, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+  m_PrefabInstance: {fileID: 3776520551678723122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1199282660
 GameObject:
   m_ObjectHideFlags: 0
@@ -8278,6 +8283,7 @@ MonoBehaviour:
   sparks2: {fileID: 0}
   sparks3: {fileID: 0}
   sparks4: {fileID: 0}
+  boostThrusters: {fileID: 0}
   trackingCamera: {fileID: 0}
   blurVolume: {fileID: 0}
   coinCollectionStarsParticleEffectObject: {fileID: 0}
@@ -18963,6 +18969,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 170707076, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 170707076, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: moveWithCustomTransform
       value: 
       objectReference: {fileID: 1808058173}
@@ -18975,6 +18985,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 254187545, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 254187545, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: moveWithCustomTransform
       value: 
       objectReference: {fileID: 1808058173}
@@ -18983,12 +18997,20 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 298614310, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 298614310, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: moveWithCustomTransform
       value: 
       objectReference: {fileID: 1808058173}
     - target: {fileID: 624465015, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 624465015, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 692381896, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: m_Layer
@@ -19014,6 +19036,10 @@ PrefabInstance:
       propertyPath: blurVolume
       value: 
       objectReference: {fileID: 554979549}
+    - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: boostThrusters
+      value: 
+      objectReference: {fileID: 1184464041}
     - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: trackingCamera
       value: 
@@ -19053,6 +19079,10 @@ PrefabInstance:
     - target: {fileID: 1559076282, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1559076285, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1559076285, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: moveWithCustomTransform

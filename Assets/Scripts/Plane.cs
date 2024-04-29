@@ -17,12 +17,15 @@ public class Plane : MonoBehaviour
     public GameObject sparks2;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject sparks3;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
+    public GameObject boostThrusters;   //The thrusters that are enabled while we are boosting
     public GameObject trackingCamera;   // The camera tracking the plane
     public Volume blurVolume;
     public GameObject coinCollectionStarsParticleEffectObject;
     public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
+    
     private Cylinder cylinderScript;
+    private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
@@ -52,6 +55,7 @@ public class Plane : MonoBehaviour
     private ParticleSystem coinCollectedStarEffect;
     private ParticleSystem coinCollectedBlobEffect;
     private ParticleSystem coinCollectedLargeEffect;
+    private bool boostActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +64,7 @@ public class Plane : MonoBehaviour
         gameInput.Enable();
         rb = GetComponent<Rigidbody>();
         cylinderScript = cylinder.GetComponent<Cylinder>();
+        virtualCamera = trackingCamera.GetComponent<CinemachineVirtualCamera>();
         cameraShaker = trackingCamera.GetComponent<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         collisionImpulseSource = GetComponent<CinemachineCollisionImpulseSource>();
         DepthOfField temp;
@@ -74,6 +79,7 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
         gameInput.Game.LeftBarrelRoll.performed += LeftBarrelRoll_performed;
         gameInput.Game.RightBarrelRoll.performed += RightBarrelRoll_performed;
+        gameInput.Game.ToggleBoost.performed += ToggleBoost_performed;
 
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
@@ -81,6 +87,64 @@ public class Plane : MonoBehaviour
         coinCollectedStarEffect = coinCollectionStarsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedBlobEffect = coinCollectionBlobsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
+    }
+
+    private void ToggleBoost_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        boostActive = !boostActive;
+        if(boostActive)
+        {
+            ApplyBoost();
+        }
+        else
+        {
+            StopBoost();
+        }
+    }
+
+    private void ApplyBoost()
+    {
+        cylinder.GetComponent<Cylinder>().StartBoost();
+        this.cameraShaker.m_AmplitudeGain += 1.15f;
+        lateralForce += 20.0f;
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = 14;
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY = 0.45f;
+        boostThrusters.SetActive(true);
+        StartCoroutine(BringBackCamera());
+    }
+
+    private IEnumerator BringBackCamera()
+    {
+        float elapsedTime = 0f;
+        float duration = 2f;    // Duration of interpolation in seconds
+
+        while (elapsedTime < duration)
+        {
+            // Calculate interpolation parameter based on elapsed time
+            float t = elapsedTime / duration;
+
+            // Linearly interpolate between startValue and endValue
+            float cameraDistance = Mathf.Lerp(14f, 11f, t);
+            float cameraY = Mathf.Lerp(0.45f, 0.6f, t);
+
+            virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = cameraDistance;
+            virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY = cameraY;
+
+            // Increment elapsed time
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
+    private void StopBoost()
+    {
+        cylinder.GetComponent<Cylinder>().StopBoost();
+        this.cameraShaker.m_AmplitudeGain -= 1.15f;
+        lateralForce -= 20.0f;
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = 10;
+        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY = 0.65f;
+        boostThrusters.SetActive(false);
     }
 
     private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -409,7 +473,7 @@ public class Plane : MonoBehaviour
             var lowestShakingSpeedThreshold = 47;
             var middleShakingSpeedThreshold = 48;
             var highestShakingSpeedThreshold = 49;  // Point after which camera shake is no longer increased any further
-            if(Mathf.Abs(cylinderScript.RotationSpeed) > lowestShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeed) < middleShakingSpeedThreshold)
+            if(Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > lowestShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < middleShakingSpeedThreshold)
             {
                 if(this.cameraShaker.m_AmplitudeGain == 0)
                 {
@@ -417,7 +481,7 @@ public class Plane : MonoBehaviour
                 }
                 this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 2);
             }
-            else if (Mathf.Abs(cylinderScript.RotationSpeed) > middleShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeed) < highestShakingSpeedThreshold)
+            else if (Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > middleShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < highestShakingSpeedThreshold)
             {
                 this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 10);
             }
