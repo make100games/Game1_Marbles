@@ -18,4 +18,14 @@ public class Obstacle : Spawnable
     {
         rb.AddForce(Vector3.down * Physics.gravity.magnitude);
     }
+
+    public void DestroyAfterAShortWhile()
+    {
+        Invoke("RemoveObstacle", 5f);
+    }
+
+    private void RemoveObstacle()
+    {
+        Destroy(this.gameObject);
+    }
 }
