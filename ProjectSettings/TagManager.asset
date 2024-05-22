@@ -12,6 +12,7 @@ TagManager:
   - Coin
   - DeletionZone
   - Boundary
+  - CoinSpinner
   layers:
   - Default
   - TransparentFX
