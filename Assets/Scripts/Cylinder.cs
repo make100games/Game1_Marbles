@@ -75,6 +75,6 @@ public class Cylinder : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
+        //transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
     }
 }

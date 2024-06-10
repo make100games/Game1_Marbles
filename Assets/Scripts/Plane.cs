@@ -94,12 +94,50 @@ public class Plane : MonoBehaviour
         boostActive = !boostActive;
         if(boostActive)
         {
+            //StartCoroutine(StartFlyingHigh());
             ApplyBoost();
         }
         else
         {
             StopBoost();
         }
+    }
+
+    IEnumerator StartFlyingHigh()
+    {
+        float amountToClimb = 10f;
+        float rateOfClimb = 0.01f;
+
+        // Pitch nose up
+        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfUpwardPitch)
+        {
+            transform.Rotate(Vector3.left, rateOfUpwardPitch, Space.World);
+
+            yield return null;
+        }
+
+        // Increase altitude until high cruising altitude reached
+        rb.isKinematic = true;
+        for(float i = 0f; i < amountToClimb; i += rateOfClimb)
+        {
+            transform.Translate(Vector3.up * rateOfClimb, Space.World);
+
+            yield return null;
+        }
+        rb.isKinematic = false;
+
+        // Slowly pitch it back down
+        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfDownwardPitch)
+        {
+            transform.Rotate(Vector3.left, -rateOfDownwardPitch, Space.World);
+
+            yield return null;
+        }
+    }
+
+    private void StopFlyingHigh()
+    {
+
     }
 
     private void ApplyBoost()
