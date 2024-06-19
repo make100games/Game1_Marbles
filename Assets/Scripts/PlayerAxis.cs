@@ -21,7 +21,7 @@ public class PlayerAxis : MonoBehaviour
     {
         var RotationSpeed = 40f;
         rotation += RotationSpeed * Time.deltaTime;
-        Debug.Log("Player Axis rotation: " + rotation);
+        //Debug.Log("Player Axis rotation: " + rotation);
         //transform.Rotate(RotationSpeed * Time.deltaTime, 0, 0);
         transform.rotation = Quaternion.Euler(rotation, 0, 0);
     }
