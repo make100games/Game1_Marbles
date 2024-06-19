@@ -39,7 +39,7 @@ public class Plane : MonoBehaviour
     private bool movingLeft = false;
     private bool movingRight = false;
     private float compensatingLateralForce = 25f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
-    private float lateralForce = 20f;    // Force to apply when moving left or right
+    private float lateralForce = 40f;    // Force to apply when moving left or right
     private float barrelRollLateralForce = 950f; // Force to apply when doing a barrel roll
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private float decelerationForce = 10f;  // Force at which we decelerate lateral movement when player stops moving laterally

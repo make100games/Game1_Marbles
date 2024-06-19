@@ -42,6 +42,7 @@ public class ObstacleSpawner : Spawner
         gameObject.transform.up = hit.normal;
         gameObject.transform.parent = parentObject.transform;
         gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
+        gameObject.GetComponent<Obstacle>().target = parentObject.transform;
 
         // Give the obstacle a bit of a spin
         if (addSpin)

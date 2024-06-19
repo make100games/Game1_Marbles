@@ -51,7 +51,7 @@ public class Cylinder : MonoBehaviour
         {
             // The player speed is nothing more than the ever increasing speed of
             // rotation of the cylinder. Increasing in the negative direction ;)
-            RotationSpeed -= accelerationFactor;
+            //RotationSpeed -= accelerationFactor;
         }
         
     }
@@ -75,6 +75,6 @@ public class Cylinder : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
+        transform.Rotate(0, 0, RotationSpeed * Time.deltaTime);
     }
 }
