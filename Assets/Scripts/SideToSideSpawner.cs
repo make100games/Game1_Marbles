@@ -8,6 +8,7 @@ public class SideToSideSpawner : MonoBehaviour
     public GameObject cylinder;
     public GameObject obstaclePrefab;
     public GameObject coinPrefab;
+    public GameObject bombPrefab;
     public bool spawnObstacle;
     public float intervalBetweenObjects = 0.25f;   // Amount of seconds between each object spawn
     public float minTimeToSpawn = 1f;
@@ -23,6 +24,7 @@ public class SideToSideSpawner : MonoBehaviour
     private bool toggle = true;
     private Spawner coinSpawner = new CoinSpawner();
     private Spawner obstacleSpawner = new ObstacleSpawner();
+    private Spawner bombSpawner = new BombSpawner();
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +75,11 @@ public class SideToSideSpawner : MonoBehaviour
             {
                 var coin = Instantiate(coinPrefab);
                 coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
+            }
+            else if(bombPrefab != null)
+            {
+                var bomb = Instantiate(bombPrefab);
+                bombSpawner.SpawnObject(cylinder, transform.position, hit, bomb, false, true);
             }
         }
         spawn = true;

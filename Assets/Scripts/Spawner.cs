@@ -83,3 +83,38 @@ public class RampSpawner : Spawner
     }
 }
 
+public class BombSpawner : Spawner
+{
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    {
+        gameObject.transform.position = sourcePosition;
+        gameObject.transform.up = hit.normal;
+        gameObject.transform.parent = parentObject.transform;
+        gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
+        gameObject.GetComponent<Bomb>().timeTillDetonation = Random.Range(1f, 3f);
+
+        // Give the obstacle a bit of a spin
+        if (addSpin)
+        {
+            var randomValue = Random.Range(1, 4);
+            Vector3 spinDirection;
+            switch (randomValue)
+            {
+                case 1:
+                    spinDirection = Vector3.left;
+                    break;
+                case 2:
+                    spinDirection = Vector3.right;
+                    break;
+                case 3:
+                    spinDirection = Vector3.forward;
+                    break;
+                default:
+                    spinDirection = Vector3.back;
+                    break;
+            }
+            gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
+        }
+    }
+}
+
