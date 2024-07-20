@@ -13,6 +13,7 @@ TagManager:
   - DeletionZone
   - Boundary
   - CoinSpinner
+  - Explosion
   layers:
   - Default
   - TransparentFX

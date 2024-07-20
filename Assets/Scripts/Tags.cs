@@ -12,4 +12,5 @@ public class Tags
     public const string Boundary = "Boundary";
     public const string Player = "Player";
     public const string CoinSpinner = "CoinSpinner";
+    public const string Explosion = "Explosion";
 }

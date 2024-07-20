@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    public Vector3 targetScale = new Vector3(20f, 20f, 20f); // Target scale
-    public float duration = 0.5f; // Duration over which to scale
+    public Vector3 targetScale = new Vector3(25f, 25f, 25f); // Target scale
+    public float duration = 5.5f; // Duration over which to scale                                  
+    public float forceMagnitude = 10f; // Force magnitude to apply to the entering object
 
     private Vector3 initialScale;
     private float timeElapsed = 0f;
@@ -25,6 +26,26 @@ public class Explosion : MonoBehaviour
         if (lerpFactor >= 1f)
         {
             Destroy(this.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Something entered explosion trigger");
+        if(other.tag != Tags.Player && other.tag != Tags.Explosion)
+        {
+            Debug.Log("Non-player object entered explosion trigger");
+            Rigidbody rb = other.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Debug.Log("Explosion will push object away");
+
+                // Calculate the direction from the trigger center to the entering object
+                Vector3 direction = (other.transform.position - transform.position).normalized;
+
+                // Apply force to the Rigidbody in the calculated direction
+                rb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+            }
         }
     }
 }
