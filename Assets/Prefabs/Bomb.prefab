@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7771512300188637167}
   - component: {fileID: 7771512300188637171}
   - component: {fileID: 7771512300188637170}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToLive: 5
   explosion: {fileID: 4418229228044896573, guid: e39f9ad04b9224e13ba8d707caaa2119, type: 3}
+  timeTillDetonation: 1
 --- !u!54 &7771512300188637170
 Rigidbody:
   m_ObjectHideFlags: 0
