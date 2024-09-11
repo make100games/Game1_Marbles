@@ -14,6 +14,7 @@ TagManager:
   - Boundary
   - CoinSpinner
   - Explosion
+  - ShockwaveEffect
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - PostLayer3
   - NoPostLayer1
   - NoPostLayer2
-  - 
+  - DistortionLayer
   - 
   - 
   - 

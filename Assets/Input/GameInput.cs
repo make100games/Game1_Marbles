@@ -89,6 +89,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f46ca50-06ee-44b0-8579-946f0460d7bd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -168,6 +177,17 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""ToggleBoost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0947c45a-18bf-4c87-8e05-b8339b5fa01d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -183,6 +203,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Game_LeftBarrelRoll = m_Game.FindAction("LeftBarrelRoll", throwIfNotFound: true);
         m_Game_RightBarrelRoll = m_Game.FindAction("RightBarrelRoll", throwIfNotFound: true);
         m_Game_ToggleBoost = m_Game.FindAction("ToggleBoost", throwIfNotFound: true);
+        m_Game_DebugClick = m_Game.FindAction("DebugClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_LeftBarrelRoll;
     private readonly InputAction m_Game_RightBarrelRoll;
     private readonly InputAction m_Game_ToggleBoost;
+    private readonly InputAction m_Game_DebugClick;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -262,6 +284,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @LeftBarrelRoll => m_Wrapper.m_Game_LeftBarrelRoll;
         public InputAction @RightBarrelRoll => m_Wrapper.m_Game_RightBarrelRoll;
         public InputAction @ToggleBoost => m_Wrapper.m_Game_ToggleBoost;
+        public InputAction @DebugClick => m_Wrapper.m_Game_DebugClick;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -292,6 +315,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ToggleBoost.started += instance.OnToggleBoost;
             @ToggleBoost.performed += instance.OnToggleBoost;
             @ToggleBoost.canceled += instance.OnToggleBoost;
+            @DebugClick.started += instance.OnDebugClick;
+            @DebugClick.performed += instance.OnDebugClick;
+            @DebugClick.canceled += instance.OnDebugClick;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -317,6 +343,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @ToggleBoost.started -= instance.OnToggleBoost;
             @ToggleBoost.performed -= instance.OnToggleBoost;
             @ToggleBoost.canceled -= instance.OnToggleBoost;
+            @DebugClick.started -= instance.OnDebugClick;
+            @DebugClick.performed -= instance.OnDebugClick;
+            @DebugClick.canceled -= instance.OnDebugClick;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -343,5 +372,6 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnLeftBarrelRoll(InputAction.CallbackContext context);
         void OnRightBarrelRoll(InputAction.CallbackContext context);
         void OnToggleBoost(InputAction.CallbackContext context);
+        void OnDebugClick(InputAction.CallbackContext context);
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bomb : Spawnable
 {
+    private GameObject shockwaveEffect;
     public GameObject explosion;
     public float timeTillDetonation = 3f;
     private Rigidbody rb;
@@ -11,6 +12,7 @@ public class Bomb : Spawnable
     // Start is called before the first frame update
     void Start()
     {
+        shockwaveEffect = GameObject.FindGameObjectWithTag(Tags.ShockwaveEffect);
         rb = GetComponent<Rigidbody>();
         Invoke("Explode", timeTillDetonation);
     }
@@ -32,5 +34,7 @@ public class Bomb : Spawnable
         var newExplosion = Instantiate(explosion);
         newExplosion.transform.position = this.transform.position;
         Destroy(this.gameObject);
+
+        shockwaveEffect.GetComponent<Shockwave>().TriggerShockwave(this.transform.position);
     }
 }
