@@ -80,8 +80,6 @@ public class Shockwave : FullscreenCameraEffect
             Vector3 hitPoint = hitInfo.point;
             Debug.Log("Hit Point on Plane: " + hitPoint);
 
-            // TODO Something is wrong with the calculation of the UV or the position on the plane somehow...
-
             // Convert hit point to plane's local space (to map UVs or for other purposes)
             // The default unity plane spans from -5 to 5 by default
             Vector3 localPoint = transform.InverseTransformPoint(hitPoint);
@@ -89,14 +87,13 @@ public class Shockwave : FullscreenCameraEffect
 
             // Convert to normalized UV values (between 0 and 1)
             // Unity's default Plane primitive spans 10 units along both the X and Z axes.
-            // We can retrieve its width and height by considering the local scale
             float planeWidth = 10.0f;   // Scaled width
             float planeHeight = 10.0f;  // Scaled height
             Debug.Log("Plane width: " + planeWidth + ", plane height: " + planeHeight);
 
             // Calculate UV coordinates
-            float u = (localPoint.x + 5.0f) / planeWidth;   // X maps to U. Adding because the plane spans from -5 to 5. We want to calculate from 0 to 10
-            float v = (localPoint.z + 5.0f) / planeHeight;  // Z maps to V. Adding because the plane spans from -5 to 5. We want to calculate from 0 to 10
+            float u = (localPoint.x + 5.0f) / planeWidth;   // X maps to U. Adding 5 because the plane spans from -5 to 5. We want to calculate from 0 to 10
+            float v = (localPoint.z + 5.0f) / planeHeight;  // Z maps to V. Adding 5 because the plane spans from -5 to 5. We want to calculate from 0 to 10
 
             Debug.Log("LocalPoint.x + 5: " + (localPoint.x + 5f) + " LocalPoint.z + 5: " + (localPoint.z + 5f));
             Debug.Log("Unclamed U: " + u + " Unclamped V: " + v);
