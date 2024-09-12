@@ -177,18 +177,18 @@ public class BombSpawner : Spawner
         }
         if(timeAlive >= 20f)
         {
-            timeTillDetonationFloor = 0.1f;
-            timeTillDetonationCeiling = 2f;
+            timeTillDetonationFloor = 0.2f;
+            timeTillDetonationCeiling = 2.2f;
         }
         if(timeAlive >= 45f)
         {
-            timeTillDetonationFloor = 0.05f;
-            timeTillDetonationCeiling = 1.5f;
+            timeTillDetonationFloor = 0.18f;
+            timeTillDetonationCeiling = 2f;
         }
         if(timeAlive >= 70f)
         {
-            timeTillDetonationFloor = 0.025f;
-            timeTillDetonationCeiling = 1f;
+            timeTillDetonationFloor = 0.15f;
+            timeTillDetonationCeiling = 2f;
         }
         // TODO add more time frames at which to decrease bomb creation time
     }

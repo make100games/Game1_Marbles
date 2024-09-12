@@ -49,7 +49,7 @@ public class Shockwave : FullscreenCameraEffect
     {
         if(shockwaveRunning && shockwaveProgress < 1.0f)
         {
-            shockwaveProgress += 0.0005f;
+            shockwaveProgress += 0.0015f;
             objectRenderer.material.SetFloat("_Progress", shockwaveProgress);
         }
         else if(shockwaveProgress >= 1.0f)

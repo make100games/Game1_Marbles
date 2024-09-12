@@ -32,7 +32,7 @@ public class Explosion : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Something entered explosion trigger");
-        if(other.tag != Tags.Player && other.tag != Tags.Explosion)
+        if(other.tag != Tags.Player && other.tag != Tags.Explosion && other.tag != Tags.Coin)
         {
             Debug.Log("Non-player object entered explosion trigger");
             Rigidbody rb = other.GetComponent<Rigidbody>();
