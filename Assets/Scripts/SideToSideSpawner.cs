@@ -29,6 +29,7 @@ public class SideToSideSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bombSpawner.Initialize();
         var renderer = cylinder.GetComponentInChildren<MeshRenderer>();
         cylinderWidth = renderer.bounds.size.x;
         cylinderLeftEdge = cylinder.transform.position.x - (cylinderWidth / 2);
@@ -52,6 +53,7 @@ public class SideToSideSpawner : MonoBehaviour
             spawn = false;
             Invoke("SpawnObject", intervalBetweenObjects);
         }
+        bombSpawner.Update();
     }
 
     void ToggleSpawning()

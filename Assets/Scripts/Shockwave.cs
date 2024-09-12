@@ -7,6 +7,8 @@ public class Shockwave : FullscreenCameraEffect
 {
     private Renderer objectRenderer;
     private GameInput gameInput;
+    private float shockwaveProgress = 0.0f;
+    private bool shockwaveRunning = false;
 
     // Start is called before the first frame update
     void Start()
@@ -45,20 +47,33 @@ public class Shockwave : FullscreenCameraEffect
     // Update is called once per frame
     void Update()
     {
-        
+        if(shockwaveRunning && shockwaveProgress < 1.0f)
+        {
+            shockwaveProgress += 0.0005f;
+            objectRenderer.material.SetFloat("_Progress", shockwaveProgress);
+        }
+        else if(shockwaveProgress >= 1.0f)
+        {
+            // Shockwave is finished. Disable the renderer. Disabling the object
+            // will make it so that it cannot be found anymore by outside objects
+            // which is not optimal.
+            this.objectRenderer.enabled = false;
+        }
     }
 
     public void TriggerShockwave(Vector3 location)
     {
-        objectRenderer.material.SetFloat("_Speed", 0.25f);
         var focalPoint = MapWorldPositionToUV(location);
-
         // If the origin of the shockwave is off screen, the focalPoint
         // will be Vector2.negativeInfinity. In that case, we do not want to
         // draw the shockwave
-        if(focalPoint != Vector2.negativeInfinity)
+        if (focalPoint.x >= 0 && focalPoint.y >= 0)
         {
+            this.objectRenderer.enabled = true;
+            shockwaveProgress = 0f;
+            objectRenderer.material.SetFloat("_Progress", 0.0f);
             objectRenderer.material.SetVector("_FocalPoint", focalPoint);
+            this.shockwaveRunning = true;
         }   
     }
 

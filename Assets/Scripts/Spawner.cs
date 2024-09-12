@@ -12,6 +12,10 @@ public interface Spawner
     /// <param name="gameObject">The object to spawn</param>
     /// <param name="randomizeScale">True if the scale of the object to be spawned should be randomized a bit</param>
 	void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true);
+
+    void Initialize();
+
+    void Update();
 }
 
 public class CoinSpawner : Spawner
@@ -25,6 +29,16 @@ public class CoinSpawner : Spawner
         gameObject.transform.Rotate(new Vector3(0, 0, 270));
         gameObject.transform.Translate(Vector3.up * ((gameObject.GetComponent<MeshRenderer>().bounds.size.y / 2) + 1.75f), Space.World);
         gameObject.transform.parent = parentObject.transform;       
+    }
+
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void Update()
+    {
+        // No op
     }
 }
 
@@ -66,6 +80,16 @@ public class ObstacleSpawner : Spawner
             gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
         }
     }
+
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void Update()
+    {
+        // No op
+    }
 }
 
 public class RampSpawner : Spawner
@@ -81,17 +105,31 @@ public class RampSpawner : Spawner
         gameObject.transform.Translate(Vector3.up * (gameObject.GetComponent<MeshRenderer>().bounds.size.y / 2), Space.World);
         gameObject.transform.parent = parentObject.transform;
     }
+
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void Update()
+    {
+        // No op
+    }
 }
 
 public class BombSpawner : Spawner
 {
+    private float timeTillDetonationFloor = 1f;
+    private float timeTillDetonationCeiling = 3f;
+    private float creationTime;
+
     public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
     {
         gameObject.transform.position = sourcePosition;
         gameObject.transform.up = hit.normal;
         gameObject.transform.parent = parentObject.transform;
         gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
-        gameObject.GetComponent<Bomb>().timeTillDetonation = Random.Range(1f, 3f);
+        gameObject.GetComponent<Bomb>().timeTillDetonation = Random.Range(timeTillDetonationFloor, timeTillDetonationCeiling);
 
         // Give the obstacle a bit of a spin
         if (addSpin)
@@ -115,6 +153,44 @@ public class BombSpawner : Spawner
             }
             gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
         }
+    }
+
+    public void Initialize()
+    {
+        creationTime = Time.time;
+    }
+
+    public void Update()
+    {
+        // Decrease time till detonation as time goes on to account for ever increasing speed of
+        // ship
+        float timeAlive = Time.time - creationTime;
+        if(timeAlive >= 5f)
+        {
+            timeTillDetonationFloor = 0.5f;
+            timeTillDetonationCeiling = 2.5f;
+        }
+        if(timeAlive >= 10f)
+        {
+            timeTillDetonationFloor = 0.25f;
+            timeTillDetonationCeiling = 2.25f;
+        }
+        if(timeAlive >= 20f)
+        {
+            timeTillDetonationFloor = 0.1f;
+            timeTillDetonationCeiling = 2f;
+        }
+        if(timeAlive >= 45f)
+        {
+            timeTillDetonationFloor = 0.05f;
+            timeTillDetonationCeiling = 1.5f;
+        }
+        if(timeAlive >= 70f)
+        {
+            timeTillDetonationFloor = 0.025f;
+            timeTillDetonationCeiling = 1f;
+        }
+        // TODO add more time frames at which to decrease bomb creation time
     }
 }
 
