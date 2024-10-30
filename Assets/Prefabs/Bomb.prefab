@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToLive: 5
   explosion: {fileID: 4418229228044896573, guid: e39f9ad04b9224e13ba8d707caaa2119, type: 3}
+  explosionEffect: {fileID: 486581319919109325, guid: f3a50fdb4f59d4f6d9391f1f061dfda3, type: 3}
   timeTillDetonation: 1
 --- !u!54 &7771512300188637170
 Rigidbody:

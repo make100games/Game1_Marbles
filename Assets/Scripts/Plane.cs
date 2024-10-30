@@ -149,14 +149,12 @@ public class Plane : MonoBehaviour
 
     private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Right barrel roll!");
         rb.AddForce(Vector3.right * barrelRollLateralForce, ForceMode.Force);
         StartCoroutine(BarrelRollToTheRight());
     }
 
     private void LeftBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        UnityEngine.Debug.Log("Left barrel roll!");
         rb.AddForce(Vector3.left * barrelRollLateralForce, ForceMode.Force);
         StartCoroutine(BarrelRollToTheLeft());
     }
@@ -299,7 +297,6 @@ public class Plane : MonoBehaviour
     {
         if(!dead)
         {
-            UnityEngine.Debug.Log("Triggery trigger: " + other.tag);
             if (other.tag == Tags.Ramp && rb.velocity.y == 0)
             {
                 // Tilt plane back then slowly back down and give it an upward push
@@ -312,7 +309,6 @@ public class Plane : MonoBehaviour
             {
                 // TODO Collect points
                 this.numberOfCoinsCollected++;
-                UnityEngine.Debug.Log("Collected coin! Total: " + this.numberOfCoinsCollected);
 
                 // Show particle effect to indicate that coin was collected
                 coinCollectedStarEffect.Play();
@@ -400,7 +396,6 @@ public class Plane : MonoBehaviour
     private void TakeDamage()
     {
         health--;
-        UnityEngine.Debug.Log("Took a hit! Current health: " + health);
         if (health == 2)
         {
             lightSmoke.SetActive(true);
@@ -420,7 +415,6 @@ public class Plane : MonoBehaviour
         }
         if (health == 0)
         {
-            UnityEngine.Debug.Log("GAME OVER");
             dead = true;
             // Game Over
             // TODO Crash ship
@@ -479,7 +473,6 @@ public class Plane : MonoBehaviour
         {
             if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
             {
-                UnityEngine.Debug.Log("BELOW CRUISING!");
                 rb.useGravity = false;
                 rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
                 rb.angularVelocity = Vector3.zero;
@@ -511,7 +504,6 @@ public class Plane : MonoBehaviour
         {
             if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < crashedYPos)
             {
-                UnityEngine.Debug.Log("BELOW CRASHING!");
                 rb.useGravity = false;
                 rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
                 rb.angularVelocity = Vector3.zero;

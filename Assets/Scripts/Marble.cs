@@ -29,7 +29,6 @@ public class Marble : MonoBehaviour
     {
         for(float x = 0f; x > -lateralDistanceToMove; x-=lateralDistanceToMovePerFrame)
         {
-            Debug.Log("Position.x: " + transform.position.x);
             transform.position =
                 new Vector3(transform.position.x - lateralDistanceToMovePerFrame, transform.position.y, transform.position.z);
             yield return null;
@@ -40,7 +39,6 @@ public class Marble : MonoBehaviour
     {
         for (float x = 0f; x < lateralDistanceToMove; x += lateralDistanceToMovePerFrame)
         {
-            Debug.Log("Position.x: " + transform.position.x);
             transform.position =
                 new Vector3(transform.position.x + lateralDistanceToMovePerFrame, transform.position.y, transform.position.z);
             yield return null;

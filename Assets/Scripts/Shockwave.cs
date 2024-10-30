@@ -18,7 +18,7 @@ public class Shockwave : FullscreenCameraEffect
         FitToCameraView();
         objectRenderer = GetComponent<Renderer>();
 
-        gameInput.Game.DebugClick.performed += DebugClick_performed;    // Only for debugging purposes
+        //gameInput.Game.DebugClick.performed += DebugClick_performed;    // Only for debugging purposes
     }
 
     private void DebugClick_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -93,25 +93,19 @@ public class Shockwave : FullscreenCameraEffect
         {
             // Get the world position on the plane
             Vector3 hitPoint = hitInfo.point;
-            Debug.Log("Hit Point on Plane: " + hitPoint);
 
             // Convert hit point to plane's local space (to map UVs or for other purposes)
             // The default unity plane spans from -5 to 5 by default
             Vector3 localPoint = transform.InverseTransformPoint(hitPoint);
-            Debug.Log("Local point on plane: " + localPoint);
 
             // Convert to normalized UV values (between 0 and 1)
             // Unity's default Plane primitive spans 10 units along both the X and Z axes.
             float planeWidth = 10.0f;   // Scaled width
             float planeHeight = 10.0f;  // Scaled height
-            Debug.Log("Plane width: " + planeWidth + ", plane height: " + planeHeight);
 
             // Calculate UV coordinates
             float u = (localPoint.x + 5.0f) / planeWidth;   // X maps to U. Adding 5 because the plane spans from -5 to 5. We want to calculate from 0 to 10
             float v = (localPoint.z + 5.0f) / planeHeight;  // Z maps to V. Adding 5 because the plane spans from -5 to 5. We want to calculate from 0 to 10
-
-            Debug.Log("LocalPoint.x + 5: " + (localPoint.x + 5f) + " LocalPoint.z + 5: " + (localPoint.z + 5f));
-            Debug.Log("Unclamed U: " + u + " Unclamped V: " + v);
 
             // Ensure UVs are in [0, 1] range
             u = Mathf.Clamp01(u);
@@ -119,11 +113,8 @@ public class Shockwave : FullscreenCameraEffect
 
             // UV coordinates for the hit point
             Vector2 uv = new Vector2(u, v);
-            Debug.Log("UV Coordinates on Plane: " + uv);
-
             return uv;
         }
-        Debug.Log("Origin of shockwave is off screen");
         return Vector2.negativeInfinity;    // error case
     }
 }

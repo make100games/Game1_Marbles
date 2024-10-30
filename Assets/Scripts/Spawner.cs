@@ -167,28 +167,28 @@ public class BombSpawner : Spawner
         float timeAlive = Time.time - creationTime;
         if(timeAlive >= 5f)
         {
-            timeTillDetonationFloor = 0.5f;
-            timeTillDetonationCeiling = 2.5f;
+            timeTillDetonationFloor = 0.15f;
+            timeTillDetonationCeiling = 2.15f;
         }
         if(timeAlive >= 10f)
         {
-            timeTillDetonationFloor = 0.25f;
-            timeTillDetonationCeiling = 2.25f;
+            timeTillDetonationFloor = 0.1f;
+            timeTillDetonationCeiling = 2.00f;
         }
         if(timeAlive >= 20f)
         {
-            timeTillDetonationFloor = 0.2f;
-            timeTillDetonationCeiling = 2.2f;
+            timeTillDetonationFloor = 0.15f;
+            timeTillDetonationCeiling = 1.8f;
         }
         if(timeAlive >= 45f)
         {
-            timeTillDetonationFloor = 0.18f;
-            timeTillDetonationCeiling = 2f;
+            timeTillDetonationFloor = 0.10f;
+            timeTillDetonationCeiling = 1.5f;
         }
         if(timeAlive >= 70f)
         {
-            timeTillDetonationFloor = 0.15f;
-            timeTillDetonationCeiling = 2f;
+            timeTillDetonationFloor = 0.05f;
+            timeTillDetonationCeiling = 1f;
         }
         // TODO add more time frames at which to decrease bomb creation time
     }
