@@ -9,6 +9,8 @@ public class Shockwave : FullscreenCameraEffect
     private GameInput gameInput;
     private float shockwaveProgress = 0.0f;
     private bool shockwaveRunning = false;
+    private float lastAspectRatio;
+    private float checkInterval = 0.5f;    // Interval in seconds to check for aspect ratio changes
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +19,32 @@ public class Shockwave : FullscreenCameraEffect
         gameInput.Enable();
         FitToCameraView();
         objectRenderer = GetComponent<Renderer>();
+        lastAspectRatio = Camera.main.aspect;
+        StartCoroutine(CheckForChangeInAspectRatio());
 
         //gameInput.Game.DebugClick.performed += DebugClick_performed;    // Only for debugging purposes
+    }
+
+    private IEnumerator CheckForChangeInAspectRatio()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(checkInterval);  // Wait for the specified interval
+
+            float currentAspectRatio = Camera.main.aspect;
+            if (!Mathf.Approximately(lastAspectRatio, currentAspectRatio))
+            {
+                OnAspectRatioChanged(currentAspectRatio);
+                lastAspectRatio = currentAspectRatio;  // Update the last known aspect ratio
+            }
+        }
+    }
+
+    private void OnAspectRatioChanged(float newAspectRatio)
+    {
+        Debug.Log("Aspect ratio changed to: " + newAspectRatio);
+
+        FitToCameraView();
     }
 
     private void DebugClick_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
