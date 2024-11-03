@@ -60,7 +60,6 @@ public class Bomb : Spawnable
 
     private bool IsBombVisibleToPlayer()
     {
-        //return IsObjectInFrustum(renderer);
         return IsObjectVisible(this.transform.position);
     }
 
@@ -90,14 +89,5 @@ public class Bomb : Spawnable
         }
 
         return false;
-    }
-
-    private bool IsObjectInFrustum(Renderer renderer)
-    {
-        // Calculate the camera's frustum planes
-        UnityEngine.Plane[] frustumPlanes = GeometryUtility.CalculateFrustumPlanes(mainCamera.GetComponent<Camera>());
-
-        // Check if the object's bounds intersect the frustum planes
-        return GeometryUtility.TestPlanesAABB(frustumPlanes, renderer.bounds);
     }
 }
