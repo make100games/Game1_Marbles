@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Tags
 {
+    public const string MainCamera = "MainCamera";
     public const string Obstacle = "Obstacle";
     public const string Ramp = "Ramp";
     public const string Coin = "Coin";
