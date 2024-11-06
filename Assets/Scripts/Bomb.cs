@@ -49,6 +49,7 @@ public class Bomb : Spawnable
         var isBombVisibleToPlayer = IsBombVisibleToPlayer();
         var positionOfBombAtTimeOfExplosion = this.transform.position;  // Hold for shockwave later on
         GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<Collider>().enabled = false;   // Once bomb has exploded, it should no longer bounce off the environment. Otherwise our explosion will bounce also
         explosionInstance = Instantiate(explosion);
         explosionEffectInstance = Instantiate(explosionEffect);
         explosionEffectInstance.GetComponent<ExplosionEffect>().OnExplosionFinished += () =>
