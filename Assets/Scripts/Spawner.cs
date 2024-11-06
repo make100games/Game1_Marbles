@@ -117,6 +117,35 @@ public class RampSpawner : Spawner
     }
 }
 
+public class SpoolSpawner : Spawner
+{
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    {
+        gameObject.transform.position = sourcePosition;
+        gameObject.transform.up = hit.normal;
+        gameObject.transform.parent = parentObject.transform;
+        //gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
+
+        // Give the obstacle a bit of a spin
+        if (addSpin)
+        {
+            var randomValue = Random.Range(1, 4);
+            Vector3 spinDirection = Vector3.forward;
+            gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
+        }
+    }
+
+    public void Update()
+    {
+        // No op
+    }
+}
+
 public class BombSpawner : Spawner
 {
     private float timeTillDetonationFloor = 1f;

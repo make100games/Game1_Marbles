@@ -5873,6 +5873,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
+      propertyPath: spoolPrefab
+      value: 
+      objectReference: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
+    - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: obstaclePrefab
       value: 
       objectReference: {fileID: 7216334630617336538, guid: 114043a233b304a90ae0a720e462684b, type: 3}
@@ -28475,7 +28479,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2024189311}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95dda40b6fc4d41e08cb5d04896a871b, type: 3}
   m_Name: 
@@ -29007,9 +29011,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
+      propertyPath: spoolPrefab
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: obstaclePrefab
       value: 
-      objectReference: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: randomizeScale
       value: 1

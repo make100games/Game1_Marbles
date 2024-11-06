@@ -10,10 +10,12 @@ public class RandomSpawner : MonoBehaviour
     public GameObject rampPrefab;
     public GameObject obstaclePrefab;
     public GameObject coinPrefab;
+    public GameObject spoolPrefab;
     private float cylinderWidth;
     private Spawner coinSpawner = new CoinSpawner();
     private Spawner obstacleSpawner = new ObstacleSpawner();
     private Spawner rampSpawner = new RampSpawner();
+    private Spawner spoolSpawner = new SpoolSpawner();
 
     private bool spawn = true;
 
@@ -61,7 +63,7 @@ public class RandomSpawner : MonoBehaviour
                 }
                 
             }
-            else if(randomValue < 7)
+            else if(randomValue < 5)
             {
                 if(obstaclePrefab != null)
                 {
@@ -70,6 +72,18 @@ public class RandomSpawner : MonoBehaviour
                     {
                         var obstacle = Instantiate(obstaclePrefab);
                         obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true);
+                    }
+                }
+            }
+            else if(randomValue < 7)
+            {
+                if (spoolPrefab != null)
+                {
+                    var numberOfObstacles = Random.Range(2, 4);
+                    for (int i = 0; i < numberOfObstacles; i++)
+                    {
+                        var obstacle = Instantiate(spoolPrefab);
+                        spoolSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true);
                     }
                 }
             }
