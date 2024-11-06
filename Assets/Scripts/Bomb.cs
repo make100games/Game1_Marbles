@@ -12,6 +12,8 @@ public class Bomb : Spawnable
     private GameObject mainCamera;
     private Rigidbody rb;
     private Renderer renderer;
+    private GameObject explosionInstance;
+    private GameObject explosionEffectInstance;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +33,14 @@ public class Bomb : Spawnable
     // Update is called once per frame
     void Update()
     {
-        
+        if(explosionInstance != null)
+        {
+            explosionInstance.transform.position = this.transform.position;
+        }
+        if(explosionEffectInstance != null)
+        {
+            explosionEffectInstance.transform.position = this.transform.position;
+        }
     }
 
     void Explode()
@@ -40,10 +49,9 @@ public class Bomb : Spawnable
         var isBombVisibleToPlayer = IsBombVisibleToPlayer();
         var positionOfBombAtTimeOfExplosion = this.transform.position;  // Hold for shockwave later on
         GetComponent<MeshRenderer>().enabled = false;
-        var newExplosion = Instantiate(explosion);
-        newExplosion.transform.position = this.transform.position;
-        var newExplosionEffect = Instantiate(explosionEffect);
-        newExplosionEffect.GetComponent<ExplosionEffect>().OnExplosionFinished += () =>
+        explosionInstance = Instantiate(explosion);
+        explosionEffectInstance = Instantiate(explosionEffect);
+        explosionEffectInstance.GetComponent<ExplosionEffect>().OnExplosionFinished += () =>
         {
             // It appears as though the explosion is not rendered onto the camera's opaque texture
             // We therefore should wait with the shockwave until the explosion has finished
@@ -51,11 +59,11 @@ public class Bomb : Spawnable
             // and the player doesnt know why which can get annoying
             if(isBombVisibleToPlayer)
             {
-                shockwaveEffect.GetComponent<Shockwave>().TriggerShockwave(positionOfBombAtTimeOfExplosion);
+                //shockwaveEffect.GetComponent<Shockwave>().TriggerShockwave(positionOfBombAtTimeOfExplosion);
             }
             Destroy(this.gameObject);
         };
-        newExplosionEffect.transform.position = this.transform.position;
+        //newExplosionEffect.transform.position = this.transform.position;
     }
 
     private bool IsBombVisibleToPlayer()
