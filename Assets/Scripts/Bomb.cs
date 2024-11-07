@@ -60,6 +60,8 @@ public class Bomb : Spawnable
             // and the player doesnt know why which can get annoying
             if(isBombVisibleToPlayer)
             {
+                // Disabled the shockwave effect for now because it means I have to have smaller explosions. Otherwise the
+                // shockwave comes in way too late... Might re-enable later, we'll see.
                 //shockwaveEffect.GetComponent<Shockwave>().TriggerShockwave(positionOfBombAtTimeOfExplosion);
             }
             Destroy(this.gameObject);
