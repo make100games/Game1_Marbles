@@ -34,14 +34,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NoiseSpeed: 0.25
+    - _Damping: 0.09
+    - _NoiseSpeed: 0.11
     - _QueueControl: 0
     - _QueueOffset: 0
     - _VoronoiSpeed: 1
     m_Colors:
-    - _Color1: {r: 1, g: 0, b: 0.9128056, a: 0}
-    - _Color2: {r: 0.9339623, g: 0.04846029, b: 0.04846029, a: 0}
-    - _Color3: {r: 0.01415092, g: 0.21799973, b: 1, a: 0}
+    - _Color1: {r: 0.46226418, g: 0.0283464, b: 0.2578222, a: 0}
+    - _Color2: {r: 0.21698111, g: 0.060386255, b: 0.15957896, a: 0}
+    - _Color3: {r: 0.18841001, g: 0.11311854, b: 0.7735849, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5978306956294321859
 MonoBehaviour:
