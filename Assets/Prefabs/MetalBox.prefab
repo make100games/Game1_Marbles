@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9099821505935623265}
   - component: {fileID: 2681226184763285621}
   - component: {fileID: 2895870971852354810}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 7237477266118974358}
   - component: {fileID: 7046867274926286709}
   - component: {fileID: 9060917398789479710}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 2606939988190260}
   - component: {fileID: 5612250268781176629}
   - component: {fileID: 6263859084091490845}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MetalBox
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 3781023046329925457}
   - component: {fileID: 5586071012015999439}
   - component: {fileID: 4072300895957570832}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

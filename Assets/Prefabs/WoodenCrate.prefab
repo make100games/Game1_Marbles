@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2977470828556897856}
   - component: {fileID: 156854648268643739}
   - component: {fileID: 3637153435838009590}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: WoodenCrate
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
