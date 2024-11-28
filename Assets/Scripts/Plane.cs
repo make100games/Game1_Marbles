@@ -10,13 +10,9 @@ public class Plane : MonoBehaviour
 {
     public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
     public GameObject cylinder; // The cylinder around which the plane is flying. Technically the plane is standing still and the cylinder is spinning but you know what I mean
-    public GameObject boundaryCollisionSparks;  // The sparks which appear as a result of the ship hitting the left or right stage boundary
+    public GameObject electricalSparks;  // The sparks which appear when the ship has been hit twice
     public GameObject lightSmoke;   // The smoke to show when plane has been hit once
     public GameObject moreSmoke;    // Smoke to show when plane has been hit twice
-    public GameObject sparks1;   // One of the spark particle systems to play back when plane has been hit twice
-    public GameObject sparks2;   // Another of the spark particle systems to play back when plane has been hit twice
-    public GameObject sparks3;   // Another of the spark particle systems to play back when plane has been hit twice
-    public GameObject sparks4;   // Another of the spark particle systems to play back when plane has been hit twice
     public GameObject boostThrusters;   //The thrusters that are enabled while we are boosting
     public GameObject trackingCamera;   // The camera tracking the plane
     public Volume blurVolume;
@@ -358,11 +354,8 @@ public class Plane : MonoBehaviour
                 // Shake camera
                 ShakeCameraDueToImpact();
 
-                // Take some damage and show electrical sparks for some time
+                // Take some damage
                 TakeDamage();
-                boundaryCollisionSparks.SetActive(true);
-
-                Invoke("TurnOffBoundaryCollisionSparks", 2.5f);
             }
         }   
     }
@@ -382,11 +375,6 @@ public class Plane : MonoBehaviour
         blurVolume.gameObject.SetActive(false);
     }
 
-    private void TurnOffBoundaryCollisionSparks()
-    {
-        boundaryCollisionSparks.SetActive(false);
-    }
-
     private void ShakeCameraDueToImpact()
     {
         var shakeForce = this.cameraShaker.m_AmplitudeGain < 0.5 ? 1 : this.cameraShaker.m_AmplitudeGain * 3;
@@ -404,14 +392,7 @@ public class Plane : MonoBehaviour
         {
             // Show smoke and repeatedly show some sparks
             moreSmoke.SetActive(true);
-            sparks1.SetActive(true);
-            sparks2.SetActive(true);
-            sparks3.SetActive(true);
-            sparks4.SetActive(true);
-            InvokeRepeating("FireFirstSparks", 1, 3);
-            InvokeRepeating("FireSecondSparks", 2, 3);
-            InvokeRepeating("FireThirdSparks", 3, 3);
-            InvokeRepeating("FireFourthSparks", 4, 3);
+            electricalSparks.SetActive(true);
         }
         if (health == 0)
         {
@@ -425,26 +406,6 @@ public class Plane : MonoBehaviour
             // Turn off camera shake
             this.cameraShaker.m_AmplitudeGain = 0;
         }
-    }
-
-    void FireFirstSparks()
-    {
-        sparks1.GetComponent<ParticleSystem>().Play();
-    }
-
-    void FireSecondSparks()
-    {
-        sparks2.GetComponent<ParticleSystem>().Play();
-    }
-
-    void FireThirdSparks()
-    {
-        sparks3.GetComponent<ParticleSystem>().Play();
-    }
-
-    void FireFourthSparks()
-    {
-        sparks4.GetComponent<ParticleSystem>().Play();
     }
 
     IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()

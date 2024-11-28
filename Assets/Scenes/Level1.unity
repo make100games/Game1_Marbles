@@ -13965,6 +13965,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
+--- !u!1 &1432916952 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1985097892, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+  m_PrefabInstance: {fileID: 3776520551678723122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1450745382 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdf06592053ca486c89dc822bcc522c5, type: 3}
@@ -29554,6 +29559,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 789275263}
     - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: electricalSparks
+      value: 
+      objectReference: {fileID: 1432916952}
+    - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: shipSparksTransform
       value: 
       objectReference: {fileID: 1808058173}
@@ -29632,7 +29641,7 @@ PrefabInstance:
     - target: {fileID: 2569709097911461310, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6bfc0c355263e4ceb94cbdfb9723173c, type: 2}
+      objectReference: {fileID: 2100000, guid: 11e28a965484c480c94b1df817555bd7, type: 2}
     - target: {fileID: 3020140860000381839, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: m_Layer
       value: 8
