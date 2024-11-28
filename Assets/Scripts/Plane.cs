@@ -19,7 +19,8 @@ public class Plane : MonoBehaviour
     public GameObject coinCollectionStarsParticleEffectObject;
     public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
-    
+
+    private Renderer objectRenderer;
     private Cylinder cylinderScript;
     private CinemachineVirtualCamera virtualCamera;
     private CinemachineBasicMultiChannelPerlin cameraShaker;    // The part of the camera that controls how the camera shakes
@@ -83,6 +84,7 @@ public class Plane : MonoBehaviour
         coinCollectedStarEffect = coinCollectionStarsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedBlobEffect = coinCollectionBlobsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
+        objectRenderer = GetComponent<Renderer>();
     }
 
     private void ToggleBoost_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -390,9 +392,10 @@ public class Plane : MonoBehaviour
         }
         if (health == 1)
         {
-            // Show smoke and repeatedly show some sparks
+            // Show smoke and repeatedly show some sparks. Also, make the ship flash red
             moreSmoke.SetActive(true);
             electricalSparks.SetActive(true);
+            objectRenderer.material.SetInt("_IsFlashing", 1);
         }
         if (health == 0)
         {
