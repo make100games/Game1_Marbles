@@ -324,27 +324,6 @@ public class Plane : MonoBehaviour
                 // Take damage
                 TakeDamage();
             }
-            if (other.tag == Tags.Obstacle && boostActive)
-            {
-                // Add a bit of an upward force and a left or right force to knock obstacle out of the way
-                other.gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * 80f, ForceMode.Impulse);
-
-                // If the obstacle hit the ship left-of-center, push it to the left. If it hit the ship
-                // right-of-center, push it to the right
-                // Get the position of the other object in local space
-                Vector3 localPosition = transform.InverseTransformPoint(other.transform.position);
-                Vector3 lateralDirectionToPushObstacle;
-                if (localPosition.x < 0)
-                {
-                    lateralDirectionToPushObstacle = Vector3.left;
-                }
-                else
-                {
-                    lateralDirectionToPushObstacle = Vector3.right;
-                }
-                other.gameObject.GetComponent<Rigidbody>().AddForce(lateralDirectionToPushObstacle * 60f, ForceMode.Impulse);
-                other.gameObject.GetComponent<Obstacle>().DestroyAfterAShortWhile();
-            }
             if(other.tag == Tags.Boundary)
             {
                 // Show a blur effect to simulate dizziness

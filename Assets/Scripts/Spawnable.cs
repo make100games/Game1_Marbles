@@ -4,34 +4,19 @@ using UnityEngine;
 
 public class Spawnable : MonoBehaviour
 {
-    public float timeToLive = 5f;  // Time until this obstacle is removed (in seconds)
-    private float maxTimeToLive = 30f;  // Time after which something gest deleted regardless of where it is
-    private float timeLived = 0;
-    private bool inDeletionZone = false;
-
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        timeLived += Time.deltaTime;
-        if ((timeLived >= timeToLive && inDeletionZone) || timeLived >= maxTimeToLive)
+        if (other.tag == Tags.DeletionZone)
         {
             Destroy(this.gameObject);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if(other.tag == Tags.DeletionZone)
+        if (collision.gameObject.tag == Tags.DeletionZone)
         {
-            inDeletionZone = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.tag == Tags.DeletionZone)
-        {
-            inDeletionZone = false;
+            Destroy(this.gameObject);
         }
     }
 }

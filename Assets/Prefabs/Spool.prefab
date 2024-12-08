@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6506532401290511980}
   - component: {fileID: 6755788408540422538}
   - component: {fileID: 3034644678950042984}
+  - component: {fileID: 5141006626788622759}
   m_Layer: 13
   m_Name: Spool
   m_TagString: Obstacle
@@ -66,6 +67,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 96c738c084700408fb934c6cf38566e9, type: 3}
+--- !u!114 &5141006626788622759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5836673992232918230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6649c18db557946bbb5db630a8f19f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6521303927680909178
 GameObject:
   m_ObjectHideFlags: 0

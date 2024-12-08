@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 2606939988190260}
   - component: {fileID: 5612250268781176629}
   - component: {fileID: 6263859084091490845}
+  - component: {fileID: -9068246610998894664}
   m_Layer: 13
   m_Name: MetalBox
   m_TagString: Obstacle
@@ -289,6 +290,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.9616966, y: 1.7960358, z: 1.9983252}
   m_Center: {x: 0.0026950836, y: -0.08571625, z: 0.004285872}
+--- !u!114 &-9068246610998894664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811371768483823246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6649c18db557946bbb5db630a8f19f36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &869080443176956347
 GameObject:
   m_ObjectHideFlags: 0
