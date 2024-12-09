@@ -37,12 +37,27 @@ public class SpawnerCoordinator : MonoBehaviour
 
     void ActivateNextWave()
     {
-        if (currentWave != null)
+        if (indexOfCurrentWave >= waves.Count)
         {
-            currentWave.SetActive(false);
+            // We get to the second phase where we keep the last (hardest) wave active and successively
+            // activate the other waves starting with the first
+            var indexOfAdditionalWave = indexOfCurrentWave % waves.Count;
+            var additionalWaveToActivate = waves[indexOfAdditionalWave];
+            if(!additionalWaveToActivate.activeSelf)
+            {
+                additionalWaveToActivate.SetActive(true);
+            }
         }
-        currentWave = waves[indexOfCurrentWave];
-        currentWave.SetActive(true);
+        else
+        {
+            if (currentWave != null)
+            {
+                currentWave.SetActive(false);
+            }
+            currentWave = waves[indexOfCurrentWave];
+            currentWave.SetActive(true);
+        }
         indexOfCurrentWave++;
+
     }
 }
