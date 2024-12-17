@@ -29815,7 +29815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253804, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: cylinder

@@ -10,10 +10,13 @@ public class Explosion : MonoBehaviour
 
     private Vector3 initialScale;
     private float timeElapsed = 0f;
+    private float dissolutionAmount = 0.0f; // Amount by which explosion should have dissolved
+    private Renderer objectRenderer;
 
     void Start()
     {
         initialScale = transform.localScale;
+        objectRenderer = GetComponent<Renderer>();
     }
 
     void Update()
@@ -21,6 +24,10 @@ public class Explosion : MonoBehaviour
         timeElapsed += Time.deltaTime;
         float lerpFactor = timeElapsed / duration;
         transform.localScale = Vector3.Lerp(initialScale, targetScale, lerpFactor);
+
+        // Dissolve explosion over time
+        objectRenderer.material.SetFloat("_ClipThreshold", dissolutionAmount);
+        dissolutionAmount += 0.005f;
 
         // Ensure the scaling stops once the target scale is reached
         if (lerpFactor >= 1f)
