@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    public Vector3 targetScale = new Vector3(25f, 25f, 25f); // Target scale
+    public Vector3 targetScale = new Vector3(35f, 35f, 35f); // Target scale
     public float duration = 5.5f; // Duration over which to scale                                  
     public float forceMagnitude = 10f; // Force magnitude to apply to the entering object
 
@@ -27,7 +27,7 @@ public class Explosion : MonoBehaviour
 
         // Dissolve explosion over time
         objectRenderer.material.SetFloat("_ClipThreshold", dissolutionAmount);
-        dissolutionAmount += 0.005f;
+        dissolutionAmount += 0.0025f;
 
         // Ensure the scaling stops once the target scale is reached
         if (lerpFactor >= 1f)
