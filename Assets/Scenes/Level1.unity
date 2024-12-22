@@ -291,7 +291,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
-      objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
+      objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: obstaclePrefab
       value: 
@@ -6496,7 +6496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3605737995889016430, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: cylinder
@@ -24341,7 +24341,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
-      objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
+      objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: obstaclePrefab
       value: 
@@ -29455,7 +29455,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
-      objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
+      objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: obstaclePrefab
       value: 
@@ -29537,7 +29537,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
-      objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
+      objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: obstaclePrefab
       value: 
@@ -29637,7 +29637,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: rampPrefab
       value: 
-      objectReference: {fileID: 4348884104419634856, guid: 77b207e0ec0d3438eb1ca8d892c58ccb, type: 3}
+      objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: obstaclePrefab
       value: 
@@ -29898,7 +29898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253804, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: cylinder
