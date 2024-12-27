@@ -9,6 +9,7 @@ public class Cylinder : MonoBehaviour
     private bool boostActive = false;
     private float boostFactor = 50f; // Amount by which to increase speed when boosting
     private float RotationSpeed { get; set; } = -40f;   // The more negative the value, the faster the cylinder rotates
+    private bool isAccelerating = false;
 
     public float RotationSpeedIgnoringBoost
     {
@@ -47,7 +48,7 @@ public class Cylinder : MonoBehaviour
                 RotationSpeed = 0;
             }
         }
-        else
+        else if(isAccelerating)
         {
             // The player speed is nothing more than the ever increasing speed of
             // rotation of the cylinder. Increasing in the negative direction ;)
@@ -71,6 +72,11 @@ public class Cylinder : MonoBehaviour
     {
         this.boostActive = false;
         this.RotationSpeed += boostFactor;
+    }
+
+    public void StartAccelerating()
+    {
+        this.isAccelerating = true;
     }
 
     private void FixedUpdate()

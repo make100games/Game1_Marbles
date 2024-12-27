@@ -82,21 +82,21 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleBoost"",
-                    ""type"": ""Button"",
-                    ""id"": ""a9ed0e65-68b6-481a-8b09-3ed12918a2fe"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""DebugClick"",
                     ""type"": ""Button"",
                     ""id"": ""2f46ca50-06ee-44b0-8579-946f0460d7bd"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StartGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b778d98-1d80-40ee-aaec-1894f220572b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -169,23 +169,23 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a673dd0b-800e-4853-a563-e12bec7db1c9"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleBoost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""0947c45a-18bf-4c87-8e05-b8339b5fa01d"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DebugClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcfad492-280c-4f3d-85f4-e82d9b1b9dc5"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -202,8 +202,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Game_StopMovingRight = m_Game.FindAction("StopMovingRight", throwIfNotFound: true);
         m_Game_LeftBarrelRoll = m_Game.FindAction("LeftBarrelRoll", throwIfNotFound: true);
         m_Game_RightBarrelRoll = m_Game.FindAction("RightBarrelRoll", throwIfNotFound: true);
-        m_Game_ToggleBoost = m_Game.FindAction("ToggleBoost", throwIfNotFound: true);
         m_Game_DebugClick = m_Game.FindAction("DebugClick", throwIfNotFound: true);
+        m_Game_StartGame = m_Game.FindAction("StartGame", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -271,8 +271,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_StopMovingRight;
     private readonly InputAction m_Game_LeftBarrelRoll;
     private readonly InputAction m_Game_RightBarrelRoll;
-    private readonly InputAction m_Game_ToggleBoost;
     private readonly InputAction m_Game_DebugClick;
+    private readonly InputAction m_Game_StartGame;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -283,8 +283,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @StopMovingRight => m_Wrapper.m_Game_StopMovingRight;
         public InputAction @LeftBarrelRoll => m_Wrapper.m_Game_LeftBarrelRoll;
         public InputAction @RightBarrelRoll => m_Wrapper.m_Game_RightBarrelRoll;
-        public InputAction @ToggleBoost => m_Wrapper.m_Game_ToggleBoost;
         public InputAction @DebugClick => m_Wrapper.m_Game_DebugClick;
+        public InputAction @StartGame => m_Wrapper.m_Game_StartGame;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -312,12 +312,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RightBarrelRoll.started += instance.OnRightBarrelRoll;
             @RightBarrelRoll.performed += instance.OnRightBarrelRoll;
             @RightBarrelRoll.canceled += instance.OnRightBarrelRoll;
-            @ToggleBoost.started += instance.OnToggleBoost;
-            @ToggleBoost.performed += instance.OnToggleBoost;
-            @ToggleBoost.canceled += instance.OnToggleBoost;
             @DebugClick.started += instance.OnDebugClick;
             @DebugClick.performed += instance.OnDebugClick;
             @DebugClick.canceled += instance.OnDebugClick;
+            @StartGame.started += instance.OnStartGame;
+            @StartGame.performed += instance.OnStartGame;
+            @StartGame.canceled += instance.OnStartGame;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -340,12 +340,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @RightBarrelRoll.started -= instance.OnRightBarrelRoll;
             @RightBarrelRoll.performed -= instance.OnRightBarrelRoll;
             @RightBarrelRoll.canceled -= instance.OnRightBarrelRoll;
-            @ToggleBoost.started -= instance.OnToggleBoost;
-            @ToggleBoost.performed -= instance.OnToggleBoost;
-            @ToggleBoost.canceled -= instance.OnToggleBoost;
             @DebugClick.started -= instance.OnDebugClick;
             @DebugClick.performed -= instance.OnDebugClick;
             @DebugClick.canceled -= instance.OnDebugClick;
+            @StartGame.started -= instance.OnStartGame;
+            @StartGame.performed -= instance.OnStartGame;
+            @StartGame.canceled -= instance.OnStartGame;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -371,7 +371,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnStopMovingRight(InputAction.CallbackContext context);
         void OnLeftBarrelRoll(InputAction.CallbackContext context);
         void OnRightBarrelRoll(InputAction.CallbackContext context);
-        void OnToggleBoost(InputAction.CallbackContext context);
         void OnDebugClick(InputAction.CallbackContext context);
+        void OnStartGame(InputAction.CallbackContext context);
     }
 }

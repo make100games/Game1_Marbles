@@ -60,21 +60,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleBoost",
-                    "type": "Button",
-                    "id": "a9ed0e65-68b6-481a-8b09-3ed12918a2fe",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "DebugClick",
                     "type": "Button",
                     "id": "2f46ca50-06ee-44b0-8579-946f0460d7bd",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StartGame",
+                    "type": "Button",
+                    "id": "7b778d98-1d80-40ee-aaec-1894f220572b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -147,23 +147,23 @@
                 },
                 {
                     "name": "",
-                    "id": "a673dd0b-800e-4853-a563-e12bec7db1c9",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleBoost",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "0947c45a-18bf-4c87-8e05-b8339b5fa01d",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "DebugClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dcfad492-280c-4f3d-85f4-e82d9b1b9dc5",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

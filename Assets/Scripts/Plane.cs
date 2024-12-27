@@ -77,7 +77,6 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
         gameInput.Game.LeftBarrelRoll.performed += LeftBarrelRoll_performed;
         gameInput.Game.RightBarrelRoll.performed += RightBarrelRoll_performed;
-        gameInput.Game.ToggleBoost.performed += ToggleBoost_performed;
 
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
