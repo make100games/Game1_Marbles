@@ -34,6 +34,9 @@ public class RotatingDisc : MonoBehaviour
             rotationSpeed -= 0.00025f;
             yield return null;
         }
-        OnStoppedRotating?.Invoke();
+        if(rotationSpeed <= 0)
+        {
+            OnStoppedRotating?.Invoke();
+        }
     }
 }
