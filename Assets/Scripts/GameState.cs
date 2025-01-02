@@ -44,8 +44,7 @@ public class GameState : MonoBehaviour
         player.SetActive(true);
         spawnerCoordinator.SetActive(true);
         coinSpawner.SetActive(true);
-        gameCam.SetActive(true);
-        startScreenCam.SetActive(false);
+        startScreenCam.GetComponent<StartScreenCam>().StartPlaying();
     }
 
     // Update is called once per frame

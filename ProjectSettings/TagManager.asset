@@ -15,6 +15,7 @@ TagManager:
   - CoinSpinner
   - Explosion
   - ShockwaveEffect
+  - GameTitle
   layers:
   - Default
   - TransparentFX

@@ -15,4 +15,5 @@ public class Tags
     public const string CoinSpinner = "CoinSpinner";
     public const string Explosion = "Explosion";
     public const string ShockwaveEffect = "ShockwaveEffect";
+    public const string GameTitle = "GameTitle";
 }

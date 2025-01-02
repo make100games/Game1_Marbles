@@ -18,4 +18,18 @@ public class RotatingDisc : MonoBehaviour
             yield return null;
         }
     }
+
+    public void StopRotating()
+    {
+        StartCoroutine(SlowDownTillStopped());
+    }
+
+    private IEnumerator SlowDownTillStopped()
+    {
+        while (rotationSpeed > 0)
+        {
+            rotationSpeed -= 0.00025f;
+            yield return null;
+        }
+    }
 }
