@@ -5,6 +5,7 @@ using System;
 public class RotatingDisc : MonoBehaviour
 {
     public float rotationSpeed = 30f;
+    private bool onStoppedInvoked = false;
 
     public event Action OnStoppedRotating;
 
@@ -34,8 +35,9 @@ public class RotatingDisc : MonoBehaviour
             rotationSpeed -= 0.00025f;
             yield return null;
         }
-        if(rotationSpeed <= 0)
+        if(rotationSpeed <= 0 && !onStoppedInvoked)
         {
+            onStoppedInvoked = true;
             OnStoppedRotating?.Invoke();
         }
     }
