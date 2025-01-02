@@ -1,9 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class RotatingDisc : MonoBehaviour
 {
     public float rotationSpeed = 30f;
+
+    public event Action OnStoppedRotating;
 
     void Start()
     {
@@ -31,5 +34,6 @@ public class RotatingDisc : MonoBehaviour
             rotationSpeed -= 0.00025f;
             yield return null;
         }
+        OnStoppedRotating?.Invoke();
     }
 }

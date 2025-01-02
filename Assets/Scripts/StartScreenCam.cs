@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.Image;
+using System;
 
 /// <summary>
 /// The StartScreenCam oscillates from side to side to create a cool looking weave effect
@@ -14,6 +15,8 @@ public class StartScreenCam : MonoBehaviour
     public GameObject gameTitle;
     public GameObject gameCam;
 
+    public event Action OnTitleFullyDisplayed;
+
     private Vector3 startPosition;
 
     void Start()
@@ -21,6 +24,12 @@ public class StartScreenCam : MonoBehaviour
         // Store the initial position of the object
         startPosition = transform.position;
         gameTitle.GetComponent<GameTitle>().OnTitleDismissed += StartScreenCam_OnTitleDismissed;
+        gameTitle.GetComponent<RotatingDisc>().OnStoppedRotating += StartScreenCam_OnStoppedRotating;
+    }
+
+    private void StartScreenCam_OnStoppedRotating()
+    {
+        OnTitleFullyDisplayed?.Invoke();
     }
 
     private void StartScreenCam_OnTitleDismissed()

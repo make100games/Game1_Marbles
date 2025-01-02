@@ -42,11 +42,11 @@ public class GameTitle : MonoBehaviour
     private IEnumerator FoldDown()
     {
         var amountRotated = 0f;
-        var amountToRotate = -0.125f;
+        var amountToRotatePerFrame = -0.075f;
         while(amountRotated > -85f)
         {
-            gameTitleCanvas.transform.Rotate(Vector3.left * amountToRotate, Space.Self);
-            amountRotated += amountToRotate;
+            gameTitleCanvas.transform.Rotate(Vector3.left * amountToRotatePerFrame, Space.Self);
+            amountRotated += amountToRotatePerFrame;
             yield return null;
         }
         foldedDown = true;
@@ -55,12 +55,11 @@ public class GameTitle : MonoBehaviour
     private IEnumerator MoveOutOfSight()
     {
         var amountRotated = 0f;
-        var amountToRotate = 0.025f;
+        var amountToRotatePerFrame = 0.025f;
         while (amountRotated < 45f)
         {
-            transform.Rotate(Vector3.up * amountToRotate, Space.Self);
-            amountRotated += amountToRotate;
-            Debug.Log("Rotated: " + amountRotated);
+            transform.Rotate(Vector3.up * amountToRotatePerFrame, Space.Self);
+            amountRotated += amountToRotatePerFrame;
             yield return null;
         }
         movedOutOfWay = true;

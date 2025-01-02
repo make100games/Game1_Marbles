@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameState : MonoBehaviour
 {
-    private State state = State.StartScreen;
+    private State state = State.Intro;
     private GameInput gameInput;
 
     public GameObject cylinder;
@@ -20,12 +20,20 @@ public class GameState : MonoBehaviour
         gameInput = new GameInput();
         gameInput.Enable();
         gameInput.Game.StartGame.performed += StartGame_performed;
+        startScreenCam.GetComponent<StartScreenCam>().OnTitleFullyDisplayed += GameState_OnTitleFullyDisplayed;
+    }
+
+    private void GameState_OnTitleFullyDisplayed()
+    {
+        state = State.StartScreen;
     }
 
     private void StartGame_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         switch (state)
         {
+            case State.Intro:
+                break;
             case State.StartScreen:
                 StartPlaying();
                 break;
@@ -55,6 +63,7 @@ public class GameState : MonoBehaviour
 
     public enum State
     {
+        Intro,  // While start screen is animating in
         StartScreen,
         Playing,
         HighScoreScreen
