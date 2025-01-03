@@ -16,6 +16,7 @@ public class StartScreenCam : MonoBehaviour
     public GameObject gameCam;
 
     public event Action OnTitleFullyDisplayed;
+    public event Action OnTitleDismissed;
 
     private Vector3 startPosition;
 
@@ -34,8 +35,7 @@ public class StartScreenCam : MonoBehaviour
 
     private void StartScreenCam_OnTitleDismissed()
     {
-        this.gameObject.SetActive(false);
-        this.gameCam.SetActive(true);
+        this.OnTitleDismissed?.Invoke();
     }
 
     void Update()

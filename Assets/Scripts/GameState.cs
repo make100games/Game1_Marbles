@@ -21,6 +21,17 @@ public class GameState : MonoBehaviour
         gameInput.Enable();
         gameInput.Game.StartGame.performed += StartGame_performed;
         startScreenCam.GetComponent<StartScreenCam>().OnTitleFullyDisplayed += GameState_OnTitleFullyDisplayed;
+        startScreenCam.GetComponent<StartScreenCam>().OnTitleDismissed += GameState_OnTitleDismissed;
+    }
+
+    private void GameState_OnTitleDismissed()
+    {
+        // this is when the game really starts
+        this.startScreenCam.SetActive(false);
+        this.gameCam.SetActive(true);
+        spawnerCoordinator.SetActive(true);
+        coinSpawner.SetActive(true);
+        cylinder.GetComponent<Cylinder>().StartAccelerating();
     }
 
     private void GameState_OnTitleFullyDisplayed()
@@ -48,10 +59,7 @@ public class GameState : MonoBehaviour
     private void StartPlaying()
     {
         state = State.Playing;
-        cylinder.GetComponent<Cylinder>().StartAccelerating();
-        player.SetActive(true);
-        spawnerCoordinator.SetActive(true);
-        coinSpawner.SetActive(true);
+        player.SetActive(true); // Activate to prevent pop-in of player
         startScreenCam.GetComponent<StartScreenCam>().StartPlaying();
     }
 
