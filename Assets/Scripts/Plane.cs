@@ -30,8 +30,8 @@ public class Plane : MonoBehaviour
     private float rateOfRoll = 120f;   // Amount to roll in a single frame update ignoring Time.deltaTime
     private float rateOfBarrellRoll = 990.0f; // Amount to barrell roll in a single frame update ignoring Time.deltaTime
     private float amountToPitchInDegrees = 45;  // Amount of degrees to pitch plane back when we hit a ramp
-    private float rateOfUpwardPitch = 0.25f;    // Amount to pitch in a single frame update when pitching up
-    private float rateOfDownwardPitch = 0.0725f;   // Amount to pitch in a single frame update when pitching down
+    private float rateOfUpwardPitch = 90f;    // 0.25 Amount to pitch in a single frame update when pitching up
+    private float rateOfDownwardPitch = 30f;   // 0.0725 Amount to pitch in a single frame update when pitching down
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
@@ -434,20 +434,44 @@ public class Plane : MonoBehaviour
         }
     }
 
-    IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()
+    private IEnumerator PitchUpQuicklyAndThenSlowlyBackDown()
     {
-        // Quickly pitch plane upwards
-        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfUpwardPitch)
+        float totalPitchedUp = 0f;
+
+        // Quickly pitch the plane upwards
+        while (totalPitchedUp < amountToPitchInDegrees)
         {
-            transform.Rotate(Vector3.left, rateOfUpwardPitch, Space.World);
+            // Calculate pitch for this frame based on upward pitch rate
+            float pitchThisFrame = rateOfUpwardPitch * Time.deltaTime;
+
+            // Ensure we don't over-pitch
+            pitchThisFrame = Mathf.Min(pitchThisFrame, amountToPitchInDegrees - totalPitchedUp);
+
+            // Apply the pitch
+            transform.Rotate(Vector3.left, pitchThisFrame, Space.World);
+
+            // Update the total amount pitched up
+            totalPitchedUp += pitchThisFrame;
 
             yield return null;
         }
 
-        // Slowly pitch it back down
-        for (float i = 0f; i < amountToPitchInDegrees; i += rateOfDownwardPitch)
+        float totalPitchedDown = 0f;
+
+        // Slowly pitch the plane back down
+        while (totalPitchedDown < amountToPitchInDegrees)
         {
-            transform.Rotate(Vector3.left, -rateOfDownwardPitch, Space.World);
+            // Calculate pitch for this frame based on downward pitch rate
+            float pitchThisFrame = rateOfDownwardPitch * Time.deltaTime;
+
+            // Ensure we don't over-pitch back down
+            pitchThisFrame = Mathf.Min(pitchThisFrame, amountToPitchInDegrees - totalPitchedDown);
+
+            // Apply the pitch
+            transform.Rotate(Vector3.left, -pitchThisFrame, Space.World);
+
+            // Update the total amount pitched down
+            totalPitchedDown += pitchThisFrame;
 
             yield return null;
         }
