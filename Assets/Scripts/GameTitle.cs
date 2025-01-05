@@ -42,11 +42,13 @@ public class GameTitle : MonoBehaviour
     private IEnumerator FoldDown()
     {
         var amountRotated = 0f;
-        var amountToRotatePerFrame = -0.075f;
-        while(amountRotated > -85f)
+        var rotationSpeed = -75f; // Rotation speed in degrees per second
+        while (amountRotated > -85f)
         {
-            gameTitleCanvas.transform.Rotate(Vector3.left * amountToRotatePerFrame, Space.Self);
-            amountRotated += amountToRotatePerFrame;
+            // Calculate rotation for this frame
+            var rotationThisFrame = rotationSpeed * Time.deltaTime;
+            gameTitleCanvas.transform.Rotate(Vector3.left * rotationThisFrame, Space.Self);
+            amountRotated += rotationThisFrame;
             yield return null;
         }
         foldedDown = true;
@@ -55,11 +57,16 @@ public class GameTitle : MonoBehaviour
     private IEnumerator MoveOutOfSight()
     {
         var amountRotated = 0f;
-        var amountToRotatePerFrame = 0.025f;
+        var rotationSpeed = 25f; // Rotation speed in degrees per second
         while (amountRotated < 45f)
         {
-            transform.Rotate(Vector3.up * amountToRotatePerFrame, Space.Self);
-            amountRotated += amountToRotatePerFrame;
+            // Calculate rotation for this frame
+            var rotationThisFrame = rotationSpeed * Time.deltaTime;
+
+            // Rotate the transform and update the total rotated amount
+            transform.Rotate(Vector3.up * rotationThisFrame, Space.Self);
+            amountRotated += rotationThisFrame;
+
             yield return null;
         }
         movedOutOfWay = true;
