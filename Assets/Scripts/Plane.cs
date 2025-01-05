@@ -27,7 +27,7 @@ public class Plane : MonoBehaviour
     private GameInput gameInput;
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float amountToRollDuringBarellRollInDegrees = 360;  // Amount of degrees to roll to the left or right when doing a barrell roll
-    private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
+    private float rateOfRoll = 120f;   // Amount to roll in a single frame update ignoring Time.deltaTime
     private float rateOfBarrellRoll = 990.0f; // Amount to barrell roll in a single frame update ignoring Time.deltaTime
     private float amountToPitchInDegrees = 45;  // Amount of degrees to pitch plane back when we hit a ramp
     private float rateOfUpwardPitch = 0.25f;    // Amount to pitch in a single frame update when pitching up
@@ -219,21 +219,45 @@ public class Plane : MonoBehaviour
         }
     }
 
-    IEnumerator RollToTheLeft()
+    private IEnumerator RollToTheLeft()
     {
-        for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
+        float totalRolled = 0f; // Tracks the total degrees rolled so far
+
+        while (totalRolled < amountToRollInDegrees)
         {
-            transform.rotation *= Quaternion.AngleAxis(rateOfRoll, Vector3.forward);
-            
+            // Calculate the rotation for this frame based on the roll rate and deltaTime
+            float rotationThisFrame = rateOfRoll * Time.deltaTime;
+
+            // Ensure we don't over-rotate past the target
+            rotationThisFrame = Mathf.Min(rotationThisFrame, amountToRollInDegrees - totalRolled);
+
+            // Apply the rotation
+            transform.rotation *= Quaternion.AngleAxis(rotationThisFrame, Vector3.forward);
+
+            // Update the total amount rolled
+            totalRolled += rotationThisFrame;
+
             yield return null;
         }
     }
 
     IEnumerator RollToTheRight()
     {
-        for (float i = 0f; i < amountToRollInDegrees; i += rateOfRoll)
+        float totalRolled = 0f; // Tracks the total degrees rolled so far
+
+        while (totalRolled < amountToRollInDegrees)
         {
-            transform.rotation *= Quaternion.AngleAxis(-rateOfRoll, Vector3.forward);
+            // Calculate the rotation for this frame based on the roll rate and deltaTime
+            float rotationThisFrame = rateOfRoll * Time.deltaTime;
+
+            // Ensure we don't over-rotate past the target
+            rotationThisFrame = Mathf.Min(rotationThisFrame, amountToRollInDegrees - totalRolled);
+
+            // Apply the rotation
+            transform.rotation *= Quaternion.AngleAxis(-rotationThisFrame, Vector3.forward);
+
+            // Update the total amount rolled
+            totalRolled += rotationThisFrame;
 
             yield return null;
         }
