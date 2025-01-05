@@ -28,7 +28,7 @@ public class Plane : MonoBehaviour
     private float amountToRollInDegrees = 45;   // Amount of degrees to roll to the left or right when flying left/right
     private float amountToRollDuringBarellRollInDegrees = 360;  // Amount of degrees to roll to the left or right when doing a barrell roll
     private float rateOfRoll = 0.25f;   // Amount to roll in a single frame update
-    private float rateOfBarrellRoll = 2.0f; // Amount to barrell roll in a single frame update
+    private float rateOfBarrellRoll = 990.0f; // Amount to barrell roll in a single frame update ignoring Time.deltaTime
     private float amountToPitchInDegrees = 45;  // Amount of degrees to pitch plane back when we hit a ramp
     private float rateOfUpwardPitch = 0.25f;    // Amount to pitch in a single frame update when pitching up
     private float rateOfDownwardPitch = 0.0725f;   // Amount to pitch in a single frame update when pitching down
@@ -102,13 +102,7 @@ public class Plane : MonoBehaviour
 
     private void ApplyBoost()
     {
-        cylinder.GetComponent<Cylinder>().StartBoost();
-        this.cameraShaker.m_AmplitudeGain += 1.15f;
-        lateralForce += 20.0f;
-        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_CameraDistance = 14;
-        virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_ScreenY = 0.45f;
-        boostThrusters.SetActive(true);
-        StartCoroutine(BringBackCamera());
+        // No op as no longer used
     }
 
     private IEnumerator BringBackCamera()
@@ -181,21 +175,45 @@ public class Plane : MonoBehaviour
         movingLeft = true;
     }
 
-    IEnumerator BarrelRollToTheLeft()
+    private IEnumerator BarrelRollToTheLeft()
     {
-        for (float i = 0f; i < amountToRollDuringBarellRollInDegrees; i += rateOfBarrellRoll)
+        float totalRolled = 0f; // Tracks the total degrees rolled so far
+
+        while (totalRolled < amountToRollDuringBarellRollInDegrees)
         {
-            transform.rotation *= Quaternion.AngleAxis(rateOfBarrellRoll, Vector3.forward);
+            // Calculate the rotation for this frame based on the rate and deltaTime
+            float rotationThisFrame = rateOfBarrellRoll * Time.deltaTime;
+
+            // Ensure we don't over-rotate past the target
+            rotationThisFrame = Mathf.Min(rotationThisFrame, amountToRollDuringBarellRollInDegrees - totalRolled);
+
+            // Apply the rotation
+            transform.rotation *= Quaternion.AngleAxis(rotationThisFrame, Vector3.forward);
+
+            // Update the total amount rolled
+            totalRolled += rotationThisFrame;
 
             yield return null;
         }
     }
 
-    IEnumerator BarrelRollToTheRight()
+    private IEnumerator BarrelRollToTheRight()
     {
-        for (float i = 0f; i < amountToRollDuringBarellRollInDegrees; i += rateOfBarrellRoll)
+        float totalRolled = 0f; // Tracks the total degrees rolled so far
+
+        while (totalRolled < amountToRollDuringBarellRollInDegrees)
         {
-            transform.rotation *= Quaternion.AngleAxis(-rateOfBarrellRoll, Vector3.forward);
+            // Calculate the rotation for this frame based on the rate and deltaTime
+            float rotationThisFrame = rateOfBarrellRoll * Time.deltaTime;
+
+            // Ensure we don't over-rotate past the target
+            rotationThisFrame = Mathf.Min(rotationThisFrame, amountToRollDuringBarellRollInDegrees - totalRolled);
+
+            // Apply the rotation
+            transform.rotation *= Quaternion.AngleAxis(-rotationThisFrame, Vector3.forward);
+
+            // Update the total amount rolled
+            totalRolled += rotationThisFrame;
 
             yield return null;
         }
