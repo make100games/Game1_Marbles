@@ -30,12 +30,20 @@ public class RotatingDisc : MonoBehaviour
 
     private IEnumerator SlowDownTillStopped()
     {
+        float decelerationRate = 0.25f; // Deceleration rate in units per second
+
         while (rotationSpeed > 0)
         {
-            rotationSpeed -= 0.00025f;
+            // Reduce rotation speed based on the deceleration rate and deltaTime
+            rotationSpeed -= decelerationRate * Time.deltaTime;
+
+            // Clamp rotationSpeed to ensure it doesn't go below zero
+            rotationSpeed = Mathf.Max(rotationSpeed, 0);
+
             yield return null;
         }
-        if(rotationSpeed <= 0 && !onStoppedInvoked)
+
+        if (rotationSpeed <= 0 && !onStoppedInvoked)
         {
             onStoppedInvoked = true;
             OnStoppedRotating?.Invoke();

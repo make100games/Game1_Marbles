@@ -10,6 +10,7 @@ public class SideToSideSpawner : MonoBehaviour
     public GameObject coinPrefab;
     public GameObject bombPrefab;
     public GameObject spoolPrefab;
+    public float movementSpeed = 30f; // Speed in units per second at which the spawner moves from side to side
     public bool spawnObstacle;
     public float intervalBetweenObjects = 0.25f;   // Amount of seconds between each object spawn
     public float minTimeToSpawn = 1f;
@@ -17,7 +18,6 @@ public class SideToSideSpawner : MonoBehaviour
     public bool randomizeScale = true;  // True if the scale of the spawned objects should be randomized. False if the objects should just be spawned at their true scale
     public bool addSpinToObstacle = true;   // If true, spawned obstacle will have a spin applied
     private float cylinderWidth;
-    private float amountByWhichToMovePerFrame = 0.05f;
     private float cylinderLeftEdge;
     private float cylinderRightEdge;
     private bool spawning = false;   // True if allowed to be spawning. False if currently not spawning
@@ -94,33 +94,39 @@ public class SideToSideSpawner : MonoBehaviour
         spawn = true;
     }
 
-    IEnumerator MoveFromSideToSide()
+    private IEnumerator MoveFromSideToSide()
     {
-        while(true)
+        while (true)
         {
             // Move left
             while (transform.position.x > cylinderLeftEdge)
             {
-                transform.position = new Vector3(transform.position.x - amountByWhichToMovePerFrame, transform.position.y, transform.position.z);
+                // Calculate the movement for this frame
+                float moveAmount = movementSpeed * Time.deltaTime;
 
-                // Make sure spawner does not go beyond bounds of cylinder
-                if (transform.position.x < cylinderLeftEdge)
-                {
-                    transform.position = new Vector3(cylinderLeftEdge, transform.position.y, transform.position.z);
-                }
+                // Update the position, clamping to the cylinder's left edge
+                transform.position = new Vector3(
+                    Mathf.Max(transform.position.x - moveAmount, cylinderLeftEdge),
+                    transform.position.y,
+                    transform.position.z
+                );
+
                 yield return null;
             }
 
             // Move right
             while (transform.position.x < cylinderRightEdge)
             {
-                transform.position = new Vector3(transform.position.x + amountByWhichToMovePerFrame, transform.position.y, transform.position.z);
+                // Calculate the movement for this frame
+                float moveAmount = movementSpeed * Time.deltaTime;
 
-                // Make sure spawner does not go beyond bounds of cylinder
-                if (transform.position.x > cylinderRightEdge)
-                {
-                    transform.position = new Vector3(cylinderRightEdge, transform.position.y, transform.position.z);
-                }
+                // Update the position, clamping to the cylinder's right edge
+                transform.position = new Vector3(
+                    Mathf.Min(transform.position.x + moveAmount, cylinderRightEdge),
+                    transform.position.y,
+                    transform.position.z
+                );
+
                 yield return null;
             }
         }
