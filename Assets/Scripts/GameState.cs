@@ -22,6 +22,12 @@ public class GameState : MonoBehaviour
         gameInput.Game.StartGame.performed += StartGame_performed;
         startScreenCam.GetComponent<StartScreenCam>().OnTitleFullyDisplayed += GameState_OnTitleFullyDisplayed;
         startScreenCam.GetComponent<StartScreenCam>().OnTitleDismissed += GameState_OnTitleDismissed;
+        player.GetComponent<Player>().OnPlayerLost += GameState_OnPlayerLost;
+    }
+
+    private void GameState_OnPlayerLost()
+    {
+        state = State.HighScoreScreen;
     }
 
     private void GameState_OnTitleDismissed()

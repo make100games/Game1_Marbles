@@ -5,6 +5,7 @@ using UnityEngine;
 using Cinemachine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using System;
 
 public class Plane : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Plane : MonoBehaviour
     public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
     public bool Dead { get; private set; } // True if the player has crashed the plane
+
+    public event Action OnPlaneCrashed;
 
     private Renderer objectRenderer;
     private Cylinder cylinderScript;
@@ -456,6 +459,8 @@ public class Plane : MonoBehaviour
 
             // Turn off camera shake
             this.cameraShaker.m_AmplitudeGain = 0;
+
+            this.OnPlaneCrashed?.Invoke();
         }
     }
 
