@@ -19,6 +19,7 @@ public class Plane : MonoBehaviour
     public GameObject coinCollectionStarsParticleEffectObject;
     public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
+    public bool Dead { get; private set; } // True if the player has crashed the plane
 
     private Renderer objectRenderer;
     private Cylinder cylinderScript;
@@ -47,7 +48,6 @@ public class Plane : MonoBehaviour
     private float glidingUpwardForce = 20f;  // When we jump, we want to glide back down and not simply fall down. This represents the slight upward force to counteract gravity a bit
     private int numberOfCoinsCollected = 0;
     private int health = 3; // Plane can take 3 hits before crashing
-    private bool dead = false;  // True if the player has crashed the plane
     private CinemachineCollisionImpulseSource collisionImpulseSource;
     private DepthOfField dizzinessBlur;
     private ParticleSystem coinCollectedStarEffect;
@@ -141,38 +141,56 @@ public class Plane : MonoBehaviour
 
     private void RightBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        rb.AddForce(Vector3.right * barrelRollLateralForce, ForceMode.Force);
-        StartCoroutine(BarrelRollToTheRight());
+        if(!this.Dead)
+        {
+            rb.AddForce(Vector3.right * barrelRollLateralForce, ForceMode.Force);
+            StartCoroutine(BarrelRollToTheRight());
+        }
     }
 
     private void LeftBarrelRoll_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        rb.AddForce(Vector3.left * barrelRollLateralForce, ForceMode.Force);
-        StartCoroutine(BarrelRollToTheLeft());
+        if(!this.Dead)
+        {
+            rb.AddForce(Vector3.left * barrelRollLateralForce, ForceMode.Force);
+            StartCoroutine(BarrelRollToTheLeft());
+        }
     }
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        StartCoroutine(RollToTheLeft());
-        movingRight = false;
+        if(!this.Dead)
+        {
+            StartCoroutine(RollToTheLeft());
+            movingRight = false;
+        }
     }
 
     private void StartMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        StartCoroutine(RollToTheRight());
-        movingRight = true;
+        if (!this.Dead)
+        {
+            StartCoroutine(RollToTheRight());
+            movingRight = true;
+        }
     }
 
     private void StopMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        StartCoroutine(RollToTheRight());
-        movingLeft = false;
+        if(!this.Dead)
+        {
+            StartCoroutine(RollToTheRight());
+            movingLeft = false;
+        }
     }
 
     private void StartMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        StartCoroutine(RollToTheLeft());
-        movingLeft = true;
+        if(!this.Dead)
+        {
+            StartCoroutine(RollToTheLeft());
+            movingLeft = true;
+        }
     }
 
     private IEnumerator BarrelRollToTheLeft()
@@ -267,7 +285,7 @@ public class Plane : MonoBehaviour
     {
         // Increase deceleration force to compensate for increased lateral force
         decelerationForce = defaultDecelerationForce + Mathf.Abs(rb.velocity.x);
-        if(movingRight && !dead)
+        if(movingRight && !Dead)
         {
             if (rb.velocity.x < 0)
             {
@@ -275,7 +293,7 @@ public class Plane : MonoBehaviour
             }
             rb.AddForce(Vector3.right * lateralForce, ForceMode.Acceleration);
         }
-        if(movingLeft && !dead)
+        if(movingLeft && !Dead)
         {
             if(rb.velocity.x > 0)
             {
@@ -295,7 +313,7 @@ public class Plane : MonoBehaviour
                 DecelerateLeftwardMovement();
             }
         }
-        if(rb.useGravity && rb.velocity.y < 0 && !dead)
+        if(rb.useGravity && rb.velocity.y < 0 && !Dead)
         {
             // If we are falling after having taken a jump, apply a slight upward force to simulate a gliding effect
             rb.AddForce(Vector3.up * glidingUpwardForce, ForceMode.Force);
@@ -337,7 +355,7 @@ public class Plane : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!dead)
+        if(!Dead)
         {
             if (other.tag == Tags.Ramp && rb.velocity.y == 0)
             {
@@ -373,16 +391,24 @@ public class Plane : MonoBehaviour
                 // Show a blur effect to simulate dizziness
                 StartCoroutine(ShowDizzinessBlur());
 
-                // Give ship a push back to the track
-                rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
-
                 // Shake camera
                 ShakeCameraDueToImpact();
 
                 // Take some damage
                 TakeDamage();
+                
+                // Give ship a push back to the track
+                rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
             }
-        }   
+        }
+        else
+        {
+            if (other.tag == Tags.Boundary)
+            {
+                // Give ship a push back to the track
+                rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
+            }
+        }
     }
 
     private IEnumerator ShowDizzinessBlur()
@@ -422,9 +448,8 @@ public class Plane : MonoBehaviour
         }
         if (health == 0)
         {
-            dead = true;
+            Dead = true;
             // Game Over
-            // TODO Crash ship
             rb.useGravity = true;
             rb.AddTorque(new Vector3(0.0f, 2.0f, 0.0f), ForceMode.Impulse);
             cylinder.GetComponent<Cylinder>().ComeToAStop();
@@ -480,7 +505,7 @@ public class Plane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!dead)
+        if (!Dead)
         {
             if (rb.velocity.y < 0 && rb.useGravity && rb.position.y < cruisingYPos)
             {
