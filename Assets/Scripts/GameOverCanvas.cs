@@ -30,7 +30,7 @@ public class GameOverCanvas : MonoBehaviour
 
         Color initialScoreTextColor = scoreText.color;
         initialScoreTextColor.a = 0f;
-        scoreText.color = initialGameOverTextColor;
+        scoreText.color = initialScoreTextColor;
 
         Color initialPressAnyTextColor = pressAnyText.color;
         initialPressAnyTextColor.a = 0f;
