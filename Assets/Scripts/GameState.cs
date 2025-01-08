@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour
 {
     private State state = State.Intro;
     private GameInput gameInput;
+    private DepthOfField gameOverBlur;
 
     public GameObject cylinder;
     public GameObject player;
@@ -13,6 +17,8 @@ public class GameState : MonoBehaviour
     public GameObject coinSpawner;
     public GameObject gameCam;
     public GameObject startScreenCam;
+    public GameObject gameOverCanvas;
+    public Volume blurVolume;
 
     // Start is called before the first frame update
     void Start()
@@ -23,11 +29,35 @@ public class GameState : MonoBehaviour
         startScreenCam.GetComponent<StartScreenCam>().OnTitleFullyDisplayed += GameState_OnTitleFullyDisplayed;
         startScreenCam.GetComponent<StartScreenCam>().OnTitleDismissed += GameState_OnTitleDismissed;
         player.GetComponent<Player>().OnPlayerLost += GameState_OnPlayerLost;
+
+        DepthOfField temp;
+        if (blurVolume.profile.TryGet<DepthOfField>(out temp))
+        {
+            gameOverBlur = temp;
+        }
     }
 
     private void GameState_OnPlayerLost()
     {
         state = State.HighScoreScreen;
+        gameOverCanvas.SetActive(true);
+        StartCoroutine(ShowGameOverBlur());
+
+        // TODO set current score/high score
+    }
+
+    private IEnumerator ShowGameOverBlur()
+    {
+        blurVolume.gameObject.SetActive(true);
+        var maxBlur = 300f;
+        var noBlur = 120f;
+        var durationInSeconds = 1;
+        for (var timePassed = 0f; timePassed < durationInSeconds; timePassed += Time.deltaTime)
+        {
+            var factor = timePassed / durationInSeconds;
+            gameOverBlur.focalLength.Override(Mathf.Lerp(noBlur, maxBlur, factor));
+            yield return null;
+        }
     }
 
     private void GameState_OnTitleDismissed()
@@ -58,6 +88,9 @@ public class GameState : MonoBehaviour
                 // No op
                 break;
             case State.HighScoreScreen:
+                gameInput.Disable();
+                // TODO skip the intro screen when restarting scene (e.g. by using global object)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 break;
         }
     }

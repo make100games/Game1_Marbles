@@ -391,14 +391,17 @@ public class Plane : MonoBehaviour
             }
             if(other.tag == Tags.Boundary)
             {
-                // Show a blur effect to simulate dizziness
-                StartCoroutine(ShowDizzinessBlur());
-
                 // Shake camera
                 ShakeCameraDueToImpact();
 
                 // Take some damage
                 TakeDamage();
+
+                if(!Dead)
+                {
+                    // Show a blur effect to simulate dizziness
+                    StartCoroutine(ShowDizzinessBlur());
+                }
                 
                 // Give ship a push back to the track
                 rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
