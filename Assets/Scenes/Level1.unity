@@ -239,6 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28b3aad14e7445139075b4c0d012ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverText: {fileID: 121200621}
+  scoreText: {fileID: 928924239}
   pressAnyText: {fileID: 1394101493}
   fadeDuration: 1
   loopBlinking: 1

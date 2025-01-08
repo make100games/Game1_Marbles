@@ -29,12 +29,18 @@ public class GameState : MonoBehaviour
         startScreenCam.GetComponent<StartScreenCam>().OnTitleFullyDisplayed += GameState_OnTitleFullyDisplayed;
         startScreenCam.GetComponent<StartScreenCam>().OnTitleDismissed += GameState_OnTitleDismissed;
         player.GetComponent<Player>().OnPlayerLost += GameState_OnPlayerLost;
+        gameOverCanvas.GetComponent<GameOverCanvas>().onReadyToPlayAgain += GameState_onReadyToPlayAgain;
 
         DepthOfField temp;
         if (blurVolume.profile.TryGet<DepthOfField>(out temp))
         {
             gameOverBlur = temp;
         }
+    }
+
+    private void GameState_onReadyToPlayAgain()
+    {
+        state = State.HighScoreScreenReadyToPlayAgain;
     }
 
     private void GameState_OnPlayerLost()
@@ -88,6 +94,9 @@ public class GameState : MonoBehaviour
                 // No op
                 break;
             case State.HighScoreScreen:
+                // No op
+                break;
+            case State.HighScoreScreenReadyToPlayAgain:
                 gameInput.Disable();
                 // TODO skip the intro screen when restarting scene (e.g. by using global object)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -113,6 +122,7 @@ public class GameState : MonoBehaviour
         Intro,  // While start screen is animating in
         StartScreen,
         Playing,
-        HighScoreScreen
+        HighScoreScreen,
+        HighScoreScreenReadyToPlayAgain
     }
 }
