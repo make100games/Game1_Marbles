@@ -18,6 +18,7 @@ public class GameState : MonoBehaviour
     public GameObject gameCam;
     public GameObject startScreenCam;
     public GameObject gameOverCanvas;
+    public GameObject scoreKeeper;
     public Volume blurVolume;
 
     // Start is called before the first frame update
@@ -45,11 +46,11 @@ public class GameState : MonoBehaviour
 
     private void GameState_OnPlayerLost()
     {
+        scoreKeeper.GetComponent<ScoreKeeper>().StopPlaying();
         state = State.HighScoreScreen;
         gameOverCanvas.SetActive(true);
+        gameOverCanvas.GetComponent<GameOverCanvas>().ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score);
         StartCoroutine(ShowGameOverBlur());
-
-        // TODO set current score/high score
     }
 
     private IEnumerator ShowGameOverBlur()
@@ -74,6 +75,7 @@ public class GameState : MonoBehaviour
         spawnerCoordinator.SetActive(true);
         coinSpawner.SetActive(true);
         cylinder.GetComponent<Cylinder>().StartAccelerating();
+        scoreKeeper.GetComponent<ScoreKeeper>().StartPlaying();
     }
 
     private void GameState_OnTitleFullyDisplayed()

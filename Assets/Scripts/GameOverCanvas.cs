@@ -15,6 +15,11 @@ public class GameOverCanvas : MonoBehaviour
 
     public event Action onReadyToPlayAgain;
 
+    public void ShowScore(long score)
+    {
+        scoreText.SetText("Your score: " + score);
+    }
+
     private void Start()
     {
         if (gameOverText == null || scoreText == null || pressAnyText == null)
