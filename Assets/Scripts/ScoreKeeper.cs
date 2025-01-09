@@ -7,10 +7,13 @@ using static UnityEngine.Rendering.DebugUI;
 public class ScoreKeeper : MonoBehaviour
 {
     private long score;
+    private int nrOfCoinsCollected;
     private bool playing = false;
     private const string HighScoreKey = "HighScore";
 
     public TMP_Text runningScoreText;
+    public TMP_Text coinsText;
+
     public long Score
     {
         get => score;
@@ -18,6 +21,16 @@ public class ScoreKeeper : MonoBehaviour
         {
             score = value;
             UpdateScoreText();
+        }
+    }
+
+    public int NrOfCoinsCollected
+    {
+        get => nrOfCoinsCollected;
+        set
+        {
+            nrOfCoinsCollected = value;
+            UpdateCoinsText();
         }
     }
 
@@ -41,10 +54,19 @@ public class ScoreKeeper : MonoBehaviour
         }
     }
 
+    private void UpdateCoinsText()
+    {
+        if (coinsText != null)
+        {
+            coinsText.text = "x " + NrOfCoinsCollected.ToString();
+        }
+    }
+
     public void StartPlaying()
     {
         playing = true;
         Score = 0L;
+        NrOfCoinsCollected = 0;
         StartCoroutine(IncrementEveryHalfSecond());
     }
 
@@ -55,18 +77,19 @@ public class ScoreKeeper : MonoBehaviour
     public long StopPlaying()
     {
         playing = false;
-        return UpdateHighScore();
+        var totalScore = Score * NrOfCoinsCollected;
+        return UpdateHighScore(totalScore);
     }
 
-    private long UpdateHighScore()
+    private long UpdateHighScore(long totalScore)
     {
         if (PlayerPrefs.HasKey(HighScoreKey))
         {
             if (long.TryParse(PlayerPrefs.GetString(HighScoreKey), out long loadedScore))
             {
-                if(Score > loadedScore)
+                if(totalScore > loadedScore)
                 {
-                    PlayerPrefs.SetString(HighScoreKey, Score.ToString());
+                    PlayerPrefs.SetString(HighScoreKey, totalScore.ToString());
                     PlayerPrefs.Save();
                 }
                 return loadedScore;
@@ -74,7 +97,7 @@ public class ScoreKeeper : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetString(HighScoreKey, Score.ToString());
+            PlayerPrefs.SetString(HighScoreKey, totalScore.ToString());
             PlayerPrefs.Save();
         }
         return 0L;

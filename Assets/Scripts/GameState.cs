@@ -51,7 +51,8 @@ public class GameState : MonoBehaviour
         var highScore = scoreKeeper.GetComponent<ScoreKeeper>().StopPlaying();
         state = State.HighScoreScreen;
         gameOverCanvas.SetActive(true);
-        gameOverCanvas.GetComponent<GameOverCanvas>().ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, highScore);
+        gameOverCanvas.GetComponent<GameOverCanvas>().
+            ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected, highScore);
         StartCoroutine(ShowGameOverBlur());
     }
 

@@ -9,6 +9,7 @@ using System;
 
 public class Plane : MonoBehaviour
 {
+    public GameObject scoreKeeper;
     public Transform shipSparksTransform;   // Used by the electric sparks particle system so that it follows the ship but does not rotate with the ship. Can be just some transform in the scene (e.g. an empty GameObject)
     public GameObject cylinder; // The cylinder around which the plane is flying. Technically the plane is standing still and the cylinder is spinning but you know what I mean
     public GameObject electricalSparks;  // The sparks which appear when the ship has been hit twice
@@ -370,8 +371,7 @@ public class Plane : MonoBehaviour
             }
             if (other.tag == Tags.Coin)
             {
-                // TODO Collect points
-                this.numberOfCoinsCollected++;
+                this.scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected++;
 
                 // Show particle effect to indicate that coin was collected
                 coinCollectedStarEffect.Play();
