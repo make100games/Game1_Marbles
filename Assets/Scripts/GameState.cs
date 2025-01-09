@@ -17,6 +17,7 @@ public class GameState : MonoBehaviour
     public GameObject coinSpawner;
     public GameObject gameCam;
     public GameObject startScreenCam;
+    public GameObject hud;
     public GameObject gameOverCanvas;
     public GameObject scoreKeeper;
     public Volume blurVolume;
@@ -46,6 +47,7 @@ public class GameState : MonoBehaviour
 
     private void GameState_OnPlayerLost()
     {
+        hud.SetActive(false);
         scoreKeeper.GetComponent<ScoreKeeper>().StopPlaying();
         state = State.HighScoreScreen;
         gameOverCanvas.SetActive(true);
@@ -76,6 +78,7 @@ public class GameState : MonoBehaviour
         coinSpawner.SetActive(true);
         cylinder.GetComponent<Cylinder>().StartAccelerating();
         scoreKeeper.GetComponent<ScoreKeeper>().StartPlaying();
+        hud.SetActive(true);
     }
 
     private void GameState_OnTitleFullyDisplayed()

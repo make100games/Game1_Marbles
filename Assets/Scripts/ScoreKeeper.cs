@@ -1,11 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 public class ScoreKeeper : MonoBehaviour
 {
-    public long Score { get; private set; }
+    public TMP_Text runningScoreText;
+    private long score;
+    public long Score
+    {
+        get => score;
+        private set
+        {
+            score = value;
+            UpdateScoreText();
+        }
+    }
     private bool playing = false;
 
     // Start is called before the first frame update
@@ -18,6 +29,14 @@ public class ScoreKeeper : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void UpdateScoreText()
+    {
+        if (runningScoreText != null)
+        {
+            runningScoreText.text = "Score: " + Score.ToString();
+        }
     }
 
     public void StartPlaying()
