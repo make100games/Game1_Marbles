@@ -15,9 +15,18 @@ public class GameOverCanvas : MonoBehaviour
 
     public event Action onReadyToPlayAgain;
 
-    public void ShowScore(long score)
+    public void ShowScore(long score, long highScore)
     {
-        scoreText.SetText("Your score: " + score);
+        if(score > highScore)
+        {
+            scoreText.SetText("Congratulations!\n" +
+                "You got a new high score!\n" +
+                "New high score: " + score);
+        }
+        else
+        {
+            scoreText.SetText("Your score: " + score + "\n" + "High score: " + highScore);
+        }
     }
 
     private void Start()

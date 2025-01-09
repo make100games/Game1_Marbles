@@ -48,10 +48,10 @@ public class GameState : MonoBehaviour
     private void GameState_OnPlayerLost()
     {
         hud.SetActive(false);
-        scoreKeeper.GetComponent<ScoreKeeper>().StopPlaying();
+        var highScore = scoreKeeper.GetComponent<ScoreKeeper>().StopPlaying();
         state = State.HighScoreScreen;
         gameOverCanvas.SetActive(true);
-        gameOverCanvas.GetComponent<GameOverCanvas>().ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score);
+        gameOverCanvas.GetComponent<GameOverCanvas>().ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, highScore);
         StartCoroutine(ShowGameOverBlur());
     }
 

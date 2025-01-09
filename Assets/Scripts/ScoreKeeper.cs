@@ -6,8 +6,11 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class ScoreKeeper : MonoBehaviour
 {
-    public TMP_Text runningScoreText;
     private long score;
+    private bool playing = false;
+    private const string HighScoreKey = "HighScore";
+
+    public TMP_Text runningScoreText;
     public long Score
     {
         get => score;
@@ -17,7 +20,6 @@ public class ScoreKeeper : MonoBehaviour
             UpdateScoreText();
         }
     }
-    private bool playing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,9 +48,36 @@ public class ScoreKeeper : MonoBehaviour
         StartCoroutine(IncrementEveryHalfSecond());
     }
 
-    public void StopPlaying()
+    /// <summary>
+    /// Stops keeping score and updates the high score if a new high score was achieved.
+    /// </summary>
+    /// <returns>The current high score</returns>
+    public long StopPlaying()
     {
         playing = false;
+        return UpdateHighScore();
+    }
+
+    private long UpdateHighScore()
+    {
+        if (PlayerPrefs.HasKey(HighScoreKey))
+        {
+            if (long.TryParse(PlayerPrefs.GetString(HighScoreKey), out long loadedScore))
+            {
+                if(Score > loadedScore)
+                {
+                    PlayerPrefs.SetString(HighScoreKey, Score.ToString());
+                    PlayerPrefs.Save();
+                }
+                return loadedScore;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString(HighScoreKey, Score.ToString());
+            PlayerPrefs.Save();
+        }
+        return 0L;
     }
 
     private IEnumerator IncrementEveryHalfSecond()
