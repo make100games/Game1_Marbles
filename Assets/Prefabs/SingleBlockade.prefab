@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6043474954038104004}
   - component: {fileID: 8472573757126777067}
   m_Layer: 13
-  m_Name: Blockade2
+  m_Name: SingleBlockade
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

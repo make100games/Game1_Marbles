@@ -18,6 +18,31 @@ public interface Spawner
     void Update();
 }
 
+public class BarrierSpawner : Spawner
+{
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    {
+        gameObject.transform.position = hit.point;
+        gameObject.transform.up = hit.normal;
+
+        // Get the ramp to face the right direction. Pretty hacky, I know.
+        gameObject.transform.Rotate(new Vector3(90, 90, 0));
+        gameObject.transform.Rotate(new Vector3(0, 180, 0));
+        gameObject.transform.Translate(Vector3.up * ((gameObject.GetComponent<MeshRenderer>().bounds.size.y / 2) - 2f), Space.World);   // Nudging it down a smidge so that it does not hover above the ground
+        gameObject.transform.parent = parentObject.transform;
+    }
+
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void Update()
+    {
+        // No op
+    }
+}
+
 public class CoinSpawner : Spawner
 {
     public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
