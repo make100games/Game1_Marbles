@@ -13,6 +13,7 @@ public class GameState : MonoBehaviour
 
     public GameObject cylinder;
     public GameObject player;
+    public GameObject barrierSpawnerSystem;
     public GameObject spawnerCoordinator;
     public GameObject coinSpawner;
     public GameObject gameCam;
@@ -76,6 +77,7 @@ public class GameState : MonoBehaviour
         this.startScreenCam.SetActive(false);
         this.gameCam.SetActive(true);
         spawnerCoordinator.SetActive(true);
+        barrierSpawnerSystem.SetActive(true);
         coinSpawner.SetActive(true);
         cylinder.GetComponent<Cylinder>().StartAccelerating();
         scoreKeeper.GetComponent<ScoreKeeper>().StartPlaying();

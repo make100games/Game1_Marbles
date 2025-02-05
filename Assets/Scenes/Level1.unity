@@ -12903,7 +12903,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &803130289
 Transform:
   m_ObjectHideFlags: 0
@@ -15628,6 +15628,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cylinder: {fileID: 559488191}
   player: {fileID: 1984726909}
+  barrierSpawnerSystem: {fileID: 803130288}
   spawnerCoordinator: {fileID: 2024189311}
   coinSpawner: {fileID: 527137349}
   gameCam: {fileID: 789275263}
