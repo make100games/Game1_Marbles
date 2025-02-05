@@ -31,13 +31,13 @@ public class LaneBarrierSpawnerSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Invoke("SpawnBarriers", UnityEngine.Random.Range(minTimeToSpawn, maxTimeToSpawn));
     }
 
     // Update is called once per frame
     void Update()
     {
-        Invoke("SpawnBarriers", UnityEngine.Random.Range(minTimeToSpawn, maxTimeToSpawn));
+        
     }
 
     private void SpawnBarriers()
@@ -63,6 +63,8 @@ public class LaneBarrierSpawnerSystem : MonoBehaviour
             }
             index++;
         }
+
+        Invoke("SpawnBarriers", UnityEngine.Random.Range(minTimeToSpawn, maxTimeToSpawn));
     }
 
     private GameObject BarrierPrefabFor(LaneBarrierType barrierType)

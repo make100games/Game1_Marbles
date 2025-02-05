@@ -24,7 +24,7 @@ public class BarrierSpawner : Spawner
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;
-        gameObject.transform.Translate(Vector3.up * ((gameObject.GetComponent<BoxCollider>().bounds.size.y / 2) - 1), Space.World);   // Nudging it down a smidge so that it does not hover above the ground
+        gameObject.transform.Translate(Vector3.up * ((gameObject.GetComponent<BoxCollider>().bounds.size.y / 2) + 1), Space.Self);   // Nudging it down a smidge so that it does not hover above the ground
         gameObject.transform.parent = parentObject.transform;
     }
 
