@@ -6,15 +6,19 @@ using UnityEngine;
 public class SideToSideSpawner : MonoBehaviour
 {
     public GameObject cylinder;
-    public GameObject obstaclePrefab;
+    public GameObject cratePrefab;
+    public GameObject barrierPrefab;
+    public GameObject spoolPrefab;
+    public GameObject barrelPrefab;
     public GameObject coinPrefab;
     public GameObject bombPrefab;
-    public GameObject spoolPrefab;
+    public bool randomizeObstacles = false;
     public float movementSpeed = 30f; // Speed in units per second at which the spawner moves from side to side
-    public bool spawnObstacle;
     public float intervalBetweenObjects = 0.25f;   // Amount of seconds between each object spawn
-    public float minTimeToSpawn = 1f;
-    public float maxTimeToSpawn = 3.5f;
+    public float minTimeToStartSpawning = 3f;
+    public float maxTimeToStartSpawning = 6f;
+    public float minTimeToStopSpawning = 0.75f;
+    public float maxTimeToStopSpawning = 1.5f;
     public bool randomizeScale = true;  // True if the scale of the spawned objects should be randomized. False if the objects should just be spawned at their true scale
     public bool addSpinToObstacle = true;   // If true, spawned obstacle will have a spin applied
     private float cylinderWidth;
@@ -27,6 +31,7 @@ public class SideToSideSpawner : MonoBehaviour
     private Spawner obstacleSpawner = new ObstacleSpawner();
     private Spawner bombSpawner = new BombSpawner();
     private Spawner spoolSpawner = new SpoolSpawner();
+    private Spawner barrelSpawner = new BarrelSpawner();
 
     // Start is called before the first frame update
     void Start()
@@ -38,30 +43,32 @@ public class SideToSideSpawner : MonoBehaviour
         cylinderRightEdge = cylinder.transform.position.x + (cylinderWidth / 2);
 
         StartCoroutine(MoveFromSideToSide());
+
+        Invoke("StartSpawning", Random.Range(minTimeToStartSpawning, maxTimeToStartSpawning));
     }
 
     // Update is called once per frame
     void Update()
     {
-        // This is pretty gross but can't think of a better way right now. It's late
-        if(toggle)
-        {
-            toggle = false;
-            Invoke("ToggleSpawning", Random.Range(minTimeToSpawn, maxTimeToSpawn));
-        }
-        
-        if(spawning && spawn)
+        if (spawning && spawn)
         {
             spawn = false;
             Invoke("SpawnObject", intervalBetweenObjects);
         }
+
         bombSpawner.Update();
     }
 
-    void ToggleSpawning()
+    void StopSpawning()
     {
-        spawning = !spawning;
-        toggle = true;
+        spawning = false;
+        Invoke("StartSpawning", Random.Range(minTimeToStartSpawning, maxTimeToStartSpawning));
+    }
+
+    void StartSpawning()
+    {
+        spawning = true;
+        Invoke("StopSpawning", Random.Range(minTimeToStopSpawning, maxTimeToStopSpawning));
     }
 
     void SpawnObject()
@@ -70,25 +77,74 @@ public class SideToSideSpawner : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity) && hit.collider.CompareTag(Tags.Ground))
         {
-            if(spawnObstacle && obstaclePrefab != null)
+            if(randomizeObstacles)
             {
-                var obstacle = Instantiate(obstaclePrefab);
-                obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                var randomValue = Random.Range(0, 4);
+                if(randomValue == 0)
+                {
+                    if(cratePrefab != null)
+                    {
+                        var obstacle = Instantiate(cratePrefab);
+                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                    }
+                }
+                else if(randomValue == 1)
+                {
+                    if(barrierPrefab != null)
+                    {
+                        var obstacle = Instantiate(barrierPrefab);
+                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, false, addSpinToObstacle);
+                    }
+                }
+                else if(randomValue == 2)
+                {
+                    if(spoolPrefab != null)
+                    {
+                        var obstacle = Instantiate(spoolPrefab);
+                        spoolSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                    }
+                }
+                else if(randomValue == 3)
+                {
+                    if(barrelPrefab != null)
+                    {
+                        var obstacle = Instantiate(barrelPrefab);
+                        barrelSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                    }
+                }
             }
-            else if(coinPrefab != null)
+            else
             {
-                var coin = Instantiate(coinPrefab);
-                coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
-            }
-            else if(bombPrefab != null)
-            {
-                var bomb = Instantiate(bombPrefab);
-                bombSpawner.SpawnObject(cylinder, transform.position, hit, bomb, false, true);
-            }
-            else if(spoolPrefab != null)
-            {
-                var spool = Instantiate(spoolPrefab);
-                spoolSpawner.SpawnObject(cylinder, transform.position, hit, spool, false, true);
+                if (cratePrefab != null)
+                {
+                    var obstacle = Instantiate(cratePrefab);
+                    obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                }
+                else if (coinPrefab != null)
+                {
+                    var coin = Instantiate(coinPrefab);
+                    coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
+                }
+                else if (bombPrefab != null)
+                {
+                    var bomb = Instantiate(bombPrefab);
+                    bombSpawner.SpawnObject(cylinder, transform.position, hit, bomb, false, true);
+                }
+                else if (spoolPrefab != null)
+                {
+                    var spool = Instantiate(spoolPrefab);
+                    spoolSpawner.SpawnObject(cylinder, transform.position, hit, spool, false, true);
+                }
+                else if(barrierPrefab != null)
+                {
+                    var obstacle = Instantiate(barrierPrefab);
+                    obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                }
+                else if (barrelPrefab != null)
+                {
+                    var obstacle = Instantiate(barrelPrefab);
+                    barrelSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, randomizeScale, addSpinToObstacle);
+                }
             }
         }
         spawn = true;

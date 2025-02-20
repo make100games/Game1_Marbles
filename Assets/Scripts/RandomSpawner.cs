@@ -8,13 +8,18 @@ public class RandomSpawner : MonoBehaviour
 {
     public GameObject cylinder;
     public GameObject rampPrefab;
-    public GameObject obstaclePrefab;
-    public GameObject coinPrefab;
+    public GameObject cratePrefab;
+    public GameObject roadClosedPrefab;
     public GameObject spoolPrefab;
+    public GameObject barrelPrefab;
+    public GameObject bombPrefab;
+    public bool spawnGroups = true;    // If true, it will spawn multiple objects at once
     private float cylinderWidth;
     private Spawner coinSpawner = new CoinSpawner();
-    private Spawner obstacleSpawner = new ObstacleSpawner();
     private Spawner rampSpawner = new RampSpawner();
+    private Spawner obstacleSpawner = new ObstacleSpawner();
+    private Spawner barrelSpawner = new BarrelSpawner();
+    private Spawner bombSpawner = new BombSpawner();
     private Spawner spoolSpawner = new SpoolSpawner();
 
     private bool spawn = true;
@@ -53,49 +58,63 @@ public class RandomSpawner : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity) && hit.collider.CompareTag(Tags.Ground))
         {
-            var randomValue = Random.Range(1, 10);
-            if(randomValue < 3)
+            if(spawnGroups)
+            {
+                var numberOfObstacles = Random.Range(2, 4);
+                for (int i = 0; i < numberOfObstacles; i++)
+                {
+                    var random = Random.Range(0, 5);
+                    if (random == 0)
+                    {
+                        if (cratePrefab != null)
+                        {
+                            var obstacle = Instantiate(cratePrefab);
+                            obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true, true, true);
+                        }
+                    }
+                    else if (random == 1)
+                    {
+                        if (spoolPrefab != null)
+                        {
+                            var obstacle = Instantiate(spoolPrefab);
+                            spoolSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true, true, true);
+                        }
+                    }
+                    else if (random == 2)
+                    {
+                        if (barrelPrefab != null)
+                        {
+                            var obstacle = Instantiate(barrelPrefab);
+                            barrelSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true, true, true);
+                        }
+                    }
+                    else if (random == 3)
+                    {
+                        if (roadClosedPrefab != null)
+                        {
+                            var obstacle = Instantiate(roadClosedPrefab);
+                            obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, false, true, true);
+                        }
+                    }
+                    else if (random == 4)
+                    {
+                        if (bombPrefab != null)
+                        {
+                            var obstacle = Instantiate(bombPrefab);
+                            bombSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, false, true, true);
+                        }
+                    }
+                }
+            }
+            else
             {
                 if(rampPrefab != null)
                 {
                     var ramp = Instantiate(rampPrefab);
                     rampSpawner.SpawnObject(cylinder, transform.position, hit, ramp);
                 }
-                
-            }
-            else if(randomValue < 5)
-            {
-                if(obstaclePrefab != null)
-                {
-                    var numberOfObstacles = Random.Range(2, 4);
-                    for (int i = 0; i < numberOfObstacles; i++)
-                    {
-                        var obstacle = Instantiate(obstaclePrefab);
-                        obstacleSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true);
-                    }
-                }
-            }
-            else if(randomValue < 7)
-            {
-                if (spoolPrefab != null)
-                {
-                    var numberOfObstacles = Random.Range(2, 4);
-                    for (int i = 0; i < numberOfObstacles; i++)
-                    {
-                        var obstacle = Instantiate(spoolPrefab);
-                        spoolSpawner.SpawnObject(cylinder, transform.position, hit, obstacle, true);
-                    }
-                }
-            }
-            else
-            {
-                if(coinPrefab != null)
-                {
-                    var coin = Instantiate(coinPrefab);
-                    coinSpawner.SpawnObject(cylinder, transform.position, hit, coin);
-                }
             }
         }
         spawn = true;
     }
-}
+ }

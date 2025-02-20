@@ -11,7 +11,7 @@ public interface Spawner
     /// <param name="hit">The position on the parent object where to spawn the object (only used if object should be spawned on surface)</param>
     /// <param name="gameObject">The object to spawn</param>
     /// <param name="randomizeScale">True if the scale of the object to be spawned should be randomized a bit</param>
-	void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true);
+	void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false);
 
     void Initialize();
 
@@ -20,7 +20,7 @@ public interface Spawner
 
 public class BarrierSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;
@@ -41,7 +41,7 @@ public class BarrierSpawner : Spawner
 
 public class CoinSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;
@@ -65,7 +65,7 @@ public class CoinSpawner : Spawner
 
 public class ObstacleSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         // Give it some randomized scale
         if(randomizeScale)
@@ -76,7 +76,6 @@ public class ObstacleSpawner : Spawner
         gameObject.transform.position = sourcePosition;
         gameObject.transform.up = hit.normal;
         gameObject.transform.parent = parentObject.transform;
-        gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
 
         // Give the obstacle a bit of a spin
         if (addSpin)
@@ -100,6 +99,32 @@ public class ObstacleSpawner : Spawner
             }
             gameObject.GetComponent<Rigidbody>().AddTorque(spinDirection * 5f, ForceMode.Impulse);
         }
+        if (addPush)
+        {
+            var randomForce = Random.Range(20f, 30f);
+            gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * randomForce, ForceMode.Impulse);
+        }
+    }
+
+    public void Initialize()
+    {
+        // No op
+    }
+
+    public void Update()
+    {
+        // No op
+    }
+}
+
+public class BarrelSpawner : Spawner
+{
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
+    {
+        gameObject.transform.position = sourcePosition;
+        gameObject.transform.up = hit.normal;
+        gameObject.transform.parent = parentObject.transform;
+        gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
     }
 
     public void Initialize()
@@ -115,7 +140,7 @@ public class ObstacleSpawner : Spawner
 
 public class RampSpawner : Spawner
 {
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         gameObject.transform.position = hit.point;
         gameObject.transform.up = hit.normal;
@@ -145,7 +170,7 @@ public class SpoolSpawner : Spawner
         // No op
     }
 
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         gameObject.transform.position = sourcePosition;
         gameObject.transform.parent = parentObject.transform;
@@ -171,7 +196,7 @@ public class BombSpawner : Spawner
     private float timeTillDetonationCeiling = 3f;
     private float creationTime;
 
-    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true)
+    public void SpawnObject(GameObject parentObject, Vector3 sourcePosition, RaycastHit hit, GameObject gameObject, bool randomizeScale = false, bool addSpin = true, bool addPush = false)
     {
         gameObject.transform.position = sourcePosition;
         gameObject.transform.up = hit.normal;
