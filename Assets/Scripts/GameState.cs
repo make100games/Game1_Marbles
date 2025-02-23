@@ -17,6 +17,8 @@ public class GameState : MonoBehaviour
     public GameObject barrierSpawnerSystem;
     public GameObject spawnerCoordinator;
     public GameObject coinSpawner;
+    public GameObject detonator1;
+    public GameObject detonator2;
     public GameObject gameCam;
     public GameObject startScreenCam;
     public GameObject hud;
@@ -78,7 +80,8 @@ public class GameState : MonoBehaviour
         this.startScreenCam.SetActive(false);
         this.gameCam.SetActive(true);
         spawnerCoordinator.SetActive(true);
-        //barrierSpawnerSystem.SetActive(true);
+        detonator1.SetActive(true);
+        detonator2.SetActive(true);
         everythingSpawner.SetActive(true);
         coinSpawner.SetActive(true);
         cylinder.GetComponent<Cylinder>().StartAccelerating();

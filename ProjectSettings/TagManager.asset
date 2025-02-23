@@ -16,6 +16,7 @@ TagManager:
   - Explosion
   - ShockwaveEffect
   - GameTitle
+  - Detonator
   layers:
   - Default
   - TransparentFX

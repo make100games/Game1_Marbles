@@ -202,7 +202,6 @@ public class BombSpawner : Spawner
         gameObject.transform.up = hit.normal;
         gameObject.transform.parent = parentObject.transform;
         gameObject.transform.Rotate(Vector3.up, 90, Space.Self);
-        gameObject.GetComponent<Bomb>().timeTillDetonation = Random.Range(timeTillDetonationFloor, timeTillDetonationCeiling);
 
         // Give the obstacle a bit of a spin
         if (addSpin)

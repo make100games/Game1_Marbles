@@ -8,12 +8,12 @@ public class Bomb : Spawnable
     private GameObject shockwaveEffect;
     public GameObject explosion;    // The physical explosion that grows and pushes other objects away (more like the shockwave, I guess)
     public GameObject explosionEffect;  // The visual explosion effect
-    public float timeTillDetonation = 3f;
     private GameObject mainCamera;
     private Rigidbody rb;
     private Renderer renderer;
     private GameObject explosionInstance;
     private GameObject explosionEffectInstance;
+    private int ttl;    // Is decreased each time it hits a detonator trigger. Once it reaches 0, the bomb explodes.
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class Bomb : Spawnable
         mainCamera = GameObject.FindGameObjectWithTag(Tags.MainCamera);
         rb = GetComponent<Rigidbody>();
         renderer = GetComponent<Renderer>();
-        Invoke("Explode", timeTillDetonation);
+        ttl = Random.Range(1, 3);
     }
 
     private void FixedUpdate()
@@ -40,6 +40,19 @@ public class Bomb : Spawnable
         if(explosionEffectInstance != null)
         {
             explosionEffectInstance.transform.position = this.transform.position;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == Tags.Detonator)
+        {
+            Debug.Log("Bomb entered a detonator!");
+            ttl--;
+            if(ttl == 0)
+            {
+                Explode();
+            }
         }
     }
 
