@@ -14,6 +14,7 @@ public class SideToSideSpawner : MonoBehaviour
     public GameObject bombPrefab;
     public bool randomizeObstacles = false;
     public float movementSpeed = 30f; // Speed in units per second at which the spawner moves from side to side
+    public float initialTimeToStartSpawning = 3f;
     public float intervalBetweenObjects = 0.25f;   // Amount of seconds between each object spawn
     public float minTimeToStartSpawning = 3f;
     public float maxTimeToStartSpawning = 6f;
@@ -44,7 +45,7 @@ public class SideToSideSpawner : MonoBehaviour
 
         StartCoroutine(MoveFromSideToSide());
 
-        Invoke("StartSpawning", Random.Range(minTimeToStartSpawning, maxTimeToStartSpawning));
+        Invoke("StartSpawning", initialTimeToStartSpawning);
     }
 
     // Update is called once per frame

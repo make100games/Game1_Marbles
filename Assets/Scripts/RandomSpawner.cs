@@ -13,6 +13,8 @@ public class RandomSpawner : MonoBehaviour
     public GameObject spoolPrefab;
     public GameObject barrelPrefab;
     public GameObject bombPrefab;
+    public float minTimeBetweenSpawns = 0.25f;
+    public float maxTimeBetweenSpawns = 1f;
     public bool spawnGroups = true;    // If true, it will spawn multiple objects at once
     private float cylinderWidth;
     private Spawner coinSpawner = new CoinSpawner();
@@ -38,7 +40,7 @@ public class RandomSpawner : MonoBehaviour
         if (spawn)
         {
             spawn = false;
-            Invoke("SpawnObject", Random.Range(0.25f, 1f));
+            Invoke("SpawnObject", Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns));
         }
     }
 

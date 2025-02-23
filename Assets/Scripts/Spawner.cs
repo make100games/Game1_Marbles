@@ -101,7 +101,7 @@ public class ObstacleSpawner : Spawner
         }
         if (addPush)
         {
-            var randomForce = Random.Range(20f, 30f);
+            var randomForce = Random.Range(15f, 25f);
             gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * randomForce, ForceMode.Impulse);
         }
     }

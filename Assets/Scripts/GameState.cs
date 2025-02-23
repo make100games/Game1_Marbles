@@ -25,6 +25,8 @@ public class GameState : MonoBehaviour
     public GameObject gameOverCanvas;
     public GameObject scoreKeeper;
     public Volume blurVolume;
+    public float timeAfterWhichToStartSpawning = 1.5f;  // Time in seconds after which we start spawning basic obstacles. Coins will start spawning immediately.
+    public float timeAfterWhichToStartSpawnerCoordinator = 3.5f;    // Time after which to start the waves of spawners
 
     // Start is called before the first frame update
     void Start()
@@ -79,14 +81,24 @@ public class GameState : MonoBehaviour
         // this is when the game really starts
         this.startScreenCam.SetActive(false);
         this.gameCam.SetActive(true);
-        spawnerCoordinator.SetActive(true);
         detonator1.SetActive(true);
         detonator2.SetActive(true);
-        everythingSpawner.SetActive(true);
         coinSpawner.SetActive(true);
         cylinder.GetComponent<Cylinder>().StartAccelerating();
         scoreKeeper.GetComponent<ScoreKeeper>().StartPlaying();
         hud.SetActive(true);
+        Invoke("StartSpawningBasicObjects", timeAfterWhichToStartSpawning);
+        Invoke("StartSpawningWavesOfObstacles", timeAfterWhichToStartSpawnerCoordinator);
+    }
+
+    private void StartSpawningBasicObjects()
+    {
+        everythingSpawner.SetActive(true);
+    }
+
+    private void StartSpawningWavesOfObstacles()
+    {
+        spawnerCoordinator.SetActive(true);
     }
 
     private void GameState_OnTitleFullyDisplayed()
