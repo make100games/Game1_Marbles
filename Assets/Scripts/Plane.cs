@@ -522,9 +522,9 @@ public class Plane : MonoBehaviour
             lateralForce += Cylinder.accelerationFactor;
 
             // Slowly start to add some camera shake as we speed up to increase that sense of speed
-            var lowestShakingSpeedThreshold = 47;
-            var middleShakingSpeedThreshold = 48;
-            var highestShakingSpeedThreshold = 49;  // Point after which camera shake is no longer increased any further
+            var lowestShakingSpeedThreshold = 55;   // Originally 47
+            var middleShakingSpeedThreshold = 56;   // Originally 48
+            var highestShakingSpeedThreshold = 57;  // Originally 49. Point after which camera shake is no longer increased any further
             if(Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > lowestShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < middleShakingSpeedThreshold)
             {
                 if(this.cameraShaker.m_AmplitudeGain == 0)
