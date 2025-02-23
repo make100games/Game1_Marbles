@@ -8,7 +8,7 @@ public class Cylinder : MonoBehaviour
     private const float deccelerationFactorWhenPlaneCrashed = 0.0075f; // Amount by which to decrease rotation once the player has crashed
     private bool boostActive = false;
     private float boostFactor = 50f; // Amount by which to increase speed when boosting
-    private float RotationSpeed { get; set; } = -40f;   // The more negative the value, the faster the cylinder rotates
+    private float RotationSpeed { get; set; } = -50f;   // Originally at -40 The more negative the value, the faster the cylinder rotates
     private bool isAccelerating = false;
 
     public float RotationSpeedIgnoringBoost

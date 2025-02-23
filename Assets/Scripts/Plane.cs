@@ -40,8 +40,8 @@ public class Plane : MonoBehaviour
     private Rigidbody rb;
     private bool movingLeft = false;
     private bool movingRight = false;
-    private float compensatingLateralForce = 25f;   // Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
-    private float lateralForce = 33;    // Force to apply when moving left or right
+    private float compensatingLateralForce = 35f;   // Originally 25. Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
+    private float lateralForce = 43;    // Originally 33. Force to apply when moving left or right
     private float barrelRollLateralForce = 950f; // Force to apply when doing a barrel roll
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private const float defaultDecelerationForce = 20f;     // Base force at which to decelerate lateral movement
