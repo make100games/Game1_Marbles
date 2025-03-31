@@ -2,32 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public class GameTitle : MonoBehaviour
 {
-    private bool foldedDown = false;
-    private bool movedOutOfWay = false;
+    public float timeAfterWhichToShowTitle = 4f;
+    public float fadeInDuration = 3f;
+    public float fadeOutDuration = 1.5f;
     public GameObject gameTitleCanvas;
+    public Image titleText;
 
+    public event Action OnTitleAppeared;
     public event Action OnTitleDismissed;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Invoke("ShowTitle", timeAfterWhichToShowTitle);
+    }
+
+    void ShowTitle()
+    {
+        titleText.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        Invoke("TitleFullyShown", (fadeInDuration * 2));  // Sadly no callback for when the tween is done. Pretty ugly but hey, whatcha gonna do
+    }
+
+    void TitleFullyShown()
+    {
+        OnTitleAppeared?.Invoke();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(foldedDown && movedOutOfWay)
-        {
-            // make sure we only invoke the callback once
-            foldedDown = false;
-            movedOutOfWay = false;
-
-            OnTitleDismissed?.Invoke();
-        }
+        
     }
 
     /// <summary>
@@ -35,40 +44,12 @@ public class GameTitle : MonoBehaviour
     /// </summary>
     public void Dismiss()
     {
-        StartCoroutine(FoldDown());
-        StartCoroutine(MoveOutOfSight());
+        titleText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        Invoke("TitleHidden", (fadeOutDuration) * 2);
     }
 
-    private IEnumerator FoldDown()
+    void TitleHidden()
     {
-        var amountRotated = 0f;
-        var rotationSpeed = -75f; // Rotation speed in degrees per second
-        while (amountRotated > -85f)
-        {
-            // Calculate rotation for this frame
-            var rotationThisFrame = rotationSpeed * Time.deltaTime;
-            gameTitleCanvas.transform.Rotate(Vector3.left * rotationThisFrame, Space.Self);
-            amountRotated += rotationThisFrame;
-            yield return null;
-        }
-        foldedDown = true;
-    }
-
-    private IEnumerator MoveOutOfSight()
-    {
-        var amountRotated = 0f;
-        var rotationSpeed = 25f; // Rotation speed in degrees per second
-        while (amountRotated < 45f)
-        {
-            // Calculate rotation for this frame
-            var rotationThisFrame = rotationSpeed * Time.deltaTime;
-
-            // Rotate the transform and update the total rotated amount
-            transform.Rotate(Vector3.up * rotationThisFrame, Space.Self);
-            amountRotated += rotationThisFrame;
-
-            yield return null;
-        }
-        movedOutOfWay = true;
+        OnTitleDismissed?.Invoke();
     }
 }

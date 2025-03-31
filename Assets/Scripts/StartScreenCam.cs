@@ -24,11 +24,11 @@ public class StartScreenCam : MonoBehaviour
     {
         // Store the initial position of the object
         startPosition = transform.position;
+        gameTitle.GetComponent<GameTitle>().OnTitleAppeared += StartScreenCam_OnTitleAppeared;
         gameTitle.GetComponent<GameTitle>().OnTitleDismissed += StartScreenCam_OnTitleDismissed;
-        gameTitle.GetComponent<RotatingDisc>().OnStoppedRotating += StartScreenCam_OnStoppedRotating;
     }
 
-    private void StartScreenCam_OnStoppedRotating()
+    private void StartScreenCam_OnTitleAppeared()
     {
         OnTitleFullyDisplayed?.Invoke();
     }
