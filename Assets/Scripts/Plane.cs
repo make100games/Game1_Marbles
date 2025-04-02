@@ -58,6 +58,8 @@ public class Plane : MonoBehaviour
     private ParticleSystem coinCollectedBlobEffect;
     private ParticleSystem coinCollectedLargeEffect;
     private bool boostActive = false;
+    private bool justBeenHit = false;   // True if ship has just hit an obstacle. Gives the player a few seconds of invincibility
+    private float timeInvincibleAfterCollision = 2f;    // How long the ship is invincible after a collision (prevents player from dying by hitting two obstacles that are right next to each other)
 
     // Start is called before the first frame update
     void Start()
@@ -381,7 +383,7 @@ public class Plane : MonoBehaviour
 
                 Destroy(other.gameObject);
             }
-            if (other.tag == Tags.Obstacle && !boostActive)
+            if (other.tag == Tags.Obstacle && !boostActive && !justBeenHit)
             {
                 // Shake camera
                 ShakeCameraDueToImpact();
@@ -391,11 +393,17 @@ public class Plane : MonoBehaviour
             }
             if(other.tag == Tags.Boundary)
             {
-                // Shake camera
-                ShakeCameraDueToImpact();
+                // Since we still want the ship to be pushed back to the track when hitting the boundary even if it has just been hit
+                // we do this check in here. This makes sure the ship doesn't take any damage if it has just been hit and crashed into the
+                // boundary but still ensures the ship doesn't just pass through
+                if(!justBeenHit)
+                {
+                    // Shake camera
+                    ShakeCameraDueToImpact();
 
-                // Take some damage
-                TakeDamage();
+                    // Take some damage
+                    TakeDamage();
+                }
                 
                 // Give ship a push back to the track
                 rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
@@ -435,18 +443,11 @@ public class Plane : MonoBehaviour
     private void TakeDamage()
     {
         health--;
-        if (health == 2)
+        if(health >= 1)
         {
-            lightSmoke.SetActive(true);
+            MakePlaneTemporarilyInvincible(health);
         }
-        if (health == 1)
-        {
-            // Show smoke and repeatedly show some sparks. Also, make the ship flash red
-            moreSmoke.SetActive(true);
-            electricalSparks.SetActive(true);
-            objectRenderer.material.SetInt("_IsFlashing", 1);
-        }
-        if (health == 0)
+        else if (health == 0)
         {
             Dead = true;
             // Game Over
@@ -458,6 +459,44 @@ public class Plane : MonoBehaviour
             this.cameraShaker.m_AmplitudeGain = 0;
 
             this.OnPlaneCrashed?.Invoke();
+        }
+    }
+
+    private void MakePlaneTemporarilyInvincible(int health)
+    {
+        justBeenHit = true;
+        objectRenderer.material.SetInt("_IsFlashing", 1);
+        objectRenderer.material.SetFloat("_Speed", 5f);
+        objectRenderer.material.SetColor("_Color", Color.cyan);
+
+        StartCoroutine(ShowEffectsOfDamageAfterDelay(timeInvincibleAfterCollision, health));
+    }
+
+    /// <summary>
+    /// Shows the effects of the damage taken after a delay.
+    /// </summary>
+    /// <param name="delay">Delay in seconds after which to show the effects of the damage</param>
+    /// <param name="health">Current health after damage was taken. Determines how the current level of damage is visualized</param>
+    /// <returns>Irrelephant. Needs to be started in a coroutine so that it can do its thing after a delay</returns>
+    private IEnumerator ShowEffectsOfDamageAfterDelay(float delay, int health)
+    {
+        yield return new WaitForSeconds(delay);
+
+        justBeenHit = false;
+        objectRenderer.material.SetInt("_IsFlashing", 0);   // Stop the flashing effect that indicates ship is temporarily invincible after collision
+
+        if (health == 2)
+        {
+            lightSmoke.SetActive(true);
+        }
+        if (health == 1)
+        {
+            // Show smoke and repeatedly show some sparks. Also, make the ship flash red
+            moreSmoke.SetActive(true);
+            electricalSparks.SetActive(true);
+            objectRenderer.material.SetInt("_IsFlashing", 1);
+            objectRenderer.material.SetFloat("_Speed", 1f);
+            objectRenderer.material.SetColor("_Color", Color.red);
         }
     }
 
