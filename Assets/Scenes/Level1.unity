@@ -1049,7 +1049,7 @@ MonoBehaviour:
   cratePrefab: {fileID: 7216334630617336538, guid: 114043a233b304a90ae0a720e462684b, type: 3}
   spoolPrefab: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
   barrelPrefab: {fileID: 1348021286389444037, guid: e0cf024b837c84d5aa423e108e218f15, type: 3}
-  roadClosedPrefab: {fileID: 829099707258737073, guid: 34b3ac8945653414a820a5b310d6205f, type: 3}
+  roadClosedPrefab: {fileID: 0}
   bombPrefab: {fileID: 0}
   movementSpeed: 30
   spawnObstacle: 0
@@ -13220,7 +13220,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: roadClosedPrefab
       value: 
-      objectReference: {fileID: 829099707258737073, guid: 34b3ac8945653414a820a5b310d6205f, type: 3}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
 --- !u!4 &718431376 stripped
@@ -13880,7 +13880,7 @@ PrefabInstance:
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: roadClosedPrefab
       value: 
-      objectReference: {fileID: 829099707258737073, guid: 34b3ac8945653414a820a5b310d6205f, type: 3}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
 --- !u!4 &884703149 stripped
@@ -15593,9 +15593,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
-      propertyPath: barrierPrefab
+      propertyPath: barrelPrefab
       value: 
       objectReference: {fileID: 1348021286389444037, guid: e0cf024b837c84d5aa423e108e218f15, type: 3}
+    - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
+      propertyPath: barrierPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253805, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: maxTimeToSpawn
       value: 5
