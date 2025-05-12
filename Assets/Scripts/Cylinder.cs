@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Cylinder : MonoBehaviour
 {
-    public const float accelerationFactor = 0.00025f;   // Amount by which to increase rotation speed of cylinder
-    private const float deccelerationFactorWhenPlaneCrashed = 0.0075f; // Amount by which to decrease rotation once the player has crashed
+    public const float accelerationFactor = 0.25f;   // Amount by which to increase rotation speed of cylinder
+    private const float deccelerationFactorWhenPlaneCrashed = 5.0f; // Amount by which to decrease rotation once the player has crashed
     private bool boostActive = false;
     private float boostFactor = 50f; // Amount by which to increase speed when boosting
     private float RotationSpeed { get; set; } = -50f;   // Originally at -40 The more negative the value, the faster the cylinder rotates
@@ -41,7 +41,7 @@ public class Cylinder : MonoBehaviour
         {
             if(RotationSpeed < 0)
             {
-                RotationSpeed += deccelerationFactorWhenPlaneCrashed;
+                RotationSpeed += (deccelerationFactorWhenPlaneCrashed * Time.deltaTime);
             }
             else if(RotationSpeed > 0)
             {
@@ -52,7 +52,7 @@ public class Cylinder : MonoBehaviour
         {
             // The player speed is nothing more than the ever increasing speed of
             // rotation of the cylinder. Increasing in the negative direction ;)
-            RotationSpeed -= accelerationFactor;
+            RotationSpeed -= (accelerationFactor * Time.deltaTime);
         }
         
     }

@@ -41,7 +41,7 @@ public class Plane : MonoBehaviour
     private bool movingLeft = false;
     private bool movingRight = false;
     private float compensatingLateralForce = 40f;   // Originally 25. Force to compensate for movement in opposite direction. ie: If you are currently moving left and then change directions to move right, we want to apply a bit more force while you are still drifing left so that the plane can correct course more quickly
-    private float lateralForce = 48;    // Originally 33. Force to apply when moving left or right
+    private float lateralForce = 60;    // Originally 33. Force to apply when moving left or right
     private float barrelRollLateralForce = 950f; // Force to apply when doing a barrel roll
     private float movingSlowlyThreshold = 0.5f; // Speed below which we consider a plane's lateral movement to be slow
     private const float defaultDecelerationForce = 35f;     // Base force at which to decelerate lateral movement
@@ -557,8 +557,8 @@ public class Plane : MonoBehaviour
             }
 
             // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
-            compensatingLateralForce += Cylinder.accelerationFactor;
-            lateralForce += Cylinder.accelerationFactor;
+            compensatingLateralForce += (Cylinder.accelerationFactor * Time.deltaTime);
+            lateralForce += (Cylinder.accelerationFactor * Time.deltaTime);
 
             // Slowly start to add some camera shake as we speed up to increase that sense of speed
             var lowestShakingSpeedThreshold = 55;   // Originally 47
@@ -570,11 +570,11 @@ public class Plane : MonoBehaviour
                 {
                     this.cameraShaker.m_AmplitudeGain = 0.5f;
                 }
-                this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 2);
+                this.cameraShaker.m_AmplitudeGain += ((Cylinder.accelerationFactor / 2) * Time.deltaTime);
             }
             else if (Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > middleShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < highestShakingSpeedThreshold)
             {
-                this.cameraShaker.m_AmplitudeGain += (Cylinder.accelerationFactor / 10);
+                this.cameraShaker.m_AmplitudeGain += ((Cylinder.accelerationFactor / 10) * Time.deltaTime);
             }
             
         } else
