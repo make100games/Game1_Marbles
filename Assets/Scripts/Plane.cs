@@ -21,6 +21,11 @@ public class Plane : MonoBehaviour
     public GameObject coinCollectionStarsParticleEffectObject;
     public GameObject coinCollectionBlobsParticleEffectObject;
     public GameObject coinCollectedLargeParticleEffectObject;
+    public GameObject coinCollectSoundEffect;
+    public GameObject collisionSoundEffect1;
+    public GameObject collisionSoundEffect2;
+    public GameObject collisionSoundEffect3;
+    public GameObject collisionCrashEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
     public event Action OnPlaneCrashed;
@@ -373,6 +378,7 @@ public class Plane : MonoBehaviour
             }
             if (other.tag == Tags.Coin)
             {
+                this.coinCollectSoundEffect.GetComponent<AudioSource>().Play();
                 this.scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected++;
 
                 // Show particle effect to indicate that coin was collected
@@ -385,6 +391,8 @@ public class Plane : MonoBehaviour
             }
             if (other.tag == Tags.Obstacle && !boostActive && !justBeenHit)
             {
+                collisionCrashEffect.GetComponent<AudioSource>().Play();
+
                 // Shake camera
                 ShakeCameraDueToImpact();
 
@@ -445,10 +453,20 @@ public class Plane : MonoBehaviour
         health--;
         if(health >= 1)
         {
+            if(health >= 2)
+            {
+                collisionSoundEffect1.GetComponent<AudioSource>().Play();
+            }
+            else if(health >= 1)
+            {
+                collisionSoundEffect2.GetComponent<AudioSource>().Play();
+            }
+            
             MakePlaneTemporarilyInvincible(health);
         }
         else if (health == 0)
         {
+            collisionSoundEffect3.GetComponent<AudioSource>().Play();
             Dead = true;
             // Game Over
             rb.useGravity = true;

@@ -25,6 +25,7 @@ public class GameState : MonoBehaviour
     public GameObject gameOverCanvas;
     public GameObject scoreKeeper;
     public Volume blurVolume;
+    public GameObject startSoundEffect;
     public float timeAfterWhichToStartSpawning = 1.5f;  // Time in seconds after which we start spawning basic obstacles. Coins will start spawning immediately.
     public float timeAfterWhichToStartSpawnerCoordinator = 3.5f;    // Time after which to start the waves of spawners
 
@@ -131,6 +132,7 @@ public class GameState : MonoBehaviour
 
     private void StartPlaying()
     {
+        startSoundEffect.GetComponent<AudioSource>().Play();
         state = State.Playing;
         player.SetActive(true); // Activate to prevent pop-in of player
         startScreenCam.GetComponent<StartScreenCam>().StartPlaying();
