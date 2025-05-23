@@ -26,6 +26,7 @@ public class Plane : MonoBehaviour
     public GameObject collisionSoundEffect2;
     public GameObject collisionSoundEffect3;
     public GameObject collisionCrashEffect;
+    public GameObject thrustEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
     public event Action OnPlaneCrashed;
@@ -96,6 +97,11 @@ public class Plane : MonoBehaviour
         coinCollectedBlobEffect = coinCollectionBlobsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
         objectRenderer = GetComponent<Renderer>();
+    }
+
+    public void StartPlayingThrusterSoundEffect()
+    {
+        this.thrustEffect.GetComponent<AudioSource>().Play();
     }
 
     private void ToggleBoost_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

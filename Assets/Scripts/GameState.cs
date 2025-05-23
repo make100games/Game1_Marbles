@@ -133,6 +133,7 @@ public class GameState : MonoBehaviour
     private void StartPlaying()
     {
         startSoundEffect.GetComponent<AudioSource>().Play();
+        player.GetComponentInChildren<Plane>().StartPlayingThrusterSoundEffect();
         state = State.Playing;
         player.SetActive(true); // Activate to prevent pop-in of player
         startScreenCam.GetComponent<StartScreenCam>().StartPlaying();
