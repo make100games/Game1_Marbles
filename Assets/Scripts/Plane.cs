@@ -101,7 +101,38 @@ public class Plane : MonoBehaviour
 
     public void StartPlayingThrusterSoundEffect()
     {
+        float targetVolume = 0.4f;
+        float rateOfVolumeIncrease = 0.1f;
+        this.thrustEffect.GetComponent<AudioSource>().volume = 0;
         this.thrustEffect.GetComponent<AudioSource>().Play();
+        StartCoroutine(ChangeThrusterVolume(targetVolume, rateOfVolumeIncrease));
+    }
+
+    private IEnumerator ChangeThrusterVolume(float targetVolume, float rateOfVolumeChange)
+    {
+        if (rateOfVolumeChange > 0) { 
+            while (this.thrustEffect.GetComponent<AudioSource>().volume < targetVolume)
+            {
+                this.thrustEffect.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
+                yield return null;
+            }
+            if (this.thrustEffect.GetComponent<AudioSource>().volume > targetVolume)
+            {
+                this.thrustEffect.GetComponent<AudioSource>().volume = targetVolume;
+            }
+        }
+        else if(rateOfVolumeChange < 0)
+        {
+            while (this.thrustEffect.GetComponent<AudioSource>().volume > targetVolume)
+            {
+                this.thrustEffect.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
+                yield return null;
+            }
+            if (this.thrustEffect.GetComponent<AudioSource>().volume < targetVolume)
+            {
+                this.thrustEffect.GetComponent<AudioSource>().volume = targetVolume;
+            }
+        }
     }
 
     private void ToggleBoost_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -412,6 +443,8 @@ public class Plane : MonoBehaviour
                 // boundary but still ensures the ship doesn't just pass through
                 if(!justBeenHit)
                 {
+                    collisionCrashEffect.GetComponent<AudioSource>().Play();
+
                     // Shake camera
                     ShakeCameraDueToImpact();
 
@@ -483,6 +516,8 @@ public class Plane : MonoBehaviour
             this.cameraShaker.m_AmplitudeGain = 0;
 
             this.OnPlaneCrashed?.Invoke();
+
+            StartCoroutine(ChangeThrusterVolume(0.0f, -0.1f));
         }
     }
 
