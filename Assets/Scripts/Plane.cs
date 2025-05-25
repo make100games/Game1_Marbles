@@ -27,6 +27,7 @@ public class Plane : MonoBehaviour
     public GameObject collisionSoundEffect3;
     public GameObject collisionCrashEffect;
     public GameObject thrustEffect;
+    public GameObject alarmEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
     public event Action OnPlaneCrashed;
@@ -518,6 +519,7 @@ public class Plane : MonoBehaviour
             this.OnPlaneCrashed?.Invoke();
 
             StartCoroutine(ChangeThrusterVolume(0.0f, -0.1f));
+            alarmEffect.GetComponent<AudioSource>().Stop();
         }
     }
 
@@ -550,12 +552,13 @@ public class Plane : MonoBehaviour
         }
         if (health == 1)
         {
-            // Show smoke and repeatedly show some sparks. Also, make the ship flash red
+            // Show smoke and repeatedly show some sparks. Also, make the ship flash red and play alarm
             moreSmoke.SetActive(true);
             electricalSparks.SetActive(true);
             objectRenderer.material.SetInt("_IsFlashing", 1);
             objectRenderer.material.SetFloat("_Speed", 1f);
             objectRenderer.material.SetColor("_Color", Color.red);
+            alarmEffect.GetComponent<AudioSource>().Play();
         }
     }
 
