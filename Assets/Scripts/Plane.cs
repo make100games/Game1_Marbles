@@ -29,6 +29,7 @@ public class Plane : MonoBehaviour
     public GameObject collisionCrashEffect;
     public GameObject thrustEffect;
     public GameObject alarmEffect;
+    public GameObject barrelRollEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
     public event Action OnPlaneCrashed;
@@ -195,6 +196,7 @@ public class Plane : MonoBehaviour
     {
         if(!this.Dead)
         {
+            barrelRollEffect.GetComponent<AudioSource>().Play();
             rb.AddForce(Vector3.right * barrelRollLateralForce, ForceMode.Force);
             StartCoroutine(BarrelRollToTheRight());
         }
@@ -204,6 +206,7 @@ public class Plane : MonoBehaviour
     {
         if(!this.Dead)
         {
+            barrelRollEffect.GetComponent<AudioSource>().Play();
             rb.AddForce(Vector3.left * barrelRollLateralForce, ForceMode.Force);
             StartCoroutine(BarrelRollToTheLeft());
         }
