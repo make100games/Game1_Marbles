@@ -91667,19 +91667,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf48b24a5d334bc5803af1a55933e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreKeeper: {fileID: 0}
   shipSparksTransform: {fileID: 0}
   cylinder: {fileID: 0}
-  boundaryCollisionSparks: {fileID: 1985097892}
+  electricalSparks: {fileID: 0}
   lightSmoke: {fileID: 1894392113}
   moreSmoke: {fileID: 1688857905}
-  sparks1: {fileID: 1075559471}
-  sparks2: {fileID: 1513562840}
-  sparks3: {fileID: 1154825249}
-  sparks4: {fileID: 1963863067}
+  boostThrusters: {fileID: 0}
   trackingCamera: {fileID: 0}
   blurVolume: {fileID: 0}
-  coinCollectionParticleEffectObject: {fileID: 0}
+  coinCollectionStarsParticleEffectObject: {fileID: 0}
+  coinCollectionBlobsParticleEffectObject: {fileID: 0}
   coinCollectedLargeParticleEffectObject: {fileID: 0}
+  coinCollectSoundEffect: {fileID: 0}
+  collisionSoundEffect1: {fileID: 0}
+  collisionSoundEffect2: {fileID: 0}
+  collisionSoundEffect3: {fileID: 0}
+  collisionCrashEffect: {fileID: 0}
+  thrustEffect: {fileID: 0}
+  alarmEffect: {fileID: 0}
+  barrelRollEffect: {fileID: 0}
 --- !u!114 &1667423478
 MonoBehaviour:
   m_ObjectHideFlags: 0
