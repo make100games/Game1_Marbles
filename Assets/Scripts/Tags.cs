@@ -17,4 +17,5 @@ public class Tags
     public const string ShockwaveEffect = "ShockwaveEffect";
     public const string GameTitle = "GameTitle";
     public const string Detonator = "Detonator";
+    public const string GameMusic = "GameMusic";
 }

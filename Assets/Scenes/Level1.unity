@@ -1197,7 +1197,7 @@ GameObject:
   - component: {fileID: 194054655}
   m_Layer: 0
   m_Name: Music
-  m_TagString: Untagged
+  m_TagString: GameMusic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13607,6 +13607,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7858443583522090611, guid: 7afc890ff422e4468becf0641a27b214, type: 3}
     - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
+      propertyPath: spawnGroups
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3605737995889016436, guid: 4f5132debe081409790c3ae0fcca77d7, type: 3}
       propertyPath: spoolPrefab
       value: 
       objectReference: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
@@ -15792,7 +15796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253809, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4308674216559253809, guid: ee1e9f960e2054a47bca1689317b54b2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34198,6 +34202,10 @@ PrefabInstance:
       propertyPath: trackingCamera
       value: 
       objectReference: {fileID: 789275263}
+    - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
+      propertyPath: gameMusicObject
+      value: 
+      objectReference: {fileID: 194054652}
     - target: {fileID: 1182629132, guid: ebd210b7288684a0d912e70fbf724c06, type: 3}
       propertyPath: electricalSparks
       value: 

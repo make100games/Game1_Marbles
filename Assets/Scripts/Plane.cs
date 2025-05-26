@@ -6,6 +6,7 @@ using Cinemachine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System;
+using Unity.VisualScripting;
 
 public class Plane : MonoBehaviour
 {
@@ -67,6 +68,7 @@ public class Plane : MonoBehaviour
     private bool boostActive = false;
     private bool justBeenHit = false;   // True if ship has just hit an obstacle. Gives the player a few seconds of invincibility
     private float timeInvincibleAfterCollision = 2f;    // How long the ship is invincible after a collision (prevents player from dying by hitting two obstacles that are right next to each other)
+    private GameObject gameMusicObject; // Resolving this by tag because the game music survives a scene reload and then somehow the plane is not able to reference it anymore once the scene is reloaded. Not sure...
 
     // Start is called before the first frame update
     void Start()
@@ -98,6 +100,7 @@ public class Plane : MonoBehaviour
         coinCollectedBlobEffect = coinCollectionBlobsParticleEffectObject.GetComponent<ParticleSystem>();
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
         objectRenderer = GetComponent<Renderer>();
+        gameMusicObject = GameObject.FindGameObjectWithTag(Tags.GameMusic);
     }
 
     public void StartPlayingThrusterSoundEffect()
@@ -106,32 +109,32 @@ public class Plane : MonoBehaviour
         float rateOfVolumeIncrease = 0.1f;
         this.thrustEffect.GetComponent<AudioSource>().volume = 0;
         this.thrustEffect.GetComponent<AudioSource>().Play();
-        StartCoroutine(ChangeThrusterVolume(targetVolume, rateOfVolumeIncrease));
+        StartCoroutine(ChangeSoundVolume(this.thrustEffect, targetVolume, rateOfVolumeIncrease));
     }
 
-    private IEnumerator ChangeThrusterVolume(float targetVolume, float rateOfVolumeChange)
+    private IEnumerator ChangeSoundVolume(GameObject sound, float targetVolume, float rateOfVolumeChange)
     {
         if (rateOfVolumeChange > 0) { 
-            while (this.thrustEffect.GetComponent<AudioSource>().volume < targetVolume)
+            while (sound.GetComponent<AudioSource>().volume < targetVolume)
             {
-                this.thrustEffect.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
+                sound.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
                 yield return null;
             }
-            if (this.thrustEffect.GetComponent<AudioSource>().volume > targetVolume)
+            if (sound.GetComponent<AudioSource>().volume > targetVolume)
             {
-                this.thrustEffect.GetComponent<AudioSource>().volume = targetVolume;
+                sound.GetComponent<AudioSource>().volume = targetVolume;
             }
         }
         else if(rateOfVolumeChange < 0)
         {
-            while (this.thrustEffect.GetComponent<AudioSource>().volume > targetVolume)
+            while (sound.GetComponent<AudioSource>().volume > targetVolume)
             {
-                this.thrustEffect.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
+                sound.GetComponent<AudioSource>().volume += (rateOfVolumeChange * Time.deltaTime);
                 yield return null;
             }
-            if (this.thrustEffect.GetComponent<AudioSource>().volume < targetVolume)
+            if (sound.GetComponent<AudioSource>().volume < targetVolume)
             {
-                this.thrustEffect.GetComponent<AudioSource>().volume = targetVolume;
+                sound.GetComponent<AudioSource>().volume = targetVolume;
             }
         }
     }
@@ -411,6 +414,8 @@ public class Plane : MonoBehaviour
                 // Tilt plane back then slowly back down and give it an upward push
                 // Be sure to enable gravity before applying the jump so that the plane can fall back down
                 StartCoroutine(PitchUpQuicklyAndThenSlowlyBackDown());
+                // Turn down the music while we are flying
+                StartCoroutine(ChangeSoundVolume(this.gameMusicObject, 0.25f, -0.8f));
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 rb.useGravity = true;
             }
@@ -518,7 +523,7 @@ public class Plane : MonoBehaviour
 
             this.OnPlaneCrashed?.Invoke();
 
-            StartCoroutine(ChangeThrusterVolume(0.0f, -0.1f));
+            StartCoroutine(ChangeSoundVolume(this.thrustEffect, 0.0f, -0.1f));
             alarmEffect.GetComponent<AudioSource>().Stop();
         }
     }
@@ -616,6 +621,8 @@ public class Plane : MonoBehaviour
                 rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
                 rb.angularVelocity = Vector3.zero;
                 rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
+                // Turn music back up to regular volume
+                StartCoroutine(ChangeSoundVolume(this.gameMusicObject, 1.0f, 0.8f));
             }
 
             // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
