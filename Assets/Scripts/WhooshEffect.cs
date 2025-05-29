@@ -8,12 +8,16 @@ using UnityEngine;
 public class WhooshEffect : MonoBehaviour
 {
     public Transform shipTransform;
-    public bool Dead { get; set; } // True if the player has crashed the plane
+    public List<AudioSource> effects = new List<AudioSource>();
+    
+    private bool TurnedOn { get; set; }
+    private int indexOfNextEffectToPlay;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.TurnOnAtLowVolume();
+        indexOfNextEffectToPlay = Random.Range(0, effects.Count);
     }
 
     // Update is called once per frame
@@ -22,13 +26,38 @@ public class WhooshEffect : MonoBehaviour
         this.transform.position = shipTransform.position;
     }
 
+    private void TurnOnAtLowVolume()
+    {
+        this.TurnedOn = true;
+        GetComponent<AudioSource>().volume = 0.4f;   
+    }
+
+    public void TurnOnAtMediumVolume()
+    {
+        this.TurnedOn = true;
+        GetComponent<AudioSource>().volume = 0.7f;
+    }
+
+    public void TurnOnAtHighVolume()
+    {
+        this.TurnedOn = true;
+        GetComponent<AudioSource>().volume = 1.0f;
+    }
+
+    public void TurnOff()
+    {
+        this.TurnedOn = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!Dead)
+        if (TurnedOn)
         {
             if (other.tag == Tags.Obstacle)
             {
-                GetComponent<AudioSource>().Play();
+                var effect = effects[indexOfNextEffectToPlay];
+                effect.Play();
+                indexOfNextEffectToPlay = Random.Range(0, effects.Count);
             }
             
         }

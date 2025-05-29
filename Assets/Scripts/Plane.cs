@@ -30,6 +30,7 @@ public class Plane : MonoBehaviour
     public GameObject thrustEffect;
     public GameObject alarmEffect;
     public GameObject barrelRollEffect;
+    public WhooshEffect whooshEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
     public event Action OnPlaneCrashed;
@@ -528,6 +529,8 @@ public class Plane : MonoBehaviour
 
             StartCoroutine(ChangeSoundVolume(this.thrustEffect, 0.0f, -0.1f));
             alarmEffect.GetComponent<AudioSource>().Stop();
+
+            whooshEffect.TurnOff();
         }
     }
 
@@ -638,6 +641,7 @@ public class Plane : MonoBehaviour
             var highestShakingSpeedThreshold = 57;  // Originally 49. Point after which camera shake is no longer increased any further
             if(Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > lowestShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < middleShakingSpeedThreshold)
             {
+                whooshEffect.TurnOnAtMediumVolume();
                 if(this.cameraShaker.m_AmplitudeGain == 0)
                 {
                     this.cameraShaker.m_AmplitudeGain = 0.5f;
@@ -646,6 +650,7 @@ public class Plane : MonoBehaviour
             }
             else if (Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) > middleShakingSpeedThreshold && Mathf.Abs(cylinderScript.RotationSpeedIgnoringBoost) < highestShakingSpeedThreshold)
             {
+                whooshEffect.TurnOnAtHighVolume();
                 this.cameraShaker.m_AmplitudeGain += ((Cylinder.accelerationFactor / 10) * Time.deltaTime);
             }
             
