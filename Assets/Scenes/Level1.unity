@@ -1178,7 +1178,7 @@ MonoBehaviour:
   spoolPrefab: {fileID: 5836673992232918230, guid: 053ef7d9b82a942caae74bcaf790c5fc, type: 3}
   barrelPrefab: {fileID: 1348021286389444037, guid: e0cf024b837c84d5aa423e108e218f15, type: 3}
   roadClosedPrefab: {fileID: 0}
-  bombPrefab: {fileID: 7771512300188637164, guid: 353a899fc1e0548e6a9ec26172f5d244, type: 3}
+  bombPrefab: {fileID: 0}
   movementSpeed: 30
   spawnObstacle: 0
   intervalBetweenObjects: 0.25

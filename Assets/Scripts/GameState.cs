@@ -61,6 +61,10 @@ public class GameState : MonoBehaviour
         gameOverCanvas.GetComponent<GameOverCanvas>().
             ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected, highScore);
         StartCoroutine(ShowGameOverBlur());
+        spawnerCoordinator.GetComponent<SpawnerCoordinator>().StopSpawning();
+        spawnerCoordinator.SetActive(false);
+        everythingSpawner.SetActive(false);
+        coinSpawner.SetActive(false);
     }
 
     private IEnumerator ShowGameOverBlur()

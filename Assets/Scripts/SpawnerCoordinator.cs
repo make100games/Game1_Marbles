@@ -22,10 +22,12 @@ public class SpawnerCoordinator : MonoBehaviour
 
     private int indexOfCurrentWave = 0;
     private GameObject currentWave = null;
+    private bool spawnerActive = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        spawnerActive = true;
         InvokeRepeating("ActivateNextWave", 0, durationOfEachWave);
     }
 
@@ -37,27 +39,38 @@ public class SpawnerCoordinator : MonoBehaviour
 
     void ActivateNextWave()
     {
-        if (indexOfCurrentWave >= waves.Count)
+        if(spawnerActive)
         {
-            // We get to the second phase where we keep the last (hardest) wave active and successively
-            // activate the other waves starting with the first
-            var indexOfAdditionalWave = indexOfCurrentWave % waves.Count;
-            var additionalWaveToActivate = waves[indexOfAdditionalWave];
-            if(!additionalWaveToActivate.activeSelf)
+            if (indexOfCurrentWave >= waves.Count)
             {
-                additionalWaveToActivate.SetActive(true);
+                // We get to the second phase where we keep the last (hardest) wave active and successively
+                // activate the other waves starting with the first
+                var indexOfAdditionalWave = indexOfCurrentWave % waves.Count;
+                var additionalWaveToActivate = waves[indexOfAdditionalWave];
+                if (!additionalWaveToActivate.activeSelf)
+                {
+                    additionalWaveToActivate.SetActive(true);
+                }
             }
-        }
-        else
-        {
-            if (currentWave != null)
+            else
             {
-                currentWave.SetActive(false);
+                if (currentWave != null)
+                {
+                    currentWave.SetActive(false);
+                }
+                currentWave = waves[indexOfCurrentWave];
+                currentWave.SetActive(true);
             }
-            currentWave = waves[indexOfCurrentWave];
-            currentWave.SetActive(true);
+            indexOfCurrentWave++;
         }
-        indexOfCurrentWave++;
+    }
 
+    public void StopSpawning()
+    {
+        spawnerActive = false;
+        if (currentWave != null)
+        {
+            currentWave.SetActive(false);
+        }
     }
 }
