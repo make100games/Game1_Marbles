@@ -12,7 +12,7 @@ public class WhooshEffect : MonoBehaviour
     
     private bool TurnedOn { get; set; }
     private int indexOfNextEffectToPlay;
-    private float volume = 0.4f;
+    private float volume = 0.7f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class WhooshEffect : MonoBehaviour
     public void TurnOnAtMediumVolume()
     {
         this.TurnedOn = true;
-        volume = 0.7f;
+        volume = 0.85f;
     }
 
     public void TurnOnAtHighVolume()

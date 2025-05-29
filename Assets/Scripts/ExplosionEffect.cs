@@ -41,6 +41,7 @@ public class ExplosionEffect : MonoBehaviour
 
         // Explosion particle systems are all done
         OnExplosionFinished?.Invoke();
+        Destroy(this.gameObject);
     }
 }
 

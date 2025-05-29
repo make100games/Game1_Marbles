@@ -13,6 +13,7 @@ public class Explosion : MonoBehaviour
     private float dissolutionAmount = 0.0f; // Amount by which explosion should have dissolved
     private Renderer objectRenderer;
     private AudioSource explosionEffect;
+    private float maxTimeUntilDestroy = 20; // Time in seconds until we kill explosion (unless it has already been destroyed before)
 
     void Start()
     {
@@ -34,9 +35,8 @@ public class Explosion : MonoBehaviour
         // Ensure the scaling stops once the target scale is reached
         // Destroy the explosion once the scale of it has reached a certain point and the sound
         // effect has fully played
-        if (lerpFactor >= 1f && !explosionEffect.isPlaying && explosionEffect.time > 0)
+        if ((lerpFactor >= 1f && !explosionEffect.isPlaying && explosionEffect.time > 0) || timeElapsed >= maxTimeUntilDestroy)
         {
-            Debug.Log("Clean up explosion");
             Destroy(this.gameObject);
         }
     }
