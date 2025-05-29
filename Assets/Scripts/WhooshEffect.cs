@@ -12,11 +12,12 @@ public class WhooshEffect : MonoBehaviour
     
     private bool TurnedOn { get; set; }
     private int indexOfNextEffectToPlay;
+    private float volume = 0.4f;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.TurnOnAtLowVolume();
+        this.TurnedOn = true;
         indexOfNextEffectToPlay = Random.Range(0, effects.Count);
     }
 
@@ -26,22 +27,16 @@ public class WhooshEffect : MonoBehaviour
         this.transform.position = shipTransform.position;
     }
 
-    private void TurnOnAtLowVolume()
-    {
-        this.TurnedOn = true;
-        GetComponent<AudioSource>().volume = 0.4f;   
-    }
-
     public void TurnOnAtMediumVolume()
     {
         this.TurnedOn = true;
-        GetComponent<AudioSource>().volume = 0.7f;
+        volume = 0.7f;
     }
 
     public void TurnOnAtHighVolume()
     {
         this.TurnedOn = true;
-        GetComponent<AudioSource>().volume = 1.0f;
+        volume = 1.0f;
     }
 
     public void TurnOff()
@@ -56,6 +51,7 @@ public class WhooshEffect : MonoBehaviour
             if (other.tag == Tags.Obstacle)
             {
                 var effect = effects[indexOfNextEffectToPlay];
+                effect.volume = this.volume;
                 effect.Play();
                 indexOfNextEffectToPlay = Random.Range(0, effects.Count);
             }

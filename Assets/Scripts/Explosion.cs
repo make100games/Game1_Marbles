@@ -12,11 +12,13 @@ public class Explosion : MonoBehaviour
     private float timeElapsed = 0f;
     private float dissolutionAmount = 0.0f; // Amount by which explosion should have dissolved
     private Renderer objectRenderer;
+    private AudioSource explosionEffect;
 
     void Start()
     {
         initialScale = transform.localScale;
         objectRenderer = GetComponent<Renderer>();
+        explosionEffect = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -30,8 +32,11 @@ public class Explosion : MonoBehaviour
         dissolutionAmount += 0.0025f;
 
         // Ensure the scaling stops once the target scale is reached
-        if (lerpFactor >= 1f)
+        // Destroy the explosion once the scale of it has reached a certain point and the sound
+        // effect has fully played
+        if (lerpFactor >= 1f && !explosionEffect.isPlaying && explosionEffect.time > 0)
         {
+            Debug.Log("Clean up explosion");
             Destroy(this.gameObject);
         }
     }
