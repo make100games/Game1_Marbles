@@ -30,6 +30,8 @@ public class Plane : MonoBehaviour
     public GameObject thrustEffect;
     public GameObject alarmEffect;
     public GameObject barrelRollEffect;
+    public GameObject downwardWhooshEffect;
+    public GameObject upwardWhooshEffect;
     public WhooshEffect whooshEffect;
     public bool Dead { get; private set; } // True if the player has crashed the plane
 
@@ -422,6 +424,8 @@ public class Plane : MonoBehaviour
                 StartCoroutine(ChangeSoundVolume(this.gameMusicObject, 0.25f, -0.8f));
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 rb.useGravity = true;
+
+                downwardWhooshEffect.GetComponent<AudioSource>().Play();
             }
             if (other.tag == Tags.Coin)
             {
@@ -629,6 +633,7 @@ public class Plane : MonoBehaviour
                 rb.MovePosition(new Vector3(rb.position.x, cruisingYPos, rb.position.z));
                 // Turn music back up to regular volume
                 StartCoroutine(ChangeSoundVolume(this.gameMusicObject, 1.0f, 0.8f));
+                upwardWhooshEffect.GetComponent<AudioSource>().Play();
             }
 
             // Since the cylinder rotates ever faster, we want to increase the lateral force as well so that the plane can move sideways more quickly as well over time
