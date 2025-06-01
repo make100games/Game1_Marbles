@@ -465,9 +465,21 @@ public class Plane : MonoBehaviour
                     // Take some damage
                     TakeDamage();
                 }
-                
+
                 // Give ship a push back to the track
-                rb.AddForce(Vector3.right * -(rb.velocity.x * 1.25f), ForceMode.Impulse);
+                // First kill the ship's lateral velocity.
+                // Then put the ship next to the barrier so that high velocity collisions don't lead
+                // to the ship going so far through the barrier's collider that the force used to nudge it back
+                // don't put it past the collider again. Maybe put it even a bit beyond where the barrier is. As in, create
+                // a bit of buffer between the ship and the barrier so that you can't so easily clip through it again.
+                // Then nudge it back a bit
+                var direction = rb.velocity.x >= 0 ? 1 : -1;
+                var buffer = 8f * direction;
+                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                var distanceInsideCollider = this.GetComponent<BoxCollider>().center.x - other.GetComponent<BoxCollider>().center.x;
+                var distanceInsideColliderWithBuffer = (distanceInsideCollider >= 0) ? distanceInsideCollider + buffer : distanceInsideCollider - buffer;
+                this.transform.position = new Vector3(this.transform.position.x - distanceInsideColliderWithBuffer, this.transform.position.y, this.transform.position.z);
+                rb.AddForce(Vector3.right * direction * -20.0f, ForceMode.Impulse);
             }
         }
         else
