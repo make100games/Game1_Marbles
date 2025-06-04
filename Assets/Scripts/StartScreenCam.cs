@@ -40,23 +40,7 @@ public class StartScreenCam : MonoBehaviour
 
     void Update()
     {
-        // Shoot a ray to detect whether camera sees the game title. Once camera
-        // sees game title, stop game title from getting any closer to camera
-        Vector3 origin = Camera.main.transform.position;
-        Vector3 direction = Camera.main.transform.forward;
-        var rayDistance = 100f;
-
-        Debug.DrawRay(origin, direction * rayDistance, Color.red, 2f);
-
-        // Perform the raycast
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, rayDistance))
-        {
-            // Log the name of the object hit
-            if(hit.collider.gameObject.tag == Tags.GameTitle)
-            {
-                gameTitle.GetComponent<RotatingDisc>().StopRotating();
-            }
-        }
+        
     }
 
     private void FixedUpdate()

@@ -14,6 +14,13 @@ public class GameTitle : MonoBehaviour
     public GameObject gameTitleCanvas;
     public Image titleText;
     public TMP_Text pressAnyKeyText;
+    public Image buttonPanelImage;
+    public Image startButtonImage;
+    public Text startButtonText;
+    public Image controlsButtonImage;
+    public Text controlsButtonText;
+    public Image creditsButtonImage;
+    public Text creditsButtonText;
     public float fadeDuration = 1f;
 
     public event Action OnTitleAppeared;
@@ -36,7 +43,13 @@ public class GameTitle : MonoBehaviour
     void TitleFullyShown()
     {
         OnTitleAppeared?.Invoke();
-        StartFlashingPressAnyText();
+        buttonPanelImage.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        startButtonImage.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        startButtonText.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        controlsButtonImage.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        controlsButtonText.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        creditsButtonImage.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
+        creditsButtonText.DOFade(1f, fadeInDuration).SetEase(Ease.InOutQuad);
     }
 
     // Update is called once per frame
@@ -45,9 +58,6 @@ public class GameTitle : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// Folds title downwards and moves it out of view past the camera
-    /// </summary>
     public void Dismiss()
     {
         if(blinkSequence != null)
@@ -58,34 +68,18 @@ public class GameTitle : MonoBehaviour
             pressAnyKeyText.color = invisibleColor;
         }
         titleText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        buttonPanelImage.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        startButtonImage.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        startButtonText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        controlsButtonImage.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        controlsButtonText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        creditsButtonImage.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
+        creditsButtonText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
         Invoke("TitleHidden", (fadeOutDuration) * 2);
     }
 
     void TitleHidden()
     {
         OnTitleDismissed?.Invoke();
-    }
-
-    private void StartFlashingPressAnyText()
-    {
-        // Ensure the alpha starts at 0
-        Color initialColor = pressAnyKeyText.color;
-        initialColor.a = 0f;
-        pressAnyKeyText.color = initialColor;
-
-        // Create the fade-in and fade-out sequence
-        blinkSequence = DOTween.Sequence();
-
-        // Fade-in animation
-        blinkSequence.Append(pressAnyKeyText.DOFade(1f, fadeDuration));
-
-        // Fade-out animation
-        blinkSequence.Append(pressAnyKeyText.DOFade(0f, fadeDuration));
-
-        // Loop the sequence indefinitely if required
-        blinkSequence.SetLoops(-1, LoopType.Yoyo);
-
-        // Play the sequence
-        blinkSequence.Play();
     }
 }

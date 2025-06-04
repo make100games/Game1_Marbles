@@ -134,6 +134,34 @@ public class GameState : MonoBehaviour
         }
     }
 
+    public void StartButtonClicked()
+    {
+        StartPlaying();
+    }
+
+    private void StartGame()
+    {
+        switch (state)
+        {
+            case State.Intro:
+                break;
+            case State.StartScreen:
+                StartPlaying();
+                break;
+            case State.Playing:
+                // No op
+                break;
+            case State.HighScoreScreen:
+                // No op
+                break;
+            case State.HighScoreScreenReadyToPlayAgain:
+                gameInput.Disable();
+                // TODO skip the intro screen when restarting scene (e.g. by using global object)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+        }
+    }
+
     private void StartPlaying()
     {
         startSoundEffect.GetComponent<AudioSource>().Play();
