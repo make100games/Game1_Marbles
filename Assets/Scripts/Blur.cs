@@ -6,9 +6,9 @@ using UnityEngine.Rendering.Universal;
 
 public class Blur
 {
-    public static IEnumerator ShowGameOverBlur(Volume blurVolume, DepthOfField gameOverBlur)
+    public static IEnumerator ShowBlur(Volume blurVolume, DepthOfField blur)
     {
-        if(gameOverBlur != null)
+        if(blur != null)
         {
             blurVolume.gameObject.SetActive(true);
             var maxBlur = 300f;
@@ -17,7 +17,7 @@ public class Blur
             for (var timePassed = 0f; timePassed < durationInSeconds; timePassed += Time.deltaTime)
             {
                 var factor = timePassed / durationInSeconds;
-                gameOverBlur.focalLength.Override(Mathf.Lerp(noBlur, maxBlur, factor));
+                blur.focalLength.Override(Mathf.Lerp(noBlur, maxBlur, factor));
                 yield return null;
             }
         }
@@ -27,7 +27,7 @@ public class Blur
         }
     }
 
-    public static void HideGameOverBlur(Volume blurVolume)
+    public static void HideBlur(Volume blurVolume)
     {
         blurVolume.gameObject.SetActive(false);
     }

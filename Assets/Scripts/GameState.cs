@@ -60,7 +60,7 @@ public class GameState : MonoBehaviour
         gameOverCanvas.SetActive(true);
         gameOverCanvas.GetComponent<GameOverCanvas>().
             ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected, highScore);
-        StartCoroutine(Blur.ShowGameOverBlur(blurVolume, gameOverBlur));
+        StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
         spawnerCoordinator.GetComponent<SpawnerCoordinator>().StopSpawning();
         spawnerCoordinator.SetActive(false);
         everythingSpawner.SetActive(false);
@@ -102,9 +102,10 @@ public class GameState : MonoBehaviour
         switch (state)
         {
             case State.Intro:
+                // No op
                 break;
             case State.StartScreen:
-                StartPlaying();
+                // No op
                 break;
             case State.Playing:
                 // No op

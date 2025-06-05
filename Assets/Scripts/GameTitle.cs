@@ -15,6 +15,7 @@ public class GameTitle : MonoBehaviour
     public float fadeOutDuration = 1.5f;
     public GameObject gameTitleCanvas;
     public GameObject controlsCanvas;
+    public GameObject creditsCanvas;
     public Image titleText;
     public TMP_Text pressAnyKeyText;
     public Image buttonPanelImage;
@@ -88,14 +89,28 @@ public class GameTitle : MonoBehaviour
     {
         gameTitleCanvas.SetActive(false);
         controlsCanvas.SetActive(true);
-        StartCoroutine(Blur.ShowGameOverBlur(blurVolume, gameOverBlur));
+        StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
+    }
+
+    public void ShowCreditsMenu()
+    {
+        gameTitleCanvas.SetActive(false);
+        creditsCanvas.SetActive(true);
+        StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
     }
 
     public void HideControlsMenu()
     {
         gameTitleCanvas.SetActive(true);
         controlsCanvas.SetActive(false);
-        Blur.HideGameOverBlur(blurVolume);
+        Blur.HideBlur(blurVolume);
+    }
+
+    public void HideCreditsMenu()
+    {
+        gameTitleCanvas.SetActive(true);
+        creditsCanvas.SetActive(false);
+        Blur.HideBlur(blurVolume);
     }
 
     void TitleHidden()
