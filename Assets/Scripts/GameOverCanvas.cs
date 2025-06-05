@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 using System;
 
 public class GameOverCanvas : MonoBehaviour
 {
+    public Image panelBackground;
     public TMP_Text gameOverText;
-    public TMP_Text scoreText;
+    public Text scoreText;
     public TMP_Text pressAnyText;
     public float fadeDuration = 1f;
     public bool loopBlinking = true;
@@ -20,17 +22,17 @@ public class GameOverCanvas : MonoBehaviour
         var totalScore = score * nrCoins;
         if(totalScore > highScore)
         {
-            scoreText.SetText("New High Score!\n" +
+            scoreText.text = "New High Score!\n" +
                 "Score: " + score + "\n" +
                 "Coins: " + nrCoins + "\n" +
-                "Total score (" + score + " x " + nrCoins +"): " + totalScore + "\n");
+                "Total score (" + score + " x " + nrCoins +"): " + totalScore + "\n";
         }
         else
         {
-            scoreText.SetText("Score: " + score + "\n" +
+            scoreText.text = "Score: " + score + "\n" +
                 "Coins: " + nrCoins + "\n" +
                 "Total score (" + score + " x " + nrCoins + "): " + totalScore + "\n" +
-                "High score: " + highScore);
+                "High score: " + highScore;
         }
     }
 
@@ -70,6 +72,7 @@ public class GameOverCanvas : MonoBehaviour
     private void FadeInScoreText()
     {
         scoreText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        panelBackground.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
     }
 
     private void StartFlashingPressAnyText()
