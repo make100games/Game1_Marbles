@@ -25,6 +25,18 @@ public class GameTitle : MonoBehaviour
     public Text controlsButtonText;
     public Image creditsButtonImage;
     public Text creditsButtonText;
+    public Image controlsBackground;
+    public Image controlsTitle;
+    public Text controlsTitleText;
+    public Text controlsText;
+    public Image controlsToMainButtonImage;
+    public Text controlsToMainButtonText;
+    public Image creditsBackground;
+    public Image creditsTitle;
+    public Text creditsTitleText;
+    public Text creditsText;
+    public Image creditsToMainButtonImage;
+    public Text creditsToMainButtonText;
     public float fadeDuration = 1f;
     public Volume blurVolume;
 
@@ -89,6 +101,12 @@ public class GameTitle : MonoBehaviour
     {
         gameTitleCanvas.SetActive(false);
         controlsCanvas.SetActive(true);
+        controlsBackground.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsTitle.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsTitleText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsToMainButtonImage.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsToMainButtonText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
         StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
     }
 
@@ -96,6 +114,12 @@ public class GameTitle : MonoBehaviour
     {
         gameTitleCanvas.SetActive(false);
         creditsCanvas.SetActive(true);
+        creditsBackground.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsTitle.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsTitleText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsToMainButtonImage.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsToMainButtonText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
         StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
     }
 
@@ -103,6 +127,12 @@ public class GameTitle : MonoBehaviour
     {
         gameTitleCanvas.SetActive(true);
         controlsCanvas.SetActive(false);
+        controlsBackground.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        controlsTitle.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        controlsTitleText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        controlsText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        controlsToMainButtonImage.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        controlsToMainButtonText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
         Blur.HideBlur(blurVolume);
     }
 
@@ -110,6 +140,12 @@ public class GameTitle : MonoBehaviour
     {
         gameTitleCanvas.SetActive(true);
         creditsCanvas.SetActive(false);
+        creditsBackground.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        creditsTitle.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        creditsTitleText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        creditsText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        creditsToMainButtonImage.DOFade(0f, 0).SetEase(Ease.InOutQuad);
+        creditsToMainButtonText.DOFade(0f, 0).SetEase(Ease.InOutQuad);
         Blur.HideBlur(blurVolume);
     }
 
