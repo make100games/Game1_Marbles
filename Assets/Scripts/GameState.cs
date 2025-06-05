@@ -60,25 +60,11 @@ public class GameState : MonoBehaviour
         gameOverCanvas.SetActive(true);
         gameOverCanvas.GetComponent<GameOverCanvas>().
             ShowScore(scoreKeeper.GetComponent<ScoreKeeper>().Score, scoreKeeper.GetComponent<ScoreKeeper>().NrOfCoinsCollected, highScore);
-        StartCoroutine(ShowGameOverBlur());
+        StartCoroutine(Blur.ShowGameOverBlur(blurVolume, gameOverBlur));
         spawnerCoordinator.GetComponent<SpawnerCoordinator>().StopSpawning();
         spawnerCoordinator.SetActive(false);
         everythingSpawner.SetActive(false);
         coinSpawner.SetActive(false);
-    }
-
-    private IEnumerator ShowGameOverBlur()
-    {
-        blurVolume.gameObject.SetActive(true);
-        var maxBlur = 300f;
-        var noBlur = 120f;
-        var durationInSeconds = 1;
-        for (var timePassed = 0f; timePassed < durationInSeconds; timePassed += Time.deltaTime)
-        {
-            var factor = timePassed / durationInSeconds;
-            gameOverBlur.focalLength.Override(Mathf.Lerp(noBlur, maxBlur, factor));
-            yield return null;
-        }
     }
 
     private void GameState_OnTitleDismissed()

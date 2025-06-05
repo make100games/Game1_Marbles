@@ -5,6 +5,8 @@ using System;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class GameTitle : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class GameTitle : MonoBehaviour
     public float fadeInDuration = 3f;
     public float fadeOutDuration = 1.5f;
     public GameObject gameTitleCanvas;
+    public GameObject controlsCanvas;
     public Image titleText;
     public TMP_Text pressAnyKeyText;
     public Image buttonPanelImage;
@@ -22,15 +25,18 @@ public class GameTitle : MonoBehaviour
     public Image creditsButtonImage;
     public Text creditsButtonText;
     public float fadeDuration = 1f;
+    public Volume blurVolume;
 
     public event Action OnTitleAppeared;
     public event Action OnTitleDismissed;
 
     private Sequence blinkSequence;
+    private DepthOfField gameOverBlur;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameOverBlur = Blur.ObtainBlur(blurVolume);
         Invoke("ShowTitle", timeAfterWhichToShowTitle);
     }
 
@@ -76,6 +82,20 @@ public class GameTitle : MonoBehaviour
         creditsButtonImage.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
         creditsButtonText.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutQuad);
         Invoke("TitleHidden", (fadeOutDuration) * 2);
+    }
+
+    public void ShowControlsMenu()
+    {
+        gameTitleCanvas.SetActive(false);
+        controlsCanvas.SetActive(true);
+        StartCoroutine(Blur.ShowGameOverBlur(blurVolume, gameOverBlur));
+    }
+
+    public void HideControlsMenu()
+    {
+        gameTitleCanvas.SetActive(true);
+        controlsCanvas.SetActive(false);
+        Blur.HideGameOverBlur(blurVolume);
     }
 
     void TitleHidden()
