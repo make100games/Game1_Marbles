@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameState : MonoBehaviour
 {
@@ -11,6 +14,9 @@ public class GameState : MonoBehaviour
     private GameInput gameInput;
     private DepthOfField gameOverBlur;
 
+    public TMP_Text runningScoreText;
+    public Image coinImage;
+    public TMP_Text coinText;
     public GameObject cylinder;
     public GameObject player;
     public GameObject everythingSpawner;
@@ -70,6 +76,9 @@ public class GameState : MonoBehaviour
     private void GameState_OnTitleDismissed()
     {
         // this is when the game really starts
+        runningScoreText.DOFade(1f, 0.5f).SetEase(Ease.InOutQuad);
+        coinImage.DOFade(1f, 0.5f).SetEase(Ease.InOutQuad);
+        coinText.DOFade(1f, 0.5f).SetEase(Ease.InOutQuad);
         this.startScreenCam.SetActive(false);
         this.gameCam.SetActive(true);
         detonator1.SetActive(true);

@@ -13,6 +13,7 @@ public class GameTitle : MonoBehaviour
     public float timeAfterWhichToShowTitle = 4f;
     public float fadeInDuration = 3f;
     public float fadeOutDuration = 1.5f;
+    public float menuScreenFadeInDuration = 0.5f;
     public GameObject gameTitleCanvas;
     public GameObject controlsCanvas;
     public GameObject creditsCanvas;
@@ -39,6 +40,8 @@ public class GameTitle : MonoBehaviour
     public Text creditsToMainButtonText;
     public float fadeDuration = 1f;
     public Volume blurVolume;
+    public AudioSource menuSelectionEffect;
+    public AudioSource navigateUpEffect;
 
     public event Action OnTitleAppeared;
     public event Action OnTitleDismissed;
@@ -99,32 +102,35 @@ public class GameTitle : MonoBehaviour
 
     public void ShowControlsMenu()
     {
+        menuSelectionEffect.Play();
         gameTitleCanvas.SetActive(false);
         controlsCanvas.SetActive(true);
-        controlsBackground.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        controlsTitle.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        controlsTitleText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        controlsText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        controlsToMainButtonImage.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        controlsToMainButtonText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        controlsBackground.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        controlsTitle.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        controlsTitleText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        controlsText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        controlsToMainButtonImage.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        controlsToMainButtonText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
         StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
     }
 
     public void ShowCreditsMenu()
     {
+        menuSelectionEffect.Play();
         gameTitleCanvas.SetActive(false);
         creditsCanvas.SetActive(true);
-        creditsBackground.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        creditsTitle.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        creditsTitleText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        creditsText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        creditsToMainButtonImage.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
-        creditsToMainButtonText.DOFade(1f, fadeDuration).SetEase(Ease.InOutQuad);
+        creditsBackground.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        creditsTitle.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        creditsTitleText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        creditsText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        creditsToMainButtonImage.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
+        creditsToMainButtonText.DOFade(1f, menuScreenFadeInDuration).SetEase(Ease.InOutQuad);
         StartCoroutine(Blur.ShowBlur(blurVolume, gameOverBlur));
     }
 
     public void HideControlsMenu()
     {
+        navigateUpEffect.Play();
         gameTitleCanvas.SetActive(true);
         controlsCanvas.SetActive(false);
         controlsBackground.DOFade(0f, 0).SetEase(Ease.InOutQuad);
@@ -138,6 +144,7 @@ public class GameTitle : MonoBehaviour
 
     public void HideCreditsMenu()
     {
+        navigateUpEffect.Play();
         gameTitleCanvas.SetActive(true);
         creditsCanvas.SetActive(false);
         creditsBackground.DOFade(0f, 0).SetEase(Ease.InOutQuad);
