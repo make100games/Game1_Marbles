@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class Plane : MonoBehaviour
 {
@@ -96,6 +97,8 @@ public class Plane : MonoBehaviour
         gameInput.Game.StopMovingRight.performed += StopMovingRight_performed;
         gameInput.Game.LeftBarrelRoll.performed += LeftBarrelRoll_performed;
         gameInput.Game.RightBarrelRoll.performed += RightBarrelRoll_performed;
+        gameInput.Game.StartTouching.performed += StartTouching_performed;
+        gameInput.Game.StopTouching.performed += StopTouching_performed;
 
         cruisingYPos = transform.position.y;
         crashedYPos = cruisingYPos - 3;
@@ -105,6 +108,33 @@ public class Plane : MonoBehaviour
         coinCollectedLargeEffect = coinCollectedLargeParticleEffectObject.GetComponent<ParticleSystem>();
         objectRenderer = GetComponent<Renderer>();
         gameMusicObject = GameObject.FindGameObjectWithTag(Tags.GameMusic);
+    }
+
+    private void StartTouching_performed(InputAction.CallbackContext obj)
+    {
+        // Steer left if we touch left half of touch screen, steer right if we touch right half
+        Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+
+        if (touchPosition.x < Screen.width / 2f)
+        {
+            StartMovingLeft();
+        }
+        else
+        {
+            StartMovingRight();
+        }
+    }
+
+    private void StopTouching_performed(InputAction.CallbackContext obj)
+    {
+        if(movingLeft)
+        {
+            StopMovingLeft();
+        }
+        else if(movingRight)
+        {
+            StopMovingRight();
+        }
     }
 
     public void StartPlayingThrusterSoundEffect()
@@ -217,7 +247,12 @@ public class Plane : MonoBehaviour
 
     private void StopMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if(!this.Dead)
+        StopMovingRight();
+    }
+
+    private void StopMovingRight()
+    {
+        if (!this.Dead)
         {
             StartCoroutine(RollToTheLeft());
             movingRight = false;
@@ -225,6 +260,11 @@ public class Plane : MonoBehaviour
     }
 
     private void StartMovingRight_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        StartMovingRight();
+    }
+
+    private void StartMovingRight()
     {
         if (!this.Dead)
         {
@@ -235,7 +275,12 @@ public class Plane : MonoBehaviour
 
     private void StopMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if(!this.Dead)
+        StopMovingLeft();
+    }
+
+    private void StopMovingLeft()
+    {
+        if (!this.Dead)
         {
             StartCoroutine(RollToTheRight());
             movingLeft = false;
@@ -244,7 +289,12 @@ public class Plane : MonoBehaviour
 
     private void StartMovingLeft_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if(!this.Dead)
+        StartMovingLeft();
+    }
+
+    private void StartMovingLeft()
+    {
+        if (!this.Dead)
         {
             StartCoroutine(RollToTheLeft());
             movingLeft = true;

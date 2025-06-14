@@ -98,6 +98,24 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StartTouching"",
+                    ""type"": ""Button"",
+                    ""id"": ""950d1a8e-a0d8-4e1d-bbbc-3fdfa0aa329b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StopTouching"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac99c1ca-9eae-40d5-b1f7-bc72c32fae25"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -188,6 +206,28 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""StartGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1c4b622a-53b6-4c38-a269-a18d97292a32"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartTouching"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""215cf627-b590-4d9b-8d0d-164bbba27026"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StopTouching"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -204,6 +244,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_Game_RightBarrelRoll = m_Game.FindAction("RightBarrelRoll", throwIfNotFound: true);
         m_Game_DebugClick = m_Game.FindAction("DebugClick", throwIfNotFound: true);
         m_Game_StartGame = m_Game.FindAction("StartGame", throwIfNotFound: true);
+        m_Game_StartTouching = m_Game.FindAction("StartTouching", throwIfNotFound: true);
+        m_Game_StopTouching = m_Game.FindAction("StopTouching", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +315,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_RightBarrelRoll;
     private readonly InputAction m_Game_DebugClick;
     private readonly InputAction m_Game_StartGame;
+    private readonly InputAction m_Game_StartTouching;
+    private readonly InputAction m_Game_StopTouching;
     public struct GameActions
     {
         private @GameInput m_Wrapper;
@@ -285,6 +329,8 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @RightBarrelRoll => m_Wrapper.m_Game_RightBarrelRoll;
         public InputAction @DebugClick => m_Wrapper.m_Game_DebugClick;
         public InputAction @StartGame => m_Wrapper.m_Game_StartGame;
+        public InputAction @StartTouching => m_Wrapper.m_Game_StartTouching;
+        public InputAction @StopTouching => m_Wrapper.m_Game_StopTouching;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -318,6 +364,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @StartGame.started += instance.OnStartGame;
             @StartGame.performed += instance.OnStartGame;
             @StartGame.canceled += instance.OnStartGame;
+            @StartTouching.started += instance.OnStartTouching;
+            @StartTouching.performed += instance.OnStartTouching;
+            @StartTouching.canceled += instance.OnStartTouching;
+            @StopTouching.started += instance.OnStopTouching;
+            @StopTouching.performed += instance.OnStopTouching;
+            @StopTouching.canceled += instance.OnStopTouching;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -346,6 +398,12 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @StartGame.started -= instance.OnStartGame;
             @StartGame.performed -= instance.OnStartGame;
             @StartGame.canceled -= instance.OnStartGame;
+            @StartTouching.started -= instance.OnStartTouching;
+            @StartTouching.performed -= instance.OnStartTouching;
+            @StartTouching.canceled -= instance.OnStartTouching;
+            @StopTouching.started -= instance.OnStopTouching;
+            @StopTouching.performed -= instance.OnStopTouching;
+            @StopTouching.canceled -= instance.OnStopTouching;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -373,5 +431,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnRightBarrelRoll(InputAction.CallbackContext context);
         void OnDebugClick(InputAction.CallbackContext context);
         void OnStartGame(InputAction.CallbackContext context);
+        void OnStartTouching(InputAction.CallbackContext context);
+        void OnStopTouching(InputAction.CallbackContext context);
     }
 }

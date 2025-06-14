@@ -76,6 +76,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "StartTouching",
+                    "type": "Button",
+                    "id": "950d1a8e-a0d8-4e1d-bbbc-3fdfa0aa329b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StopTouching",
+                    "type": "Button",
+                    "id": "ac99c1ca-9eae-40d5-b1f7-bc72c32fae25",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -164,6 +182,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "StartGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c4b622a-53b6-4c38-a269-a18d97292a32",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartTouching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "215cf627-b590-4d9b-8d0d-164bbba27026",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StopTouching",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
